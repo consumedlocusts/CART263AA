@@ -17,7 +17,7 @@ function draw() {
     (h = 50),
     (r = 90),
     (g = 80),
-    (b = 40)
+    (b = 50)
   );
 
   noStroke();

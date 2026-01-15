@@ -1,9 +1,11 @@
 "use strict";
-let w = 600 / 3;
-let h = 600;
+const w = 600 / 3;
+const h = 600;
 let rect1 = { x: 0, y: 0, w: 600 / 3, h: 600, fill: "olive" };
 let rect2 = { x: 600 / 3, y: 0, w: 600 / 3, h: 600, fill: "green" };
 let rect3 = { x: 400, y: 0, fill: "brown" };
+let turnWhite;
+false;
 function setup() {
   console.log("go");
   createCanvas(600, 600);
@@ -28,16 +30,14 @@ function draw() {
   pop();
 }
 
-function mousePressed2() {
-  const distance = (mouseX, mouseY, rect1.w / 2, rect1.h / 2);
-  const mouseOverlapsRect1 = (distance < rect1.x / 2, rect1.y / 2);
-  if (mouseOverlapsRect1) {
-    rect1.fill = fill(200);
+function mouseMoved() {
+  const distance = (mouseX, mouseY, rect1.x / 2, rect1.y / 2);
+  const mouseOverlapsRect1 = (distance < rect1.w / 2, rect1.h / 2);
+  if (turnWhite == true) {
+    fill;
+  }
+  if (mouseX >= w / 3 && (w / 3) * 2) {
+    rect1.w;
   }
 }
-function keyPressed() {
-  if (keyPressed) {
-    rect2.x = 20;
-    rect2.y = 30;
-  }
-}
+function white() {}

@@ -1,6 +1,7 @@
 "use strict";
-let x, y, w, h, r, g, b;
-
+let rect1 = ((x = 300), (y = 300), (w = 40), (h = 40));
+let rect2 = ((x = 400), (y = 400), (w = 40), (h = 40));
+let rect3 = ((x = 500), (y = 500), (w = 40), (h = 40));
 function setup() {
   console.log("go");
   createCanvas(600, 600);
@@ -8,17 +9,12 @@ function setup() {
 
 function draw() {
   background(0);
-  drawEllipse(20, 30, 60, 50, 400, 500, 500);
-  drawEllipse2(43, 83, 93, 93, 400, 500, 500);
-  drawEllipse3(23, 205, 63, 30, 400, 500, 500);
 }
 
-function drawEllipse(x, y, w, h, r, g, b) {
-  ellipse(x, y, h, w, r, g, b);
-}
-function drawEllipse2(x, y, w, h, r, g, b) {
-  ellipse(x, y, h, w, r, g, b);
-}
-function drawEllipse3(x, y, w, h, r, g, b) {
-  ellipse(x, y, h, w, r, g, b);
+function mousePressedRect() {
+  const distance = (mouseX, mouseY, rect1.x, rect1.y);
+  const mouseOverlapsRect1 = distance < rect1.x / 2;
+  if (mousePressed && mouseOverlapsRect1) {
+    rect1.x = 400;
+  }
 }

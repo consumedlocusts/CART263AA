@@ -1,7 +1,18 @@
 "use strict";
-let rect1 = { x: 300, y: 300, w: 40, h: 40 };
-let rect2 = { x: 400, y: 400, w: 40, h: 40 };
-let rect3 = { x: 500, y: 500, w: 40, h: 40 };
+//I must get rid of objects sadly
+//sizes instead :-O i dislike the blending of commas actually skill issue
+let x1 = 100;
+let y1 = 100;
+let x2 = 250;
+let y2 = 250;
+let x3 = 400;
+let y3 = 0;
+
+let r = 255;
+let g = 0;
+let b = 0;
+//i refuse let r=,b=,g= hiiii how r u
+//stop
 function setup() {
   console.log("go");
   createCanvas(600, 600);
@@ -9,31 +20,36 @@ function setup() {
 
 function draw() {
   background(0);
-  noStroke();
-  rect(rect1.x, rect1.y, rect1.w, rect1.h);
-  noStroke();
-  rect(rect2.x, rect2.y, rect2.w, rect2.h);
-  noStroke();
-  rect(rect3.x, rect3.y, rect3.w, rect3.h);
+  //FILE LSIT stop
+  fill(r, g, b);
+  rect(x1, y1, 45, 45);
+
+  fill(r, g, b);
+  rect(x2, y2, 30, 30);
+
+  fill(r, g, b);
+  rect(x3, y3, 60, 60);
 }
 
 function mousePressed() {
-  const distance = (mouseX, mouseY, rect1.x, rect1.y);
-  const mouseOverlapsRect1 = (distance < rect1.x / 2, rect1.y / 2);
+  const distance = (mouseX, mouseY, x1, y1);
+  const mouseOverlapsRect1 = (distance < x1 / 2, y1 / 2);
   if (mouseOverlapsRect1 && mousePressed) {
-    rect1.x = 500;
-    rect1.y = 500;
+    x1 = random(300);
+    y1 = random(300);
+    //i figured
   }
 }
 function keyPressed() {
   if (keyPressed) {
-    rect2.x = 20;
-    rect2.y = 30;
+    //move around the random canvas
+    x2 = random(600);
+    y2 = random(600);
   }
 }
 function mouseMoved() {
   if (mouseMoved) {
-    rect3.x = 95;
-    rect3.y = 200;
+    //add frames pivoting effect idk
+    y3 = y3 + 6;
   }
 }

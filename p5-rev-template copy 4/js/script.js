@@ -9,14 +9,28 @@ let orange = {
   g: 165,
   b: 0,
 };
-let ellipseAlpha;
-let radius;
+let ellipseAlpha = 10;
+let radius = 80;
 function setup() {
   createCanvas(800, 800);
 }
 function draw() {
   background(0);
   displaySquare();
+  if (counter < 1 || counter > 10) {
+    return; //  /|O___o|\
+  }
+  let i = 0;
+  while (i < counter) {
+    //test
+    //centereed in ze canvas
+    //basically elipalph + i * 20 is just saying increment by 20 or wahetevr each time
+    fill(255, 255, 255, ellipseAlpha + i * 10);
+    ellipse(width / 2, height / 2, radius + i * 40, radius + i * 40);
+
+    //Increment by 20. True!!
+    i++;
+  }
 }
 
 function displaySquare() {

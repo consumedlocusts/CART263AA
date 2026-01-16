@@ -1,50 +1,51 @@
 "use strict";
-const canSize = 600;
-const w = canSize / 3;
-const h = canSize;
-//make objects the colors i suppose it is NOT a flag
-const col1 = { c: "olive" };
-const col2 = { c: "brown" };
-const col3 = { c: "grey" };
-
+let counter = 0;
+let orange = {
+  x: 80,
+  y: 50,
+  w: 90,
+  h: 90,
+  r: 255,
+  g: 165,
+  b: 0,
+};
+let ellipseAlpha;
+let radius;
 function setup() {
-  console.log("go");
-  createCanvas(600, 600);
+  createCanvas(800, 800);
 }
-
 function draw() {
   background(0);
-
-  noStroke();
-  fill(col1.c);
-  rect(0, 0, w, h);
-  //i dont think im supposed to pushpop
-  //unncessary numbers and objects removed, y = 0
-  noStroke();
-  fill(col2.c);
-  rect(w, 0, w, h);
-
-  noStroke();
-  fill(col3.c);
-  rect(w * 2, 0, w, h);
+  displaySquare();
 }
 
-function mouseMoved() {
-  //call and reset the colors again to be used and not turn stringy,
-  // also so that the colors reset obv
-  col1.c = "olive";
-  col2.c = "brown";
-  col3.c = "grey";
-
-  if (mouseX < w) {
-    col1.c = "white";
+function displaySquare() {
+  //checking to make the color change
+  if (checkSquare()) {
+    fill("#f9ca5cff");
+  } else {
+    //rbg bruh be fr
+    fill(orange.r, orange.g, orange.b);
   }
-  //check 2 see if mouse is in the pixel range without that distance stuff
-  else if (mouseX < w * 2) {
-    col2.c = "white";
+  rect(orange.x, orange.y, orange.w, orange.h);
+}
+//check it like  squre cuz its got 4 coordnates ig
+function checkSquare() {
+  if (
+    mouseX >= orange.x &&
+    mouseX <= orange.x + orange.w && //fool
+    mouseY >= orange.y &&
+    mouseY <= orange.y + orange.h
+  ) {
+    return true;
+  } else {
+    return false;
   }
-  //liek 1,2,3
-  else if (mouseX < w * 3) {
-    col3.c = "white";
+  //idk how to make this simpler
+}
+function mousePressed() {
+  if (checkSquare()) {
+    counter++;
+    //ez
   }
 }

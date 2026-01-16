@@ -21,6 +21,7 @@ function draw() {
     text(i, x, y);
   }
   for (let i = 0; i <= 15; i++) {
+    //looks good because the two 0s blend over eachother. cux of the step
     let x = 20;
     let y = yh + i * xw;
     text(i, x, y);

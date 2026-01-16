@@ -1,11 +1,12 @@
 "use strict";
-const w = 600 / 3;
-const h = 600;
-let rect1 = { x: 0, y: 0, w: 600 / 3, h: 600, fill: "olive" };
-let rect2 = { x: 600 / 3, y: 0, w: 600 / 3, h: 600, fill: "green" };
-let rect3 = { x: 400, y: 0, fill: "brown" };
-let turnWhite;
-false;
+const canSize = 600;
+const w = canSize / 3;
+const h = canSize;
+//make objects the colors i suppose it is NOT a flag
+const col1 = { c: "olive" };
+const col2 = { c: "brown" };
+const col3 = { c: "grey" };
+
 function setup() {
   console.log("go");
   createCanvas(600, 600);
@@ -13,31 +14,37 @@ function setup() {
 
 function draw() {
   background(0);
-  push();
+
   noStroke();
-  fill(rect1.fill);
-  rect(rect1.x, rect1.y, w, h);
-  pop();
-  push();
+  fill(col1.c);
+  rect(0, 0, w, h);
+  //i dont think im supposed to pushpop
+  //unncessary numbers and objects removed, y = 0
   noStroke();
-  fill(rect2.fill);
-  rect(rect2.x, rect2.y, w, h);
-  pop();
-  push();
+  fill(col2.c);
+  rect(w, 0, w, h);
+
   noStroke();
-  fill(rect3.fill);
-  rect(rect3.x, rect3.y, w, h);
-  pop();
+  fill(col3.c);
+  rect(w * 2, 0, w, h);
 }
 
 function mouseMoved() {
-  const distance = (mouseX, mouseY, rect1.x / 2, rect1.y / 2);
-  const mouseOverlapsRect1 = (distance < rect1.w / 2, rect1.h / 2);
-  if (turnWhite == true) {
-    fill;
+  //call and reset the colors again to be used and not turn stringy,
+  // also so that the colors reset obv
+  col1.c = "olive";
+  col2.c = "brown";
+  col3.c = "grey";
+
+  if (mouseX < w) {
+    col1.c = "white";
   }
-  if (mouseX >= w / 3 && (w / 3) * 2) {
-    rect1.w;
+  //check 2 see if mouse is in the pixel range without that distance stuff
+  else if (mouseX < w * 2) {
+    col2.c = "white";
+  }
+  //liek 1,2,3
+  else if (mouseX < w * 3) {
+    col3.c = "white";
   }
 }
-function white() {}

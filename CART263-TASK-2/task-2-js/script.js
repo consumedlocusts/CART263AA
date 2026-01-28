@@ -43,16 +43,24 @@ function setup() {
   /* 5A: all h2 elements */
   /* 5B: length of the list in 5A */
   /* 5C: the text content of the first element in the list from 5A */
-  /***CODE */
-  /***OUTPUT:
-   *
+  /***CODE */ const allH2 = document.getElementsByTagName("h2"); //get the tag name first
+  console.log(allH2); //since the accessed <h2> element calling is already established,
+  // i only need to log for the length of the list that has beeen accessed ^^^
+  console.log(allH2.length);
+  //using javascript ".textContent"
+  console.log(allH2[0].textContent);
+
+  /***OUTPUT: first log: show all <h2> elements
+   * second log: shows how many <h2> elements exist
+   * third log: shows the text content of only the first <h2>
    */
 
   /*************************************** */
   /* 6: the element with id name parent */
-  /***CODE */
-  /***OUTPUT:
-   *
+  /***CODE */ const parentEl = document.getElementById("parent");
+  console.log(parentEl);
+  /***OUTPUT: using get element by id instead of tag
+   * shows the element with id "parent"
    */
 
   /*************************************** */

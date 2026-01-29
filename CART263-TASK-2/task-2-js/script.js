@@ -48,7 +48,7 @@ function setup() {
   // i only need to log for the length of the list that has beeen accessed ^^^
   console.log(allH2.length);
   //using javascript ".textContent"
-  console.log(allH2[0].textContent);
+  console.log(allH2).textContent;
 
   /***OUTPUT: first log: show all <h2> elements
    * second log: shows how many <h2> elements exist

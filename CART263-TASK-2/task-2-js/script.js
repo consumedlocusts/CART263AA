@@ -6,7 +6,7 @@ function setup() {
   /*** ALL ANWSERS TO BE ADDED IN THE ALLOCATED SPACE */
   /*** START PART ONE ACCESS */
   /* 1: all paragraph elements */
-  /***CODE */ const allPTags = document.getElementsByTagName("p");
+  /***CODE */ let allPTags = document.getElementsByTagName("p");
   console.log(allPTags);
   /***OUTPUT: shwoing list of all <p> elements on the page/logging list of all <p> elements
    *
@@ -14,7 +14,7 @@ function setup() {
 
   /*************************************** */
   /* 2: only the first paragraph element */
-  /***CODE */ const firstPTag = document.getElementsByTagName("p")[0];
+  /***CODE */ let firstPTag = document.getElementsByTagName("p")[0];
   console.log(firstPTag);
   /***OUTPUT: shows only the first <p> element on the page only
    *
@@ -22,7 +22,7 @@ function setup() {
 
   /*************************************** */
   /* 3: all elements with the class inner-container */
-  /***CODE */ const innerContainers =
+  /***CODE */ let innerContainers =
     document.getElementsByClassName("inner-container");
   console.log(innerContainers);
   /***OUTPUT: shows all elements thatt have an "inner-container" class
@@ -31,9 +31,9 @@ function setup() {
 
   /*************************************** */
   /* 4: the last image element inside the element that has the class img-container */
-  /***CODE */ const imgContainer = document.querySelector(".img-container"); //. indicating accesisng within class
-  const imgs = imgContainer.getElementsByTagName("img");
-  const lastImg = imgs[imgs.length - 1]; //-1 counting by accessing last el of array javascript is backwards
+  /***CODE */ let imgContainer = document.querySelector(".img-container"); //. indicating accesisng within class
+  let imgs = imgContainer.getElementsByTagName("img");
+  let lastImg = imgs[imgs.length - 1]; //-1 counting by accessing last el of array javascript is backwards
   console.log(lastImg); //logging the lastImg only
   /***OUTPUT: shows last <img> inside the class "img-container"
    *
@@ -43,7 +43,7 @@ function setup() {
   /* 5A: all h2 elements */
   /* 5B: length of the list in 5A */
   /* 5C: the text content of the first element in the list from 5A */
-  /***CODE */ const allH2 = document.getElementsByTagName("h2"); //get the tag name first
+  /***CODE */ let allH2 = document.getElementsByTagName("h2"); //get the tag name first
   console.log(allH2); //since the accessed <h2> element calling is already established,
   // i only need to log for the length of the list that has beeen accessed ^^^
   console.log(allH2.length);
@@ -57,7 +57,7 @@ function setup() {
 
   /*************************************** */
   /* 6: the element with id name parent */
-  /***CODE */ const parentEl = document.getElementById("parent");
+  /***CODE */ let parentEl = document.getElementById("parent");
   console.log(parentEl);
   /***OUTPUT: using get element by id instead of tag
    * shows the element with id "parent"
@@ -68,9 +68,15 @@ function setup() {
 
   /*************************************** */
   /*** START PART TWO MODIFY */
+
   /*************************************** */
   /* 1: Select the first paragraph and replace the text within the paragraph... */
   /***CODE */
+  let firstP = document.getElementById("1");
+  console.log(firstP);
+  firstP.textContent = "hello hello hello";
+  console.log(firstP.textContent);
+  //logging new replacement for the first paragraph
   /*************************************** */
   /* 2: Select all elements in the HTML that have the class name content-container
  and change the background color ... of first and second ...*/

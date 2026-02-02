@@ -201,7 +201,7 @@ passing the current allPTagsThree element as the parent with each iteration.*/
     otherwise lat it have the content `ODD`.*/
 
   /***CODE */
-  console.log(document.getElementsByClassName("testDiv").length);
+
   function customNewBoxCreate(parent) {
     //2B:
     let newDiv = document.createElement("div");
@@ -218,20 +218,22 @@ passing the current allPTagsThree element as the parent with each iteration.*/
   //using the cell size alrd mentioned in CSS
   let cellSize = 40; //ik i should ref the CSS but its confusing
   for (let row = 0; row < 10; row++) {
-    //nested
+    //nested llooop for row,cols
     for (let col = 0; col < 10; col++) {
-      //new var to create a new box and save returned eelment
+      //new var, create one new box ref and save returned eelment
       let returnDiv = customNewBoxCreate(newGridParent);
-      //might crash
+      //might crash, set pos based on row/col
       returnDiv.style.left = col * cellSize + "px";
       returnDiv.style.top = row * cellSize + "xp";
     }
   }
+  console.log(document.getElementsByClassName("testDiv").length);
   /***EXPLANATION::
-   *
-   *
+   *the function creates one div with class "testDiv" and appends it to #new-grid
+   *then the nested loop runs 10x10 creatung 100 boxes, each box is pos left/top=col*size, row*size
    */
-
+  //the CSS sets .testDiv to position:absolute and #new-grid to position:relative the bxoxes r visible grids
+  //sorry i cant do the bonus
   /*************************************** */
   /* 3: GRID OF BOXES II */
 

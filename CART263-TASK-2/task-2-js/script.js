@@ -149,8 +149,31 @@ function setup() {
   /* 1H: Iterate through the allPTagsThree array and call customCreateElement(), 
 passing the current allPTagsThree element as the parent with each iteration.*/
   /***CODE */
+  //1A:
+  let allPTagsThree = document.getElementsByTagName("p");
+  console.log(allPTagsThree);
+  console.log(allPTagsThree.length);
+  //logs list of all <p> elements, which is 9 (logs the number 9 as length)
+  //1B: new function
+  //before adding new Ps freeze the og
 
-  /***EXPLANATION::
+  function customCreateElement(parent) {
+    //1C,1D,1E,1F
+    let newP = document.createElement("p");
+    newP.textContent = "using create Element";
+    newP.style.backgroundColor = "green";
+    newP.style.color = "white";
+
+    //1G:add the newP to the "parent" its not working
+  }
+  //test
+  for (let i = 0; i < allPTagsThree.length; i++) {
+    customCreateElement(allPTagsThree[i]);
+  }
+  //   customCreateElement(allPTagsThree[i]);
+
+  // }
+  /***EXPLANATION:
    *
    *
    */

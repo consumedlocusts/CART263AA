@@ -89,9 +89,11 @@ function setup() {
   console.log(contentContainers[1].style.backgroundColor);
   //backgroundColor
   /*************************************** */
-  /* 3: Change the src element of the first image element on the page to be ...
+  /* 3: Change the src element of the first image element on the page to be ...?? seventh
 /***CODE */
-
+  let allImgs = document.getElementsByTagName("img");
+  allImgs[0].setAttribute("src", "seven.png");
+  console.log(allImgs[0].getAttribute("src"));
   /*************************************** */
   /* 4: Select the third paragraph element on the page and 
 replace the content (within the paragraph) to be an h2 element which contains the text `TEST 123`

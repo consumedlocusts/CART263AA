@@ -92,18 +92,22 @@ function setup() {
   /* 3: Change the src element of the first image element on the page to be ...?? seventh
 /***CODE */
   let allImgs = document.getElementsByTagName("img");
-  allImgs[0].setAttribute("src", "seven.png");
+  allImgs[0].setAttribute("src", "task-2-images/seven.png");
   console.log(allImgs[0].getAttribute("src"));
   /*************************************** */
   /* 4: Select the third paragraph element on the page and 
 replace the content (within the paragraph) to be an h2 element which contains the text `TEST 123`
 /***CODE */
-
+  let pThree = document.getElementById("3");
+  pThree.innerHTML = "<h2>TEST 123</h2>"; //
+  console.log(pThree.innerHTML);
   /*************************************** */
   /* 5: Select the fourth paragraph element on the page and 
 add to the existing content an h2 element containing the text `TEST 123`
 /***CODE */
-
+  let pFour = document.getElementById("4");
+  pFour.innerHTML = pFour.innerHTML + "<h2>TEST 123</h2>"; //
+  console.log(pFour.innerHTML);
   /*************************************** */
   /* 6: Select the fifth paragraph element on the page and add to the existing content 
 an img element that holds `one.png`, and add the class newStyle to said paragraph element.

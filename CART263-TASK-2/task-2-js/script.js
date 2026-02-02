@@ -22,11 +22,11 @@ function setup() {
 
   /*************************************** */
   /* 3: all elements with the class inner-container */
-  /***CODE */ let innerContainers =
-    document.getElementsByClassName("inner-container");
-  console.log(innerContainers);
+  // /***CODE */ let innerContainers =
+  //   document.getElementsByClassName("inner-container");
+  // console.log(innerContainers);
   /***OUTPUT: shows all elements thatt have an "inner-container" class
-   *
+   * // overrides part 2
    */
 
   /*************************************** */
@@ -82,7 +82,7 @@ function setup() {
  and change the background color ... of first and second ...*/
   /***CODE */
   let contentContainers = document.getElementsByClassName("content-container");
-  console.log("ww", contentContainers.length);
+  console.log("lengs", contentContainers.length); //"lengs" is logging the lenght of all elemnts w class name content-container (8)
   contentContainers[0].style.backgroundColor = "orange";
   contentContainers[1].style.backgroundColor = "purple";
   console.log(contentContainers[0].style.backgroundColor);
@@ -107,12 +107,15 @@ add to the existing content an h2 element containing the text `TEST 123`
 /***CODE */
   let pFour = document.getElementById("4");
   pFour.innerHTML = pFour.innerHTML + "<h2>TEST 123</h2>"; //
-  console.log(pFour.innerHTML);
+  console.log(pFour.innerHTML); //same as above but adding instead of repkacing with + symbol
   /*************************************** */
   /* 6: Select the fifth paragraph element on the page and add to the existing content 
 an img element that holds `one.png`, and add the class newStyle to said paragraph element.
 /***CODE */
-
+  let pFive = document.getElementById("5");
+  pFive.innerHTML = pFive.innerHTML + '<img src="task-2-images/one.png">'; //
+  pFive.classList.add("newStyle"); //logs the classlist with/including "new style" which is pink
+  console.log(pFive.classList);
   /*************************************** */
   /* 7: Add the following array variable: let colors = ['red','blue','green','orange'];, 
 then access all elements with class name inner-container and save to a variable called `innerContainers`. 
@@ -121,7 +124,14 @@ assign the element from innerContainers variable with the same index
 (i.e. colors[0] should be allocated to the first innerContainers element, colors[1] to the second, etc ...) 
 a background using that color.
 /***CODE */
-
+  let colors = ["red", "blue", "green", "orange"]; //array
+  //let innerContainers = document.getElementsByClassName("inner-container"); //cannot redeclaere this
+  let innerContainers = document.getElementsByClassName("inner-container");
+  console.log("inner", innerContainers.length);
+  for (let i = 0; i < colors.length; i++) {
+    innerContainers[i].style.backgroundColor = colors[i]; //border of containers?? why
+    console.log(innerContainers[i].style.backgroundColor);
+  }
   /*************************************** */
   /*** END PART TWO MODIFY */
 

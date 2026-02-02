@@ -69,69 +69,69 @@ function setup() {
   /*************************************** */
   /*** START PART TWO MODIFY */
 
-  /*************************************** */
-  /* 1: Select the first paragraph and replace the text within the paragraph... */
-  /***CODE */
-  let firstP = document.getElementById("1");
-  console.log(firstP);
-  firstP.textContent = "hello hello hello";
-  console.log(firstP.textContent);
-  //logging new replacement for the first paragraph
-  /*************************************** */
-  /* 2: Select all elements in the HTML that have the class name content-container
- and change the background color ... of first and second ...*/
-  /***CODE */
-  let contentContainers = document.getElementsByClassName("content-container");
-  console.log("lengs", contentContainers.length); //"lengs" is logging the lenght of all elemnts w class name content-container (8)
-  contentContainers[0].style.backgroundColor = "orange";
-  contentContainers[1].style.backgroundColor = "purple";
-  console.log(contentContainers[0].style.backgroundColor);
-  console.log(contentContainers[1].style.backgroundColor);
-  //backgroundColor
-  /*************************************** */
-  /* 3: Change the src element of the first image element on the page to be ...?? seventh
-/***CODE */
-  let allImgs = document.getElementsByTagName("img");
-  allImgs[0].setAttribute("src", "task-2-images/seven.png");
-  console.log(allImgs[0].getAttribute("src"));
-  /*************************************** */
-  /* 4: Select the third paragraph element on the page and 
-replace the content (within the paragraph) to be an h2 element which contains the text `TEST 123`
-/***CODE */
-  let pThree = document.getElementById("3");
-  pThree.innerHTML = "<h2>TEST 123</h2>"; //
-  console.log(pThree.innerHTML);
-  /*************************************** */
-  /* 5: Select the fourth paragraph element on the page and 
-add to the existing content an h2 element containing the text `TEST 123`
-/***CODE */
-  let pFour = document.getElementById("4");
-  pFour.innerHTML = pFour.innerHTML + "<h2>TEST 123</h2>"; //
-  console.log(pFour.innerHTML); //same as above but adding instead of repkacing with + symbol
-  /*************************************** */
-  /* 6: Select the fifth paragraph element on the page and add to the existing content 
-an img element that holds `one.png`, and add the class newStyle to said paragraph element.
-/***CODE */
-  let pFive = document.getElementById("5");
-  pFive.innerHTML = pFive.innerHTML + '<img src="task-2-images/one.png">'; //
-  pFive.classList.add("newStyle"); //logs the classlist with/including "new style" which is pink
-  console.log(pFive.classList);
-  /*************************************** */
-  /* 7: Add the following array variable: let colors = ['red','blue','green','orange'];, 
-then access all elements with class name inner-container and save to a variable called `innerContainers`. 
-Next, iterate over the colors array, and for each color: 
-assign the element from innerContainers variable with the same index 
-(i.e. colors[0] should be allocated to the first innerContainers element, colors[1] to the second, etc ...) 
-a background using that color.
-/***CODE */
-  let colors = ["red", "blue", "green", "orange"]; //array
-  //let innerContainers = document.getElementsByClassName("inner-container"); //cannot redeclaere this
-  let innerContainers = document.getElementsByClassName("inner-container");
-  console.log("inner", innerContainers.length);
-  for (let i = 0; i < colors.length; i++) {
-    innerContainers[i].style.backgroundColor = colors[i]; //border of containers?? why
-    console.log(innerContainers[i].style.backgroundColor);
-  }
+  //   /*************************************** */
+  //   /* 1: Select the first paragraph and replace the text within the paragraph... */
+  //   /***CODE */
+  //   let firstP = document.getElementById("1");
+  //   console.log(firstP);
+  //   firstP.textContent = "hello hello hello";
+  //   console.log(firstP.textContent);
+  //   //logging new replacement for the first paragraph
+  //   /*************************************** */
+  //   /* 2: Select all elements in the HTML that have the class name content-container
+  //  and change the background color ... of first and second ...*/
+  //   /***CODE */
+  //   let contentContainers = document.getElementsByClassName("content-container");
+  //   console.log("lengs", contentContainers.length); //"lengs" is logging the lenght of all elemnts w class name content-container (8)
+  //   contentContainers[0].style.backgroundColor = "orange";
+  //   contentContainers[1].style.backgroundColor = "purple";
+  //   console.log(contentContainers[0].style.backgroundColor);
+  //   console.log(contentContainers[1].style.backgroundColor);
+  //   //backgroundColor
+  //   /*************************************** */
+  //   /* 3: Change the src element of the first image element on the page to be ...?? seventh
+  // /***CODE */
+  //   let allImgs = document.getElementsByTagName("img");
+  //   allImgs[0].setAttribute("src", "task-2-images/seven.png");
+  //   console.log(allImgs[0].getAttribute("src"));
+  //   /*************************************** */
+  //   /* 4: Select the third paragraph element on the page and
+  // replace the content (within the paragraph) to be an h2 element which contains the text `TEST 123`
+  // /***CODE */
+  //   let pThree = document.getElementById("3");
+  //   pThree.innerHTML = "<h2>TEST 123</h2>"; //
+  //   console.log(pThree.innerHTML);
+  //   /*************************************** */
+  //   /* 5: Select the fourth paragraph element on the page and
+  // add to the existing content an h2 element containing the text `TEST 123`
+  // /***CODE */
+  //   let pFour = document.getElementById("4");
+  //   pFour.innerHTML = pFour.innerHTML + "<h2>TEST 123</h2>"; //
+  //   console.log(pFour.innerHTML); //same as above but adding instead of repkacing with + symbol
+  //   /*************************************** */
+  //   /* 6: Select the fifth paragraph element on the page and add to the existing content
+  // an img element that holds `one.png`, and add the class newStyle to said paragraph element.
+  // /***CODE */
+  //   let pFive = document.getElementById("5");
+  //   pFive.innerHTML = pFive.innerHTML + '<img src="task-2-images/one.png">'; //
+  //   pFive.classList.add("newStyle"); //logs the classlist with/including "new style" which is pink
+  //   console.log(pFive.classList);
+  //   /*************************************** */
+  //   /* 7: Add the following array variable: let colors = ['red','blue','green','orange'];,
+  // then access all elements with class name inner-container and save to a variable called `innerContainers`.
+  // Next, iterate over the colors array, and for each color:
+  // assign the element from innerContainers variable with the same index
+  // (i.e. colors[0] should be allocated to the first innerContainers element, colors[1] to the second, etc ...)
+  // a background using that color.
+  // /***CODE */
+  //   let colors = ["red", "blue", "green", "orange"]; //array
+  //   //let innerContainers = document.getElementsByClassName("inner-container"); //cannot redeclaere this
+  //   let innerContainers = document.getElementsByClassName("inner-container");
+  //   console.log("inner", innerContainers.length);
+  //   for (let i = 0; i < colors.length; i++) {
+  //     innerContainers[i].style.backgroundColor = colors[i]; //border of containers?? why
+  //     console.log(innerContainers[i].style.backgroundColor);
+  //   }
   /*************************************** */
   /*** END PART TWO MODIFY */
 

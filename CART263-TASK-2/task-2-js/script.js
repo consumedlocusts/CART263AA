@@ -48,7 +48,7 @@ function setup() {
   // i only need to log for the length of the list that has beeen accessed ^^^
   console.log(allH2.length);
   //using javascript ".textContent"
-  console.log(allH2).textContent;
+  //console.log(allH2).textContent;
 
   /***OUTPUT: first log: show all <h2> elements
    * second log: shows how many <h2> elements exist
@@ -81,7 +81,13 @@ function setup() {
   /* 2: Select all elements in the HTML that have the class name content-container
  and change the background color ... of first and second ...*/
   /***CODE */
-
+  let contentContainers = document.getElementsByClassName("content-container");
+  console.log("ww", contentContainers.length);
+  contentContainers[0].style.backgroundColor = "orange";
+  contentContainers[1].style.backgroundColor = "purple";
+  console.log(contentContainers[0].style.backgroundColor);
+  console.log(contentContainers[1].style.backgroundColor);
+  //backgroundColor
   /*************************************** */
   /* 3: Change the src element of the first image element on the page to be ...
 /***CODE */

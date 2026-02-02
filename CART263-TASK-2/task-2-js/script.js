@@ -150,32 +150,34 @@ function setup() {
 passing the current allPTagsThree element as the parent with each iteration.*/
   /***CODE */
   //1A:
-  let allPTagsThree = document.getElementsByTagName("p");
+  let allPTagsThree = document.querySelectorAll("p"); //query select to not increaase the things we trying to get idk
   console.log(allPTagsThree);
   console.log(allPTagsThree.length);
   //logs list of all <p> elements, which is 9 (logs the number 9 as length)
   //1B: new function
-  //before adding new Ps freeze the og
-
+  //do i have to, before adding newP, freeze the og so no CPU overload??
   function customCreateElement(parent) {
     //1C,1D,1E,1F
     let newP = document.createElement("p");
-    newP.textContent = "using create Element";
+    newP.textContent = "hello hello hello hello hello";
     newP.style.backgroundColor = "green";
     newP.style.color = "white";
+    // 1G:add the newP to the "parent" hehe nvm
+    parent.appendChild(newP);
 
-    //1G:add the newP to the "parent" its not working
+    console.log("newP to parent", parent);
   }
   //test
   for (let i = 0; i < allPTagsThree.length; i++) {
     customCreateElement(allPTagsThree[i]);
   }
-  //   customCreateElement(allPTagsThree[i]);
 
   // }
   /***EXPLANATION:
-   *
-   *
+   * not sure if i did this correctly/understood the parent to child relation of this example but
+   * new <p>;for each original <p>, a NEW <p> is inserted right after it. They are not nested <p> within <p>
+   * so it displays like this ^^ (sep green text box) IN THE PARENT CONTAINER(its appended to)
+   *query selected instead as a static list (not live)
    */
 
   /*************************************** */
@@ -199,7 +201,32 @@ passing the current allPTagsThree element as the parent with each iteration.*/
     otherwise lat it have the content `ODD`.*/
 
   /***CODE */
+  console.log(document.getElementsByClassName("testDiv").length);
+  function customNewBoxCreate(parent) {
+    //2B:
+    let newDiv = document.createElement("div");
 
+    newDiv.classList.add("testDiv");
+    //2C:
+    parent.appendChild(newDiv);
+    //2D:
+    return newDiv;
+  }
+  //get parent el for first grrid ,log the <sectiom id="new-grid"></section element
+  let newGridParent = document.getElementById("new-grid");
+  console.log(newGridParent);
+  //using the cell size alrd mentioned in CSS
+  let cellSize = 40; //ik i should ref the CSS but its confusing
+  for (let row = 0; row < 10; row++) {
+    //nested
+    for (let col = 0; col < 10; col++) {
+      //new var to create a new box and save returned eelment
+      let returnDiv = customNewBoxCreate(newGridParent);
+      //might crash
+      returnDiv.style.left = col * cellSize + "px";
+      returnDiv.style.top = row * cellSize + "xp";
+    }
+  }
   /***EXPLANATION::
    *
    *

@@ -26,17 +26,24 @@ window.onload = function () {
   }
   let gridCells = document.querySelectorAll(".grid-cell");
   let divisor = 2;
-  for (let i = 0; i < gridCells.length; i++) {
-    // if(i%divisor===0){
-    //     gridCells
-    // }
-    if (i % 24 === 0) {
-      if (currentShadeIndex === 0) {
-        currentShadeIndex = 1;
-      } else {
-        currentShadeIndex = 0;
-      }
-    }
-    gridCells[i].style.background = shades[currentShadeIndex];
+  //   for (let i = 0; i < gridCells.length; i++) {
+  //     // if(i%divisor===0){
+  //     //     gridCells
+  //     // }
+  //     if (i % 24 === 0) {
+  //       if (currentShadeIndex === 0) {
+  //         currentShadeIndex = 1;
+  //       } else {
+  //         currentShadeIndex = 0;
+  //       }
+  //     }
+  //     gridCells[i].style.background = shades[currentShadeIndex];
+  //   }
+
+  let changingDivisor = 0;
+  window.setInterval(animate_rows, 1000);
+  function animate_rows() {
+    changingDivisor += 1;
+    console.log(changingDivisor);
   }
 };

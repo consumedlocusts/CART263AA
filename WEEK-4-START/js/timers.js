@@ -82,16 +82,50 @@ window.onload = function () {
   //     console.log(dynamicdelay);
   //   }, dynamicdelay);
   // };
-  let dynamicdelay = 500;
-  window.setTimeout(changingTimeout, dynamicdelay);
+  //   let dynamicdelay = 500;
+  //   window.setTimeout(changingTimeout, dynamicdelay);
 
-  function changingTimeout() {
-    let sp = document.createElement("span");
-    sp.textContent = "adding text";
-    document.querySelector("#parent").appendChild(sp);
-    dynamicdelay -= 10;
-    console.log(dynamicdelay);
-    //dont do set interval again use set timeout for dynamic delays
-    window.setTimeout(changingTimeout, dynamicdelay);
+  //   function changingTimeout() {
+  //     let sp = document.createElement("span");
+  //     sp.textContent = "adding text";
+  //     document.querySelector("#parent").appendChild(sp);
+  //     dynamicdelay -= 10;
+  //     console.log(dynamicdelay);
+  //     //dont do set interval again use set timeout for dynamic delays
+  //     window.setTimeout(changingTimeout, dynamicdelay);
+  //   }
+  //create a particle div
+  let particleDiv = document.createElement("div");
+  particleDiv.id = "particle";
+  document.querySelector("#parent").appendChild(particleDiv);
+  particleDiv.style.left = "25px";
+  particleDiv.style.top = "25px";
+
+  let speedX = 2;
+  let speedY = 3;
+  window.requestAnimationFrame(animate);
+  checkBounds(document.getElementById("parent"), p);
+
+  function animate() {
+    console.log("test");
+    let p = document.getElementById("particle");
+    p.style.left = parseInt(p.style.left) + speedX + "px";
+    p.style.top = parseInt(p.style.top) + speedY + "px";
+    window.requestAnimationFrame(animate);
+  }
+  function checkBounds(parent, p) {
+    let bounds = parent.getBoundingClientRect();
+
+    if (parseInt(p.style.left) > bounds.right) {
+      speedX *= -1;
+    } else if (parseInt(p.style.left) < bounds.left) {
+      speedX *= -1;
+    }
+
+    if (parseInt(p.style.top) > bounds.bottom) {
+      speedY *= -1;
+    } else if (parseInt(p.style.top) < bounds.top) {
+      speedY *= -1;
+    }
   }
 };

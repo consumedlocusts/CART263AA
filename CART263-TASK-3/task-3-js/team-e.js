@@ -26,11 +26,11 @@ function setup_E() {
    * Do not change any code above or the HTML markup.
    * **/
 
-  // ///
-  //   function aniA(parentCanvas) {
-  //     console.log("in ani-A -teamE");
-  //   }
-  // ///
+  ///
+  function aniA(parentCanvas) {
+    console.log("in ani-A -teamE");
+  }
+  ///
 
   /****************ANI B ************************************ */
   /** PUT ALL YOUR CODE FOR INTERACTIVE PATTERN B INSIDE HERE */
@@ -82,12 +82,14 @@ function setup_E() {
     let totalTiles = 0; //for track revealing bool progress
     let revealedT = 0;
     parentCanvas.innerHTML = "";
-    let box = parentCanvas.getBoundingClientRect(); //rendered size of thhis canvas to get
+    let rect = parentCanvas.getBoundingClientRect(); //rendered size of thhis canvas to get
     //building the initial "hidden" style grid with nests
-    for (let y = step; y < box.height; y += step) {
-      for (letx = step; x < box.width; x += step) {
+    for (let y = step; y < rect.height; y += step) {
+      for (let x = step; x < rect.width; x += step) {
         let tile = document.createElement("div");
-        tile.classList.add(".TEAM_E_cell");
+        tile.classList.add("TEAM_E_cell");
+        parentCanvas.appendChild(tile);
+
         //placing tiles
         tile.style.left = x + "px";
         tile.style.top = y + "px";
@@ -95,12 +97,13 @@ function setup_E() {
         tile.style.height = tileSize + "px";
         //keeping the same image fo every tile but its hidden by the inital first layer of red grids
         //use image file as bacjground image for/as specified div tile
-        tile.style.backgroundImage = `url(${imgPath})`;
+        tile.style.backgroundImage = "url(" + imgPath + ")";
         //stroing tile pos for image slicing
         tile.setAttribute("x", x);
         tile.setAttribute("y", y);
         //track if tile haas been revealed
         tile.setAttribute("revealed", "no");
+        tile.style.backgroundColor = "red";
         //hover reveal effect listener
         tile.addEventListener("mousemove", revealTile);
         //counter
@@ -117,57 +120,50 @@ function setup_E() {
       this.style.backgroundPosition = -x + "px " + -y + "px";
       //make tile visible bt removing the red layer mask
       this.style.backgroundColor = "transparent";
-      //and coubt this tile as revealed only once
+
+      //and coubt this tile as revealed only once; attribute toggle
       if (this.getAttribute("revealed") === "no") {
         this.setAttribute("revealed", "yes");
         revealedT += 1;
       }
     }
-    ///////////
-    // function aniC(parentCanvas) {
-    //   console.log("in ani-C -teamE");
 
-    //   /*** THIS IS THE CALLBACK FOR KEY DOWN (* DO NOT CHANGE THE NAME *..) */
-    //   windowKeyDownRef = function (e) {
-    //     //code for key down in here
-    //     console.log(e);
-    //     console.log("e-down");
-    //   };
+    function aniC(parentCanvas) {
+      console.log("in ani-C -teamE");
 
-    //   /*** THIS IS THE CALLBACK FOR KEY UP (*DO NOT CHANGE THE NAME..) */
-    //   windowKeyUpRef = function (e) {
-    //     console.log(e);
-    //     console.log("e-up");
-    //   };
-    //   //DO NOT REMOVE
-    //   window.addEventListener("keydown", windowKeyDownRef);
-    //   window.addEventListener("keyup", windowKeyUpRef);
-    // }
-    // }
-    ////////////////////
-    ////
-    /****************ANI D************************************ */
-    /** PUT ALL YOUR CODE FOR INTERACTIVE PATTERN D INSIDE HERE */
-    /****************ANI D************************************ */
-    /**************** TASK *******************************************
-     * YOU CAN USE ALL NOTES --- and see my examples in team-h.js for inspiration and possibly help:).
-     * 1: create a creative, visual pattern using text, divs as shapes, images ...
-     * 2: add in animation using requestAnimationFrame somewhere to make the sketch animate :)
-     *
-     * NOTE::: PLEASE::: if you add any custom css PLEASE use the style.css and prefix any class names with your team label
-     * i.e. you want to create a custom div class and you are in "Team_A" then call your class TEAM_A_ANI_A_Div -
-     * this is so that your styles are not overriden by other teams.
-     * NOTE::: All your code is to be added here inside this function -
-     * remember you can define other functions inside....
-     * Do not change any code above or the HTML markup.
-     * **/
+      /*** THIS IS THE CALLBACK FOR KEY DOWN (* DO NOT CHANGE THE NAME *..) */
+      windowKeyDownRef = function (e) {
+        //code for key down in here
+        console.log(e);
+        console.log("e-down");
+      };
 
-    /////////////
-    //   function aniD(parentCanvas) {
-    //     console.log("in ani-D -teamE");
-    //   }
-    // }
-    // }
-    ///////////////
+      /*** THIS IS THE CALLBACK FOR KEY UP (*DO NOT CHANGE THE NAME..) */
+      windowKeyUpRef = function (e) {
+        console.log(e);
+        console.log("e-up");
+      };
+      //DO NOT REMOVE
+      window.addEventListener("keydown", windowKeyDownRef);
+      window.addEventListener("keyup", windowKeyUpRef);
+    }
+  }
+  /****************ANI D************************************ */
+  /** PUT ALL YOUR CODE FOR INTERACTIVE PATTERN D INSIDE HERE */
+  /****************ANI D************************************ */
+  /**************** TASK *******************************************
+   * YOU CAN USE ALL NOTES --- and see my examples in team-h.js for inspiration and possibly help:).
+   * 1: create a creative, visual pattern using text, divs as shapes, images ...
+   * 2: add in animation using requestAnimationFrame somewhere to make the sketch animate :)
+   *
+   * NOTE::: PLEASE::: if you add any custom css PLEASE use the style.css and prefix any class names with your team label
+   * i.e. you want to create a custom div class and you are in "Team_A" then call your class TEAM_A_ANI_A_Div -
+   * this is so that your styles are not overriden by other teams.
+   * NOTE::: All your code is to be added here inside this function -
+   * remember you can define other functions inside....
+   * Do not change any code above or the HTML markup.
+   * **/
+  function aniD(parentCanvas) {
+    console.log("in ani-D -teamE");
   }
 }

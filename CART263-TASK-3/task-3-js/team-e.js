@@ -1,4 +1,8 @@
 setup_E();
+//1: Dylan-MOUSECLICK: Grid of 50 letters, space randomizes, look for words
+// 2:SAMA-HOVER: Picturegrid randomized color change, with hover effect
+//3:Dylan-KEY:
+//4: Shrook-ANIMATION:
 /** THEME: SARCASM  */
 function setup_E() {
   console.log("in e");

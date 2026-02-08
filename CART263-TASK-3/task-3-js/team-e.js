@@ -71,7 +71,7 @@ function setup_E() {
 
   console.log("TEAM E, Sama's image grid thhing HOVERINGG");
   //team e's canvas div from DOM id
-  let imgPath = "teamEimages/oneImage.png"; //soon i will upload the image, but for now this is the new team E file path
+  let imgPath = "teamEimages/oneImage.jpg"; //soon i will upload the image, but for now this is the new team E file path
   let step = 20; //grid layout: spacing between cells
   let tileSize = 18; //grid layout: actual tile sizes
   let totalTiles = 0; //for track revealing bool progress

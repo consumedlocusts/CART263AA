@@ -71,6 +71,18 @@ function setup_E() {
   /* TASK: make an interactive pattern .. colors, shapes, sizes, text, images....
    * using  ONLY key down and/or keyup -- any keys::
    */
+  window.onload=function(){
+console.log("TEAM E, Sama's image grid thhing")
+//team e's canvas div from DOM id
+let parentCanvas=document.getElementById("ani_canvE_A");
+//gridding
+makeGrid(parentCanvas);
+//event listener for keyboardpress, listen 
+window.addEventListener("keydown",function(event)){
+  let stepMove=10; //this is how many pixels per each keypress shifts 
+
+}
+  }
 
   function aniC(parentCanvas) {
       console.log("in ani-C -teamE");

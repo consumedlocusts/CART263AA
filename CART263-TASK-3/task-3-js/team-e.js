@@ -27,9 +27,6 @@ function setup_E() {
    * **/
 
   ///
-  function aniA(parentCanvas) {
-    console.log("in ani-A -teamE");
-  }
   ///
 
   /****************ANI B ************************************ */

@@ -8,7 +8,7 @@ function setup_E() {
   console.log("in e");
   /**************************************************** */
   //get the buttons
-  activateButtons(`#TEAM_E`, "ani_canvE", aniA, aniB, aniC, aniD);
+  activateButtons(`#TEAM_E`, "ani_canvE", aniB, aniD);
 
   /**************** ANI A ************************************ */
   /** PUT ALL YOUR CODE FOR INTERACTIVE PATTERN A INSIDE HERE */
@@ -198,7 +198,11 @@ function setup_E() {
     }
     let ellipseS = 35;
     let circles = [];
-    let images = ["image1.png", "image2.png", "image3.png"];
+    let images = [
+      "./teamEimages/image1.png",
+      "./teamEimages/image2.png",
+      "./teamEimages/image3.png",
+    ];
 
     //for circles/images
     function addCircles(row, col) {

@@ -162,5 +162,200 @@ function setup_E() {
    * **/
   function aniD(parentCanvas) {
     console.log("in ani-D -teamE");
+
+    let boundingBoxParent = parentCanvas.getBoundingClientRect();
+    let size = 7;
+    let squareS = 60;
+
+    // I am going to try something else
+
+    //this is for making a background of a chess board
+    //a grid of squares
+    for (let row = 0; row < size; row++) {
+      for (let col = 0; col < size; col++) {
+        //create divs for the squares
+        let square = document.createElement("div");
+
+        //charactersitcs for the squares
+        square.style.left = col * 52 + "px";
+        square.style.top = row * 52 + "px";
+        square.style.width = squareS + "px";
+        square.style.height = squareS + "px";
+        square.style.position = "absolute";
+
+        //make it white and black
+        square.style.backgroundColor =
+          (row + col) % 2 === 0 ? "white" : "black";
+        /*   if ((row + col) % 2 === 0) {
+            square.style.backgroundColor = "white";
+          } else {
+            square.style.backgroundColor = "black";
+          } */
+        //append it to parent
+        parentCanvas.appendChild(square);
+      }
+    }
+    let ellipseS = 35;
+    let circles = [];
+    let images = ["image1.png", "image2.png", "image3.png"];
+
+    //for circles/images
+    function addCircles(row, col) {
+      //create divs for the images
+      let pawn = document.createElement("div");
+      //characteristicsfor the images
+      pawn.style.position = "absolute";
+      pawn.style.width = 50 + "px";
+      pawn.style.height = 50 + "px";
+      //ellipse.style.borderRadius = "50%";
+      // ellipse.style.backgroundColor = "purple";
+
+      // to pick random images
+      pawn.style.background = `url(${images[parseInt(Math.random() * images.length)]})`;
+      pawn.style.backgroundSize = "cover";
+      pawn.style.backgroundPosition = "center";
+      pawn.style.backgroundRepeat = "no-repeat";
+
+      pawn.style.left = col * 57 + (squareS - ellipseS) / 2 + "px";
+      pawn.style.top = row * 57 + (squareS - ellipseS) / 2 + "px";
+      pawn.style.transform = "translate(-50%,-50%)";
+      pawn.setAttribute("move", "true");
+
+      pawn.row = row;
+      pawn.col = col;
+      console.log(pawn.col);
+
+      //append it to parents
+      parentCanvas.appendChild(pawn);
+
+      return pawn;
+    }
+
+    //call the function addCircles and create multiple of it
+    for (let row = 0; row < size; row++) {
+      for (let col = 0; col < size; col++) {
+        // if (Math.random() < 0.9) {
+        circles.push(addCircles(row, col));
+        //}
+      }
+    }
+
+    //do animation  of moving pawns from square to square
+    function animate() {
+      //to put the animation for all pawns
+      for (let i = 0; i < circles.length; i++) {
+        let pawn = circles[i];
+
+        //if the pawns move it become true
+        if (pawn.getAttribute("move") === "true") {
+          console.log("here");
+          //steps
+          let move = [-1, 1, 0];
+          console.log(move);
+
+          //moving for the pawns using -1,1 or 0
+          let rowMove = move[parseInt(Math.random() * move.length)];
+          let colMove = move[parseInt(Math.random() * move.length)];
+
+          //stay inside grid
+          //if (newRow >= 0 && newRow < size) { ellipse.row = newRow; }
+
+          // put limits to where the pawns can go with random numbers after multiple tries and console log
+          if (parseFloat(pawn.style.left) < 60 && colMove === -1) {
+            colMove = 1;
+          } else if (parseFloat(pawn.style.left) > 295 && colMove === 1) {
+            colMove = -1;
+          }
+
+          if (parseFloat(pawn.style.top) < 60 && rowMove === -1) {
+            rowMove = 1;
+          } else if (parseFloat(pawn.style.top) > 295 && rowMove === 1) {
+            rowMove = -1;
+          }
+
+          //pawns new position for colum and row
+          let newPosition = parseFloat(pawn.style.left) + colMove * 55;
+          let newPositionRow = parseFloat(pawn.style.top) + rowMove * 55;
+
+          pawn.setAttribute("colMove", colMove);
+          pawn.setAttribute("rowMove", rowMove);
+          pawn.setAttribute("newPosition", newPosition);
+          pawn.setAttribute("newPositionRow", newPositionRow);
+
+          //new position
+          // let newRow = ellipse.row + rowMove;
+          //let newCol = ellipse.col + colMove;
+          pawn.setAttribute("move", "moving");
+        }
+
+        //if state of pawn is moving then move this code
+        if (pawn.getAttribute("move") === "moving") {
+          //get attribute
+          let colMove = parseInt(pawn.getAttribute("colMove"));
+          let rowMove = parseInt(pawn.getAttribute("rowMove"));
+          let newPosition = parseFloat(pawn.getAttribute("newPosition"));
+          let newPositionRow = parseFloat(pawn.getAttribute("newPositionRow"));
+
+          if (colMove !== 0) {
+            console.log(colMove);
+
+            //to move left or right
+            pawn.style.left = parseFloat(pawn.style.left) + 1 * colMove + "px";
+            console.log(pawn.style.left);
+          }
+
+          if (rowMove !== 0) {
+            console.log(rowMove);
+
+            //to move up or down
+            pawn.style.top = parseFloat(pawn.style.top) + 1 * rowMove + "px";
+            console.log(pawn.style.top);
+          }
+          //if pawn is a new position
+          if (parseFloat(pawn.style.left) === parseFloat(newPosition)) {
+            console.log("stop");
+
+            //then turn into false and wait 500ms then move again
+            pawn.setAttribute("move", "false");
+
+            setTimeout(function () {
+              pawn.setAttribute("move", "true");
+            }, 500);
+          }
+          /* 
+                    if (parseFloat(pawn.style.top) === parseFloat(newPositionRow)) {
+                      console.log("stop")
+                      pawn.setAttribute("move", "false")
+          
+                      setTimeout(function () {
+                        pawn.setAttribute("move", "true")
+                      }, 500)
+                    } */
+
+          console.log(pawn.style.left);
+          // ellipse.style.top = ellipse.row * 55 + 15 + "px";
+        }
+        //
+      }
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+
+    /*     function checkBounds(parent, ellipse) {
+          let boundingBoxParent = parentCanvas.getBoundingClientRect();
+          if (parseFloat(ellipse.style.left) > boundingBoxParent) {
+            colMove = 1;
+    
+          }
+          else if (parseFloat(ellipse.style.left) < boundingBoxParent) {
+            colMove = -1;
+    
+          }
+    
+          if (parseFloat(ellipse.style.top) > boundingBoxParent) {
+            rowMove = 1;
+    
+          }
+        } */
   }
 }

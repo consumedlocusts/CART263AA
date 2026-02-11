@@ -75,20 +75,20 @@ function setup_E() {
     //since I am doing a "grid revealed per tile/box"
     //new Image().src = "teamEimages/oneImage.jpg"
     let imgPath = "./teamEimages/oneImagecopy.jpg"; //soon i will upload the image, but for now this is the new team E file path
-    let step = 20; //grid layout: spacing between cells
-    let tileSize = 18; //grid layout: actual tile sizes
-    let totalTiles = 0; //for track revealing bool progress
-    let revealedT = 0;
-    parentCanvas.innerHTML = "";
-    let rect = parentCanvas.getBoundingClientRect(); //rendered size of thhis canvas to get
+    let step = 20; //grid layout: spacing between cells as provided in teamH
+    let tileSize = 18; //grid layout: actual tile sizes as provided in teamH
+    let totalTiles = 0; //for track revealing bool thing progress
+    let revealedT = 0; //booley
+    parentCanvas.innerHTML = ""; //setting the nested chile dom elemnt to the parent canavs
+    let rect = parentCanvas.getBoundingClientRect(); //returns this Dom rect object to provide info about size/pos of el, relative to the viewport (render)
     //building the initial "hidden" style grid with nests
     for (let y = step; y < rect.height; y += step) {
       for (let x = step; x < rect.width; x += step) {
-        let tile = document.createElement("div");
+        let tile = document.createElement("div"); //create tile div
         tile.classList.add("TEAM_E_cell");
-        parentCanvas.appendChild(tile);
+        parentCanvas.appendChild(tile); //append mean parent to i think
 
-        //placing tiles
+        //placing tiles likewise of teamH
         tile.style.left = x + "px";
         tile.style.top = y + "px";
         tile.style.width = tileSize + "px";
@@ -101,7 +101,7 @@ function setup_E() {
         tile.setAttribute("y", y);
         //track if tile haas been revealed
         tile.setAttribute("revealed", "no");
-        tile.style.backgroundColor = "red";
+        tile.style.backgroundColor = "blue";
         //hover reveal effect listener
         tile.addEventListener("mousemove", revealTile);
         //counter

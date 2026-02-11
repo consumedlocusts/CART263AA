@@ -154,6 +154,7 @@ h5 {
 .TEAM_E_cell {
   position: absolute;
   transform: translate(-50%, -50%);
+  background-color: red;
   background-repeat: no-repeat;
   background-size: 375px 375px;
 }

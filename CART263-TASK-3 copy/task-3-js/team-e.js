@@ -59,13 +59,14 @@ function setup_E() {
         tile.style.height = tileSize + "px";
         //keeping the same image fo every tile but its hidden by the inital first layer of red grids
         //use image file as bacjground image for/as specified div tile
+        tile.style.backgroundColor = "red"; //mask ss
         tile.style.backgroundImage = "url(" + imgPath + ")";
         //string tile pos for image slicing
         tile.setAttribute("x", x);
         tile.setAttribute("y", y);
         //track if tile haas been revealed
         tile.setAttribute("revealed", "no");
-        tile.style.backgroundColor = "red";
+
         //hover reveal effect listener
         tile.addEventListener("mousemove", revealTile);
         //counter

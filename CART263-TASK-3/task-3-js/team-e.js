@@ -73,7 +73,8 @@ function setup_E() {
     //NOTE : im not using image src because the grid effect is built from div tiles CSS background images (not <img> elmnt)
     //im taking one WHOLE image and slicing it into each grid tile, showing a different cropped bit of the SAME image(using background-position)
     //since I am doing a "grid revealed per tile/box"
-    let imgPath = "teamEimages/oneImagecopy.jpg"; //soon i will upload the image, but for now this is the new team E file path
+    //new Image().src = "teamEimages/oneImage.jpg"
+    let imgPath = "./teamEimages/oneImagecopy.jpg"; //soon i will upload the image, but for now this is the new team E file path
     let step = 20; //grid layout: spacing between cells
     let tileSize = 18; //grid layout: actual tile sizes
     let totalTiles = 0; //for track revealing bool progress

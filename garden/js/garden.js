@@ -1,5 +1,6 @@
 window.onload = function () {
   // Our garden
+
   let garden = {
     // An array to store the individual flowers
     flowers: [],
@@ -31,16 +32,17 @@ window.onload = function () {
     },
 
     /*sun object */
-    sun: {
-      sunColor: {
-        r: 240,
-        g: 206,
-        b: 83,
-      },
-      //the sun element
-      sunDiv: document.createElement("div"),
-    },
+    // sun: {
+    //   sunColor: {
+    //     r: 240,
+    //     g: 206,
+    //     b: 83,
+    //   },
+    //   //the sun element
+    //   sunDiv: document.createElement("div"),
+    // },
   };
+  let sun = new Sun(10, 10, { r: 240, g: 206, b: 83 });
 
   function createAndRenderTheGarden() {
     /* note how we use dot notation....*/
@@ -54,15 +56,15 @@ window.onload = function () {
     document.getElementsByTagName("main")[0].appendChild(garden.sky.skyDiv);
 
     //sun - IN the sky
-    garden.sun.sunDiv.classList.add("sun");
-    garden.sun.sunDiv.style.background = `rgb(
-        ${garden.sun.sunColor.r},
-        ${garden.sun.sunColor.g},
-        ${garden.sun.sunColor.b}
-        )`;
+    // garden.sun.sunDiv.classList.add("sun");
+    // garden.sun.sunDiv.style.background = `rgb(
+    //     ${garden.sun.sunColor.r},
+    //     ${garden.sun.sunColor.g},
+    //     ${garden.sun.sunColor.b}
+    //     )`;
     //append to the SKY div
     document.getElementsByClassName("sky")[0].appendChild(garden.sun.sunDiv);
-
+    sun.renderSun();
     //grass
     garden.grass.grassDiv.classList.add("grass");
     garden.grass.grassDiv.style.background = `rgb(
@@ -106,4 +108,8 @@ window.onload = function () {
   for (let i = 0; i < garden.numFlowers; i++) {
     garden.flowers[i].renderFlower();
   }
+  window.addEventListener("keydown", function handleKeyDown(event) {
+    //call the handleKeyDown method of class
+    sun.handleKeyDownInSUn(event);
+  });
 };

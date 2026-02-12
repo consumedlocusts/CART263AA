@@ -23,6 +23,24 @@ class Flower {
       g: 0,
       b: 0,
     };
+    this.flowerStemDiv.addEventListener("click", growStem);
+    let self = this; //keep a copy of 'this'
+
+    function growStem(e) {
+      console.log("clicked");
+      console.log(self);
+      //this is the div :)
+      //console.log(self);
+      self.stemLength = self.stemLength + 10;
+
+      //update the actual div...
+      self.flowerStemDiv.style.height = self.stemLength + "px";
+      self.flowerStemDiv.style.top = self.y - self.stemLength + "px";
+
+      // and also the petal element needs to move up
+      self.flowerPetalDiv.style.top =
+        self.y - self.stemLength - self.size / 2 + "px";
+    }
   }
   renderFlower() {
     this.flowerStemDiv.classList.add("flower");

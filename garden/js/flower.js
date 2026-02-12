@@ -1,12 +1,11 @@
 class Flower {
-  constructor() {
-    // We write instructions to set up a Flower here
+  constructor(x, y, size, stemLength, petalColor) {
     // We write instructions to set up a Flower here
     // Position and size information
-    this.x = Math.random() * window.innerWidth;
-    this.y = Math.random() * 120;
-    this.size = 40;
-    this.stemLength = 75;
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.stemLength = stemLength;
     this.stemThickness = 10;
     this.petalThickness = 8;
     this.flowerStemDiv = document.createElement("div");
@@ -18,11 +17,7 @@ class Flower {
       g: 150,
       b: 50,
     };
-    this.petalColor = {
-      r: 200,
-      g: 50,
-      b: 50,
-    };
+    this.petalColor = petalColor;
     this.centreColor = {
       r: 50,
       g: 0,

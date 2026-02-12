@@ -73,15 +73,37 @@ window.onload = function () {
     document.getElementsByTagName("main")[0].appendChild(garden.grass.grassDiv);
   }
   createAndRenderTheGarden();
-  let flower = new Flower();
-  flower.renderFlower();
-  //   //let flower = createFlower();
-  //   //renderFlower(flower);
-  for (let i = 0; i < garden.numFlowers; i++) {
-    garden.flowers.push(new Flower());
-  }
+  //let flower = new Flower();
+  //flower.renderFlower();
+  //   //   //let flower = createFlower();
+  //   //   //renderFlower(flower);
+  //   for (let i = 0; i < garden.numFlowers; i++) {
+  //     garden.flowers.push(new Flower());
+  //   }
 
-  for (let i = 0; i < garden.flowers.length; i++) {
+  //   for (let i = 0; i < garden.flowers.length; i++) {
+  //     garden.flowers[i].renderFlower();
+  //   }
+  //   garden.flowers
+  // };
+  for (let i = 0; i < garden.numFlowers; i++) {
+    // Create variables for our arguments for clarity
+    let x = Math.random() * (window.innerWidth - 100);
+    let y = Math.random() * 120;
+    let size = Math.random() * 30 + 50;
+    let stemLength = Math.random() * 50 + 50;
+    let petalColor = {
+      r: parseInt(Math.random() * 155) + 100,
+      g: parseInt(Math.random() * 155) + 100,
+      b: parseInt(Math.random() * 155) + 100,
+    };
+
+    // Create a new flower using the arguments
+
+    // Add the flower to the array of flowers
+    garden.flowers.push(new Flower(x, y, size, stemLength, petalColor));
+  }
+  for (let i = 0; i < garden.numFlowers; i++) {
     garden.flowers[i].renderFlower();
   }
 };

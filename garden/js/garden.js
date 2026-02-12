@@ -73,4 +73,13 @@ window.onload = function () {
     document.getElementsByTagName("main")[0].appendChild(garden.grass.grassDiv);
   }
   createAndRenderTheGarden();
+  let flower = createFlower();
+  renderFlower(flower);
+  for (let i = 0; i < garden.numFlowers; i++) {
+    garden.flowers.push(createFlower());
+  }
+
+  for (let i = 0; i < garden.flowers.length; i++) {
+    renderFlower(garden.flowers[i]);
+  }
 };

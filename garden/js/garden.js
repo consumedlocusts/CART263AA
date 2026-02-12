@@ -74,14 +74,14 @@ window.onload = function () {
   }
   createAndRenderTheGarden();
   let flower = new Flower();
-
+  flower.renderFlower();
   //   //let flower = createFlower();
   //   //renderFlower(flower);
-  //   for (let i = 0; i < garden.numFlowers; i++) {
-  //     garden.flowers.push(createFlower());
-  //   }
+  for (let i = 0; i < garden.numFlowers; i++) {
+    garden.flowers.push(new Flower());
+  }
 
-  //   for (let i = 0; i < garden.flowers.length; i++) {
-  //     renderFlower(garden.flowers[i]);
-  //   }
+  for (let i = 0; i < garden.flowers.length; i++) {
+    garden.flowers[i].renderFlower();
+  }
 };

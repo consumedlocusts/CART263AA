@@ -24,3 +24,15 @@ body {
   left: 10px;
   top: 10px;
 }
+/* flower style */
+.flower {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+}
+.petal {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  border-style: solid;
+}

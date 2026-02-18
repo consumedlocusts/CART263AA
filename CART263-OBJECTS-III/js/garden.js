@@ -1,6 +1,8 @@
-window.onload = function (){
-// Our garden
-let garden = {
+window.onload = function () {
+  // Our garden
+  let garden = {
+    numDogs: 10,
+    dogs: [],
     /*grass object */
     grass: {
       // The color of the grass (background)
@@ -12,7 +14,7 @@ let garden = {
       //the grass element
       grassDiv: document.createElement("div"),
     },
- 
+
     /*sky object */
     sky: {
       // The color of the sky (background)
@@ -26,7 +28,7 @@ let garden = {
     },
   };
   // new  sun instancce
-  let sun =  new Sun(10,10,{r: 240, g: 206,b: 83})
+  let sun = new Sun(10, 10, { r: 240, g: 206, b: 83 });
 
   function createAndRenderTheGarden() {
     /* note how we use dot notation....*/
@@ -41,11 +43,16 @@ let garden = {
     garden.grass.grassDiv.classList.add("grass");
     garden.grass.grassDiv.style.background = `rgb(${garden.grass.grassColor.r},${garden.grass.grassColor.g},${garden.grass.grassColor.b})`;
     document.getElementsByTagName("main")[0].appendChild(garden.grass.grassDiv);
-
-    
-
+  }
+  function createDogs() {
+    for (let i = 0; i < garden.numDogs; i++) {
+      let x = Math.random() * window.innerWidth;
+      let y = Math.random() * 100;
+      let dog = new Dog(x, y, 15, 15);
+      garden.dogs.push(dog);
+    }
   }
   createAndRenderTheGarden();
-}
-
-  
+  createDogs();
+  renderAnimal();
+};

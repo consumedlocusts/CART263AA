@@ -30,23 +30,12 @@ window.onload = function () {
       //the sky element
       skyDiv: document.createElement("div"),
     },
-
-    /*sun object */
-    // sun: {
-    //   sunColor: {
-    //     r: 240,
-    //     g: 206,
-    //     b: 83,
-    //   },
-    //   //the sun element
-    //   sunDiv: document.createElement("div"),
-    // },
   };
-  let sun = new Sun(10, 10, { r: 240, g: 206, b: 83 });
 
   function createAndRenderTheGarden() {
     /* note how we use dot notation....*/
     //sky
+
     garden.sky.skyDiv.classList.add("sky");
     garden.sky.skyDiv.style.background = `rgb(
         ${garden.sky.skyColor.r},
@@ -55,16 +44,8 @@ window.onload = function () {
         )`;
     document.getElementsByTagName("main")[0].appendChild(garden.sky.skyDiv);
 
-    //sun - IN the sky
-    // garden.sun.sunDiv.classList.add("sun");
-    // garden.sun.sunDiv.style.background = `rgb(
-    //     ${garden.sun.sunColor.r},
-    //     ${garden.sun.sunColor.g},
-    //     ${garden.sun.sunColor.b}
-    //     )`;
-    //append to the SKY div
-    document.getElementsByClassName("sky")[0].appendChild(garden.sun.sunDiv);
-    sun.renderSun();
+    //document.getElementsByClassName("sky")[0].appendChild(garden.sun.sunDiv);
+
     //grass
     garden.grass.grassDiv.classList.add("grass");
     garden.grass.grassDiv.style.background = `rgb(
@@ -75,6 +56,8 @@ window.onload = function () {
     document.getElementsByTagName("main")[0].appendChild(garden.grass.grassDiv);
   }
   createAndRenderTheGarden();
+
+  let sun = new Sun(10, 10, { r: 240, g: 206, b: 83 });
   //let flower = new Flower();
   //flower.renderFlower();
   //   //   //let flower = createFlower();
@@ -99,17 +82,15 @@ window.onload = function () {
       g: parseInt(Math.random() * 155) + 100,
       b: parseInt(Math.random() * 155) + 100,
     };
-
-    // Create a new flower using the arguments
-
-    // Add the flower to the array of flowers
     garden.flowers.push(new Flower(x, y, size, stemLength, petalColor));
   }
   for (let i = 0; i < garden.numFlowers; i++) {
     garden.flowers[i].renderFlower();
   }
+  sun.renderSun();
   window.addEventListener("keydown", function handleKeyDown(event) {
     //call the handleKeyDown method of class
-    sun.handleKeyDownInSUn(event);
+    //console.log(event.key);
+    sun.handleKeyEvent(event);
   });
 };

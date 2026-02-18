@@ -8,17 +8,18 @@ class Sun {
     this.sunDiv = document.createElement("div");
   }
   renderSun() {
-    // //sun - IN the sky
-    this.sunDiv.classList.add("sun");
-    this.sunDiv.style.background = `rgb(${this.sunColor.r},${this.sunColor.g},${this.sunColor.b})`;
+    // // //sun - IN the sky
+    // this.sunDiv.classList.add("sun");
+    // this.sunDiv.style.background = `rgb(${this.sunColor.r}
+    // ${this.sunColor.g},${this.sunColor.b})`;
     // //append to the SKY div
     document.querySelector(".sky").appendChild(this.sunDiv);
   }
-  handleKeyDownInSUn(event) {
+  handleKeyEvent(event) {
     // console.log("key pressed");
     // console.log(this);
     //console.log(event);
-
+    console.log(event.key);
     //LINEAR MOVEMENT
     //go up
     if (event.key === "w") {

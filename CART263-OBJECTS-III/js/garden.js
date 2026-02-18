@@ -63,6 +63,7 @@ window.onload = function () {
   createAndRenderTheGarden();
   createDogs();
   renderAnimals();
+  window.requestAnimationFrame(updateGarden);
   function updateGarden() {
     // Go through all the animals and move, wrap, and display them
     for (let i = 0; i < garden.dogs.length; i++) {

@@ -52,7 +52,15 @@ window.onload = function () {
       garden.dogs.push(dog);
     }
   }
+  function renderAnimals() {
+    // Go through all the animals and move, wrap, and display them
+    for (let i = 0; i < garden.dogs.length; i++) {
+      let dog = garden.dogs[i];
+      dog.renderAnimal();
+    }
+  }
+
   createAndRenderTheGarden();
   createDogs();
-  renderAnimal();
+  renderAnimals();
 };

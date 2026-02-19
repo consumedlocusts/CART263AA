@@ -68,11 +68,11 @@ window.onload = function () {
     // Go through all the animals and move, wrap, and display them
     for (let i = 0; i < garden.dogs.length; i++) {
       let dog = garden.dogs[i];
-      dog.renderAnimals();
+      dog.renderAnimal();
     }
     for (let i = 0; i < garden.birds.length; i++) {
       let bird = garden.birds[i];
-      bird.renderAnimals();
+      bird.renderAnimal();
     }
   }
 

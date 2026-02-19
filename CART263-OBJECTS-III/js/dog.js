@@ -16,24 +16,31 @@ class Dog extends Animal {
     this.vx = Math.random() * 5 + 1;
     this.vy = 0;
     this.animalBody = document.createElement("div");
+    this.isjumping = false;
   }
   // 3. We don't need to define move() or wrap() because they are already part
   // of the Animal class so our Dog inherits them
   // Move the Dog according to its velocity
-
+  jump() {
+    // console.log("jump");
+    this.isjumping = true;
+    this.vy = -27; //speed to go up
+  }
+  updateJump() {
+    //check if I am on the "ground" i.e. y of dog is > or equal to 150
+    if (this.y < 150) {
+      this.vy += 1; //speed of drop
+    }
+    //stop jumping
+    else {
+      this.isjumping = false;
+      this.vy = 0; //reset y speed
+      this.y = 100; //reset y value
+    }
+  }
   //  we do want to define this - as we want to visualize a dog specifically
   renderAnimal() {
-    // Even though the Animals's version of renderAnimal() does nothing, we should STILL
-    // call it. The variable "super" contains a reference to the Animal's part of this dod,
-    // so we can call the Animal version of the renderAnimal() method by writing:
     super.renderAnimal();
-
-    this.animalBody.classList.add("animal");
-    this.animalBody.style.width = this.width + "px";
-    this.animalBody.style.height = this.height + "px";
-    this.animalBody.style.left = this.x + "px";
-    this.animalBody.style.top = this.y + "px";
-    this.animalBody.style.borderRadius = this.width + "px";
     //add to the DOM
     document.getElementsByClassName("grass")[0].appendChild(this.animalBody);
   }

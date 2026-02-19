@@ -1,5 +1,8 @@
 class Nut {
   constructor(x, y, size, color) {
-    this.x;
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.color = color;
   }
 }

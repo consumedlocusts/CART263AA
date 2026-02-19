@@ -68,13 +68,11 @@ window.onload = function () {
     // Go through all the animals and move, wrap, and display them
     for (let i = 0; i < garden.dogs.length; i++) {
       let dog = garden.dogs[i];
-      dog.move();
-      dog.wrap();
+      dog.renderAnimals();
     }
     for (let i = 0; i < garden.birds.length; i++) {
       let bird = garden.birds[i];
-      bird.move();
-      bird.wrap();
+      bird.renderAnimals();
     }
   }
 
@@ -84,6 +82,10 @@ window.onload = function () {
   renderAnimals();
   window.requestAnimationFrame(updateGarden);
   function updateGarden() {
+    if (garden.dogs[0].isjumping === true) {
+      console.log("jump");
+      garden.dogs[0].updateJump();
+    }
     // Go through all the animals and move, wrap, and display them
     for (let i = 0; i < garden.dogs.length; i++) {
       let dog = garden.dogs[i];
@@ -98,4 +100,15 @@ window.onload = function () {
     }
     window.requestAnimationFrame(updateGarden);
   }
+  window.addEventListener("keydown", function (e) {
+    //set up to allow got "0" to jump
+    if (e.code === "Space") {
+      //prevent default behaviour of the space bar
+      e.preventDefault();
+      //check if the dog is already jumping
+      if (garden.dogs[0].isjumping === false) {
+        garden.dogs[0].jump();
+      }
+    }
+  });
 };

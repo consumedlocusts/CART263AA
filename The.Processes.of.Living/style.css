@@ -1,4 +1,4 @@
-#future-canvas {
+/* #future-canvas {
   width: 640px;
   height: 640px;
   margin: 20px auto;
@@ -6,4 +6,20 @@
   background: rgb(0, 0, 0);
   overflow: hidden;
   border: 1px solid rgb(75, 75, 75);
+} */
+/*hello 
+/*while looking at css stuff i realized that ---color=1234 is correct
+and not color=#1234
+if dashes removed css treats it as invalid says google
+
+test css plus test ugly font import*/
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel+Decorative:wght@400;700&display=swap");
+html,
+body {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-mono);
+  overflow: hidden;
 }

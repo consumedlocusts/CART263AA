@@ -23,3 +23,29 @@ body {
   font-family: var(--font-mono);
   overflow: hidden;
 }
+/*state container css woild go here as statemanager 
+toggles display none to switch the screens
+like defining a full-screen layout system for each “state” (screen)
+so everything inside .state is perfectly centered in the screen when it comes time */
+.state {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+/* opener css its purely typography and visual styling and will be changed */
+#title-label {
+  font-family: var(--font-title);
+  font-size: 13px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 1.2rem;
+}
+/*billy ball container to strictly have a “this area is interactive / precise / clickable” defined
+like a wrapper and positioned relative to this container, not the whole page
+target for el <div id="ball-container"></div> 
+ALSO the cross hair effect for the mouse cursoer hover to signal the "this area is interactive" visually */

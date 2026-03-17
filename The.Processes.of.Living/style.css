@@ -1,0 +1,9 @@
+#future-canvas {
+  width: 640px;
+  height: 640px;
+  margin: 20px auto;
+  position: relative;
+  background: rgb(0, 0, 0);
+  overflow: hidden;
+  border: 1px solid rgb(75, 75, 75);
+}

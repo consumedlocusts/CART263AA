@@ -20,6 +20,16 @@ class StateMan {
     this.current = this.states[name];
     //show it
     this.current.style.display = "block";
+
+    if (name === "future") {
+      futureThe.enter;
+    }
   }
 }
 //sorrry i wrote this in the wrong js
+class TheFuture {
+  //get element ID stuff
+  constructor() {
+    this.canvas = document.getElementById("future-canvas");
+  }
+}

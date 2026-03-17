@@ -2,22 +2,70 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>one fortiethly</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
-    <script src="js/class.js" defer></script>
-    <script src="js/8ball.js" defer></script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   </head>
   <body>
-    <div id="parent">
-      <h2>ASK.BILLY.BALL</h2>
-      <p>click mee</p>
-      <div id="baller"></div>
+     <script id="responses-data" type="application/json">
+      [
+        "IT IS CERTAIN",
+        "IT IS CERTAIN",
+        "ASK AGAIN LATER",
+        "ASK AGAIN LATER",
+        "WITHOUT A DOUBT",
+        "WITHOUT A DOUBT",
+        "CANNOT PREDICT",
+        "CANNOT PREDICT",
+        "OUTLOOK GOOD",
+        "OUTLOOK GOOD",
+        "VERY DOUBTFUL",
+        "VERY DOUBTFUL",
+        "REPLY HAZY",
+        "REPLY HAZY",
+        "DON'T COUNT ON IT",
+        "DON'T COUNT ON IT",
+        "YES",
+        "YES",
+        "NO",
+        "NO",
+        "MOST LIKELY",
+        "MOST LIKELY",
+        "SIGNS POINT TO YES",
+        "SIGNS POINT TO YES",
+        "MY SOURCES SAY NO",
+        "MY SOURCES SAY NO",
+        "CONCENTRATE",
+        "CONCENTRATE",
+        "NOT NOW",
+        "NOT NOW",
+        "YES DEFINITELY",
+        "YES DEFINITELY",
+        "AS I SEE IT YES",
+        "AS I SEE IT YES",
+        "BETTER NOT TELL",
+        "BETTER NOT TELL",
+        "YOU MAY RELY ON IT",
+        "YOU MAY RELY ON IT",
+        "OUTLOOK NOT GOOD",
+        "OUTLOOK NOT GOOD",
+        "FUTURE",
+        "FUTURE",
+        "FUTURE",
+        "FUTURE",
+        "FUTURE",
+        "FUTURE",
+        "FUTURE",
+        "FUTURE"
+      ]
+    </script>
+
+    <div id="opening" class="state">
+      <h2 id="title-label">ASK.BILLY.BALL?</h2>
+      <p id="hint-label"></p>click meeeee... one fortiethly</p>
+      <div id="ball-container"></div>
       <div id="balled">
         <p>waiting...</p>
       </div>

@@ -129,4 +129,9 @@ function checkHover() {
     }
   }
 }
-function mousePressed() {}
+function mousePressed() {
+  if (manager.current !== document.getElementById("opening")) {
+    return; //do nothing if screen is not running or currently showing
+  }
+  let midBall = dist(mouseX, mouseY, width / 2, height / 2) < 180;
+}

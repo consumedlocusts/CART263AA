@@ -6,20 +6,20 @@ function setupManager() {
   manager = new StateManager();
 
   manager.add("opening", document.getElementById("opening"));
-  manager.add("future", document.getElementById("future"));
+  // manager.add("future", document.getElementById("future"));
 
   manager.switchTo("opening");
 }
 
 //return button when ready
 
-function setupButtons() {
-  document
-    .getElementById("future-return")
-    .addEventListener("click", function () {
-      manager.switchTo("opening");
-    });
-}
+// function setupButtons() {
+//   document
+//     .getElementById("future-return")
+//     .addEventListener("click", function () {
+//       manager.switchTo("opening");
+//     });
+// }
 
 // class StateMan {
 //   constructor() {

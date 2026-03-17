@@ -49,3 +49,21 @@ so everything inside .state is perfectly centered in the screen when it comes ti
 like a wrapper and positioned relative to this container, not the whole page
 target for el <div id="ball-container"></div> 
 ALSO the cross hair effect for the mouse cursoer hover to signal the "this area is interactive" visually */
+#ball-container {
+  position: relative;
+  cursor: crosshair;
+  line-height: 1;
+}
+/* this applies only to a <canvas> inside that container to fix wierd spacing 
+and baseline text alignment issues when i dont want the random text (soon to be added as offshoots to game) to appear on the ball but
+on anywhere else, blcok removes extra bottom spacing and makes this a rectangle */
+#ball-container canvas {
+  display: block;
+}
+/* for the subtext*/
+#hint-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.22);
+  margin-top: 1rem;
+}

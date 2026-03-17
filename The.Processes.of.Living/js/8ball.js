@@ -67,3 +67,65 @@ function setup() {
     futureGame = new OneForth();
   }
 }
+function draw() {
+  //hover ing adding the letters hovering in the middle yes
+  background(0);
+
+  checkHover();
+  //scroll the letters/advance the scroll pos counter while reveal it running
+  if (revealActive) {
+    revealFrame++;
+  }
+  //char counter for the lettrers
+  for (let i = 0; i < chars.length; i++) {
+    let c = chars[i];
+    let d = dist(mouseX, mouseY, c.x, c.y);
+    let hover = d < 50;
+
+    let displayChar = c.listString;
+    //"bands" are the cells insdie the horz center "bands" of text that scroll and show the text in red
+    //numbers are kinda random, tried to use a "screen measurere" idk
+    if (revealActive) {
+      let bandTop = height * 0.43;
+      let bandBottom = height * 0.58;
+      let bandLeft = width * 0.29;
+      let bandRight = width * 0.71;
+      //this is them as a whole so alternates can be made
+      let inBand =
+        c.y > bandTop && c.y < bandBottom && c.x > bandLeft && c.x < bandRight;
+
+      if (inBand) {
+        //idk i saw this somewhere / sourced it from "city signs neon"
+        //localCol = this cell's column offset from the band's left edge
+        let localCol = floor((c.x - bandLeft) / charWid);
+        let scrollIndex =
+          (localCol + floor(revealFrame / 2)) % revealMessage.length;
+        displayChar = revealMessage[scrollIndex];
+
+        fill("#c60606");
+        text(displayChar, c.x + charWid / 2, c.y + charHi / 2);
+        //this cell is already drawn in red, skip the normal fill = continue
+        continue;
+      }
+    }
+    //fill normlly
+    if (hover && mouseIsPressed) {
+      fill("#c60606ff");
+    } else {
+      fill("rgba(227, 227, 227, 0.74)");
+    }
+
+    text(displayChar, c.x + charWid / 2, c.y + charHi / 2);
+  }
+  //controls the reverting from normal text to the future text,
+  //  replaces each celll from the istString with otherListString (the image-mapped character) when the mouse passes within 50px and once a cell
+  // is revealed it never reverts
+  function checkHover() {
+    for (let i = 0; i < chars.length; i++) {
+      let d = dist(mouseX, mouseY, chars[i].x, chars[i].y);
+      if (d < 50) {
+        chars[i].listString = chars[i].otherListString;
+      }
+    }
+  }
+}

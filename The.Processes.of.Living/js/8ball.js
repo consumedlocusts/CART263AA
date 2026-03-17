@@ -108,7 +108,7 @@ function draw() {
         continue;
       }
     }
-    //fill normlly
+    //fill normlly back to normal ascii
     if (hover && mouseIsPressed) {
       fill("#c60606ff");
     } else {
@@ -117,15 +117,16 @@ function draw() {
 
     text(displayChar, c.x + charWid / 2, c.y + charHi / 2);
   }
-  //controls the reverting from normal text to the future text,
-  //  replaces each celll from the istString with otherListString (the image-mapped character) when the mouse passes within 50px and once a cell
-  // is revealed it never reverts
-  function checkHover() {
-    for (let i = 0; i < chars.length; i++) {
-      let d = dist(mouseX, mouseY, chars[i].x, chars[i].y);
-      if (d < 50) {
-        chars[i].listString = chars[i].otherListString;
-      }
+}
+//controls the reverting from normal text to the future text,
+//  replaces each celll from the istString with otherListString (the image-mapped character) when the mouse passes within 50px and once a cell
+// is revealed it never reverts
+function checkHover() {
+  for (let i = 0; i < chars.length; i++) {
+    let d = dist(mouseX, mouseY, chars[i].x, chars[i].y);
+    if (d < 50) {
+      chars[i].listString = chars[i].otherListString;
     }
   }
 }
+function mousePressed() {}

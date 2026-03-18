@@ -18,9 +18,9 @@ html,
 body {
   width: 100%;
   min-height: 100vh;
-  background: var(--black);
-  color: var(--white);
-  font-family: var(--font-mono);
+  background: #000;
+  color: #e3e3e3;
+  font-family: "Share Tech Mono", "Courier New", monospace;
   overflow: hidden;
 }
 /*state container css woild go here as statemanager 
@@ -38,7 +38,7 @@ so everything inside .state is perfectly centered in the screen when it comes ti
 }
 /* opener css its purely typography and visual styling and will be changed */
 #title-label {
-  font-family: var(--font-title);
+  font-family: "Cinzel Decorative", "Georgia", serif;
   font-size: 13px;
   letter-spacing: 0.35em;
   text-transform: uppercase;

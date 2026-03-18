@@ -1,7 +1,8 @@
 //BILLY BALL th e magical
 //global ooops
-let manager; //issinged in main (oneforth.js)
-let futureGame; //assigned in set up
+//let manager; //issinged in main (oneforth.js)
+//let futureGame; //assigned in set up
+
 let charWid;
 let charHi;
 let horz;
@@ -22,18 +23,31 @@ let revealResult = ""; //picked response e.g. "FUTURE" or "YES
 let revealTimer = null;
 //list of possibke results, i just doubled the words to make it more or less common idk
 let responses = [];
-//loaded from the #responsesdata JSON block in index.html.
-
+//loaded from the #responsesdata JSON block in index.html sooo
+//something like  <script id="responses-data" type="application/json"></script>
+//type="application/json" find in html VVVVV
+//i cant use windlow.onload because it is overriding my p5 (its already using it, would stop set up from ever playing) and i put this script at the end of body so "can be read directly"
+//the awnsers live in index.html as json block
+let responsesEl = document.getElementById("responses-data");
+if (responsesEl) {
+  responses = JSON.parse(responsesEl.textContent);
+  console.log("loaded " + responses.length + " responses");
+} else {
+  console.log("you suck");
+}
 function preload() {
   billy = loadImage("assets/8ball.jpg");
 }
 function setup() {
   let cnv = createCanvas(640, 640);
+  cnv.parent("ball-container");
   //cnv.parent("ball-er")
   background(0);
   //stripped from previous billy.ball code messy sorry
   textSize(15);
   textAlign(LEFT, BOTTOM);
+  charWid = textWidth("W");
+  charHi = textAscent() + textDescent();
   //char fit
   horz = floor(width / charWid);
   vert = floor(height / charHi);
@@ -62,9 +76,9 @@ function setup() {
       y: row * charHi,
     });
     //let me = (v * billy.width + h) * 4;
-    setupManager();
-    setupButtons();
-    futureGame = new OneForth();
+    //setupManager();
+    //setupButtons();
+    //futureGame = new OneForth();
   }
 }
 function draw() {
@@ -133,5 +147,22 @@ function mousePressed() {
   if (manager.current !== document.getElementById("opening")) {
     return; //do nothing if screen is not running or currently showing
   }
-  let midBall = dist(mouseX, mouseY, width / 2, height / 2) < 180;
+  let insideBall = dist(mouseX, mouseY, width / 2, height / 2) < 180;
+  if (insideBall && revealActive === false) {
+    //picks random number from array and floor(random) giving integer 0 to n-1 SOURCE:LINK HERE
+    let pick = responses[floor(random(responses.length))];
+    //result
+    revealResult = pick;
+    //the scroll here ensures theres no gaps and also replays the message thrice liike the
+    revealMessage = "   " + pick + "   " + pick + "   " + pick + "   ";
+    revealFrame = 0;
+    revealActive = true; //frame checker??????
+    //cancel out previous leftover from clicking
+    clearTimeout(revealTimer);
+    //the scrolling stops after 1.7 seconds of playing
+    revealTimer = window.setTimeout(function () {
+      revealActive = false;
+      console.log("result was: " + revealResult);
+    }, 1700);
+  }
 }

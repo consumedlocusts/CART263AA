@@ -28,6 +28,12 @@ let responses = [];
 //type="application/json" find in html VVVVV
 //i cant use windlow.onload because it is overriding my p5 (its already using it, would stop set up from ever playing) and i put this script at the end of body so "can be read directly"
 //the awnsers live in index.html as json block
+// var responsesEl= document.querySelector([responses-data]);
+
+// for (var i=0; i<responsesEl.length; i++){
+//   [i].addEventListener("click", function(e){}
+// }
+
 let responsesEl = document.getElementById("responses-data");
 if (responsesEl) {
   responses = JSON.parse(responsesEl.textContent);
@@ -145,9 +151,9 @@ function checkHover() {
 }
 //NOT WORKINGGGGGG
 function mousePressed() {
-  // if (manager.current !== document.getElementById("opening")) {
-  //   return; //do nothing if screen is not running or currently showing
-  // }
+  if (manager.current !== document.getElementById("opening")) {
+    return; //do nothing if screen is not running or currently showing
+  }
   let insideBall = dist(mouseX, mouseY, width / 2, height / 2) < 180;
   if (insideBall && revealActive === false) {
     //picks random number from array and floor(random) giving integer 0 to n-1 SOURCE:LINK HERE

@@ -13,15 +13,14 @@ function setupManager() {
 
 //return button when ready
 
-// function setupButtons() {
-//   document
-//     .getElementById("future-return")
-//     .addEventListener("click", function () {
-//       manager.switchTo("opening");
-//     });
-// }
+function setupButtons() {
+  document.getElementById("future-return");
+  document.addEventListener("click", function () {
+    // manager.switchTo("opening");
+  });
+}
 
-// class StateMan {
+// class StateManager {
 //   constructor() {
 //     //all elements of states storage
 //     this.states = {};
@@ -42,9 +41,9 @@ function setupManager() {
 //     //show it
 //     this.current.style.display = "block";
 
-//     if (name === "future") {
-//       futureThe.enter;
-//     }
+//     // if (name === "future") {
+//     //   futureThe.enter;
+//     // }
 //   }
 // }
 // //sorrry i wrote this in the wrong js

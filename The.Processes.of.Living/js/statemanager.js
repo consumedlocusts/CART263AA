@@ -19,9 +19,9 @@ class StateManager {
     //show it
     this.current.style.display = "block";
 
-    if (name === "future") {
-      futureThe.enter;
-    }
+    // if (name === "future") {
+    //   futureThe.enter;
+    // }
   }
 }
 //sorrry i wrote this in the wrong js

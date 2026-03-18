@@ -76,8 +76,8 @@ function setup() {
       y: row * charHi,
     });
     //let me = (v * billy.width + h) * 4;
-    //setupManager();
-    //setupButtons();
+    setupManager();
+    setupButtons();
     //futureGame = new OneForth();
   }
 }
@@ -143,10 +143,11 @@ function checkHover() {
     }
   }
 }
+//NOT WORKINGGGGGG
 function mousePressed() {
-  if (manager.current !== document.getElementById("opening")) {
-    return; //do nothing if screen is not running or currently showing
-  }
+  // if (manager.current !== document.getElementById("opening")) {
+  //   return; //do nothing if screen is not running or currently showing
+  // }
   let insideBall = dist(mouseX, mouseY, width / 2, height / 2) < 180;
   if (insideBall && revealActive === false) {
     //picks random number from array and floor(random) giving integer 0 to n-1 SOURCE:LINK HERE

@@ -83,7 +83,7 @@ function setup() {
     });
     //let me = (v * billy.width + h) * 4;
     setupManager();
-    setupButtons();
+    // setupButtons();
     //futureGame = new OneForth();
   }
 }
@@ -151,9 +151,10 @@ function checkHover() {
 }
 //NOT WORKINGGGGGG
 function mousePressed() {
-  if (manager.current !== document.getElementById("opening")) {
-    return; //do nothing if screen is not running or currently showing
-  }
+  // if (manager.current !== document.getElementById("opening")) {
+  //   return; //do nothing if screen is not running or currently showing
+  // }
+  console.log(manager);
   let insideBall = dist(mouseX, mouseY, width / 2, height / 2) < 180;
   if (insideBall && revealActive === false) {
     //picks random number from array and floor(random) giving integer 0 to n-1 SOURCE:LINK HERE
@@ -170,6 +171,8 @@ function mousePressed() {
     revealTimer = window.setTimeout(function () {
       revealActive = false;
       console.log("result was: " + revealResult);
+      if (revealResult === responses[responses.length - 1])
+        manager.switch("future");
     }, 1700);
   }
 }

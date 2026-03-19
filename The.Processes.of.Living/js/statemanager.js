@@ -1,9 +1,9 @@
 class StateManager {
-  constructor() {
+  constructor(current) {
     //all elements of states storage
     this.states = {};
     //current state visible storeage
-    this.current = null;
+    this.current = current;
   }
   add(name, state) {
     //store the element o state by name

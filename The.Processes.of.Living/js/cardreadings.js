@@ -1,29 +1,33 @@
 class CardReading {
   constructor() {
-    //holds all the catomancy knowlege for the future , 
-    // generates meaning text from the three cards drawn and then combines them simply 
+    //holds all the catomancy knowlege for the future ,
+    // generates meaning text from the three cards drawn and then combines them simply
     //SUIT MEANINGGS
     this.suitMeanings = {
       Hearts: "x",
-      Diamonds:"y",
+      Diamonds: "y",
       Clubs: "z",
       Spades: "f",
     };
     //RANK MEANIGS:
-    this.rankMeanings={
-        Ace:"hi"
-        2:"hi",
-        3:"hi",
-        4:"hi",
-        5:"hi",
-        6:"hi",
-        7:"hi",
-        8:"hi",
-        9:"hi",
-        10:"hi",
-        Jack:"hi",
-       Queen:"hi",
-       King:"hi"
+    this.rankMeanings = {
+      Ace: "hi",
+      2: "hi",
+      3: "hi",
+      4: "hi",
+      5: "hi",
+      6: "hi",
+      7: "hi",
+      8: "hi",
+      9: "hi",
+      10: "hi",
+      Jack: "hi",
+      Queen: "hi",
+      King: "hi",
     };
+    //the three card "filler word"
+    this.position = ["you may", "for what", "well"];
+
   }
+  getFullMeaning(card, position[],)
 }

@@ -26,8 +26,9 @@ class CardReading {
       King: "hi",
     };
     //the three card "filler word"
-    this.position = ["you may", "for what", "well"];
-
+    this.positions = ["you may", "for what", "well"];
   }
-  getFullMeaning(card, position[],)
+  getFullMeaning(card, positionX) {
+    let position = this.positions[positionX];
+  }
 }

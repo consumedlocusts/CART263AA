@@ -48,4 +48,26 @@ class Deck {
       }
     }
   }
+  //SHUFFLE better so to "randomises (my this.cards) in place using the Fisher-Yates algorithm"
+  //walking backwards of the array so at each position i, swaps that card with a random earlier position j
+  //very ordering gets an equal chance "the statistically correct shuffle" SOURCE:
+  shuffle() {
+    for (let i = this.cards.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let tmp = this.cards[i];
+      this.cards[i] = this.cards[j];
+      this.cards[j] = tmp;
+    }
+  }
+  //draw three func shuffles the deck then returns the first three cards
+  //array.slice(0,3) should take index 0, 1, 2 without modifying he original array
+  drawThree() {
+    this.shuffle();
+    return this.cards.slice(0, 3);
+  }
+  getImagePath(cards) {
+    //images returned the file path for a card's image name by created code asssiged to the title
+    //FIX PATH NAME AFTER OTHER MODES R DONE
+    return "assets/cards/" + cards.code + ".png";
+  }
 }

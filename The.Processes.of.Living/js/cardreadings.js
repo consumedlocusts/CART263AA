@@ -30,5 +30,9 @@ class CardReading {
   }
   getFullMeaning(card, positionX) {
     let position = this.positions[positionX];
+    let suit = this.suitMeanings[card.suit];
+    let rank = this.rankMeanings[card.rank];
+    return card.display + "X" + position + "??" + "filler";
   }
+  build;
 }

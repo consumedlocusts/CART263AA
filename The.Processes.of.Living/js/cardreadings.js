@@ -28,11 +28,18 @@ class CardReading {
     //the three card "filler word"
     this.positions = ["you may", "for what", "well"];
   }
+  //returns full parag for one card that includes its pos in the spread
+  //its suit and rank theme are determined in the pattern
+  //pos index is like 0,1,2 (the threee cards) matching the this.positions[] index
   getFullMeaning(card, positionX) {
     let position = this.positions[positionX];
     let suit = this.suitMeanings[card.suit];
     let rank = this.rankMeanings[card.rank];
     return card.display + "X" + position + "??" + "filler";
   }
-  build;
+  //weaving of the three cards into one story with the skeleton remaining the same
+  //FOR NOW
+  buildStory(cards) {
+    let lines = "";
+  }
 }

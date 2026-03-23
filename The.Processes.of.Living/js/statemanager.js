@@ -21,7 +21,7 @@ class StateManager {
     this.current.style.display = "block";
     //if entered the future mode n then reset that game
     if (name === "future") {
-      futureThe.enter;
+      futureGame.enter;
     }
   }
 }

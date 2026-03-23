@@ -84,3 +84,53 @@ on anywhere else, blcok removes extra bottom spacing and makes this a rectangle 
   background: #000;
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
+#prompt-text {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.2em;
+  color: #e3e3e3;
+  top: 20px;
+  left: 20px;
+}
+/*deck image edit for tranform later */
+#deck-image {
+  position: absolute;
+  width: 120px;
+  height: 168px;
+  cursor: pointer;
+  display: none;
+  left: 260px;
+  top: 220px;
+  transition: transform 0.15s;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+/*flip card CSS : SOURCE : https://www.w3schools.com/howto/howto_css_flip_card.asp
+and the structure in html:
+*/
+/* pos absolute on #future-stage w js the Outer container*/
+.flip-card {
+  position: absolute;
+  width: 120px;
+  height: 168px;
+  display: none; /* hidden until FutureGame shows them */
+  left: 260px; /* start stacked at deck center and the js will move it*/
+  top: 220px;
+  /* perspective gives the 3D depth effect, same as the W3Schools example */
+  perspective: 1000px;
+  cursor: pointer;
+  /*animate with transition left/top when js changes them*/
+  transition:
+    left 0.55s ease,
+    top 0.55s ease;
+}
+/*inner container which is the actual rotation part*/
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /*this transition controls the flip speed */
+  transition: transform 0.7s;
+  /* assuming preserve-3d keeps both faces in 3D space so the back is truly behind */
+  transform-style: preserve-3d;
+}

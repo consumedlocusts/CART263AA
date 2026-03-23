@@ -39,7 +39,18 @@ class CardReading {
     let position = this.positions[positionX];
     let suit = this.suitMeanings[card.suit];
     let rank = this.rankMeanings[card.rank];
-    return card.display + "X" + position + "??" + "filler";
+    return (
+      card.display +
+      " Y " +
+      position +
+      ". " +
+      "X " +
+      suit +
+      ". " +
+      "z" +
+      rank +
+      "."
+    );
   }
   //weaving of the three cards into one story with the skeleton remaining the same
   //FOR NOW
@@ -56,7 +67,7 @@ class CardReading {
       "ends"
     );
   }
-  buildInt(cards) {
+  buildInterpretation(cards) {
     //actual interpertation building
     let text = "";
 

@@ -3,10 +3,12 @@
 //ok fix later bur creates the statemangaer
 let manager;
 function setupManager() {
-  manager = new StateManager(document.getElementById("opening"));
+  manager = new StateManager();
+  //(document.getElementById("opening"));
   manager.add("opening", document.getElementById("opening"));
   // manager.add("opening", document.getElementById("opening"));
   manager.add("future", document.getElementById("future"));
+  manager.switch("opening");
 }
 
 //return button when ready

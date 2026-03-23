@@ -3,9 +3,9 @@ class OneForth {
     //custombool attributt tracks the scene
     //main stage box(too big)
     this.stage = document.getElementById("future-stage");
-    //intsructions for users NOTE; i need 2 call the prompt text i actually want each time
+    //intsructions for users NOTE; i need 2 call the text i actually want each time
     //this is only styled
-    this.promptEl = document.getElementById("prompt-text");
+    this.tellEl = document.getElementById("tell-text");
     //deck image clicky in the center as imahe
     this.deckEl = document.getElementById("deck-image");
     //.flip-card cintainer stored in a three array idk its
@@ -35,7 +35,7 @@ class OneForth {
     //helper deck and reading clas objects
     this.deck = new Deck();
     //null 4 now
-    this.reading = null;
+    this.reading = new CardReading();
     // this.reading = new CardReading();
     //this array gets the later stored 3 cards drawn from the deck
     this.currentCards = [];
@@ -47,9 +47,11 @@ class OneForth {
     //deck click, when its clicked, only let the deck work in the start
     //If the deck is clicked later, nothing should happen
     this.deckEl.addEventListener("click", () => {
+      let scene = this.stage.getAttribute("custom-bool");
       if (this.scene === "start") {
         //this.showCards();
         this.startReading(); //im adding this
+        // } else if (scene === "") {
       }
     });
     //clicker loop, card elements n different behavior depending on state
@@ -58,15 +60,18 @@ class OneForth {
   //   console.log("deck clicked");
   // }
   enter() {
-    //enter the prompt and card display before reset
+    console.log("future entered");
+    //enter card display before reset
     this.reset();
-    //text prompt call
-    this.promptEl.textContent = "CLICK THE DECK";
-    //makes it visible
-    this.deckEl.style.display = "block";
+    //text call
+
     //positioned upon the stage, css doing rest of work
     this.deckEl.style.left = "260px";
     this.deckEl.style.top = "220px";
+    //makes it visible
+    this.deckEl.style.display = "block";
+    //updated text call w method
+    this.setTell("CLICK THE DECK TO SHUFFLE");
   }
   reset() {
     //return the empty/reset every element to its blank starting state
@@ -129,7 +134,7 @@ class OneForth {
     //reading scene
     this.scene = "reading";
     //update primp text
-    this.promptEl.textContent = "CLICK EACH CARD";
+    this.tellElEl.textContent = "CLICK EACH CARD";
     //loop to flip
     for (let i = 0; i < this.cardEls.length; i++) {
       //find the flip-card-inner element for this card rn
@@ -150,6 +155,43 @@ class OneForth {
     this.fateClicked[index] = true;
     //add the CSS to cliked card
     this.cardEls[index].classList.add("fate-read");
+    //if all three are clicked then begin the show reading next phase
+    let allDone = this.fateClicked.every((clicked) => clicked === true);
+
+    if (allDone) {
+      this.showReading();
+    }
   }
-  showReading() {}
+  showReading() {
+    //final scene of this
+    this.scene = "done";
+    this.tellEl.textContent = "THE READING IS COMPLETE";
+    //cardreading object function stuff
+    this.cardsLine.textContent = this.reading.getCardNames();
+    this.storyLine.textContent = this.reading.getStory();
+    this.interLine.textContent = this.reading.getInterpretation();
+  }
+  //label randomiser its giving it a hand-placed, ritual feel uses the same Math.random()
+  setTell(text){
+let colors = [
+      "rgb(227,227,227)",
+      "rgb(255,220,100)",
+      "rgb(255,170,170)",
+      "rgb(170,215,255)",
+    ];
+    //randomise from these colors in da array
+       let colorIndex = Math.floor(Math.random() * colors.length);
+    this.tellEl.style.color = colors[colorIndex];
+//tilt the text oddly
+let angle = Math.floor(Math.random() * 13) - 6;
+    this.tellEl.style.transform = "rotate(" + angle + "deg)";
+    //generate 60 random pos for the text on the stage BUT avoids the center 
+      let tellW = 300;
+    let tellH = 40;
+    let placed = false;
+    for (let attempt = 0; attempt < 60; attempt++) {
+      let x = Math.floor(Math.random() * (640 - tellW - 20)) + 10;
+      let y = Math.floor(Math.random() * (640 - tellH - 20)) + 10;
+      
+  }
 }

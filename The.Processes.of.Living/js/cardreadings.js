@@ -25,8 +25,12 @@ class CardReading {
       Queen: "hi",
       King: "hi",
     };
-    //the three card "filler word"
+    //the three card "filler word" as positions in the spread
     this.positions = ["you may", "for what", "well"];
+  }
+  getOneLine(card) {
+    //short summary one liner at the top of the completed reading
+    return card.display + " — " + this.rankMeanings[card.rank];
   }
   //returns full parag for one card that includes its pos in the spread
   //its suit and rank theme are determined in the pattern
@@ -40,6 +44,26 @@ class CardReading {
   //weaving of the three cards into one story with the skeleton remaining the same
   //FOR NOW
   buildStory(cards) {
-    let lines = "";
+    return (
+      "soon" +
+      "first" +
+      cards[0].display +
+      "then" +
+      cards[1].display +
+      "interpolates" +
+      "finally" +
+      cards[2].display +
+      "ends"
+    );
+  }
+  buildInt(cards) {
+    //actual interpertation building
+    let text = "";
+
+    for (let i = 0; i < cards.length; i++) {
+      text += this.getFullMeaning(cards[i], i);
+      text += "<br><br>";
+    }
+    return text;
   }
 }

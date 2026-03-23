@@ -27,7 +27,7 @@ class Deck {
       { name: "Queen", code: "queen" },
       { name: "King", code: "king" },
     ];
-    //this.cards call for array of 52VVVV
+    //this.cards call for array of 52VVVV it is the final deck array
     this.cards = [];
 
     this.buildDeck();

@@ -7,6 +7,7 @@ class StateManager {
   }
   add(name, state) {
     //store the element o state by name
+    //save a DOM element under a name like "opening" or "future"
     this.states[name] = state;
   }
   switch(name) {
@@ -18,10 +19,10 @@ class StateManager {
     this.current = this.states[name];
     //show it
     this.current.style.display = "block";
-
-    // if (name === "future") {
-    //   futureThe.enter;
-    // }
+    //if entered the future mode n then reset that game
+    if (name === "future") {
+      futureThe.enter;
+    }
   }
 }
 //sorrry i wrote this in the wrong js

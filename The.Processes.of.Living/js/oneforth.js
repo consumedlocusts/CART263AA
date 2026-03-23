@@ -38,13 +38,19 @@ class OneForth {
     //deck click, when its clicked, only let the deck work in the start
     this.deckEl.addEventListener("click", () => {
       if (this.scene === "start") {
-        this.showCards();
+        //this.showCards();
+        this.startReading(); //im adding this
       }
     });
+    //clicker loop, card elements n different behavior depending on state
   }
-  showCards() {
-    console.log("deck clicked");
-  }
+  // showCards() {
+  //   console.log("deck clicked");
+  // }
   enter() {}
-  dealCards() {}
+  reset() {}
+  startReading() {}
+  flipCards() {}
+  readCard() {}
+  showReading() {}
 }

@@ -4,7 +4,7 @@
 let manager;
 function setupManager() {
   manager = new StateManager(document.getElementById("opening"));
-
+  manager.add("opening", document.getElementById("opening"));
   // manager.add("opening", document.getElementById("opening"));
   manager.add("future", document.getElementById("future"));
 }

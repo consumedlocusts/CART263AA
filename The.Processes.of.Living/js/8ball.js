@@ -84,7 +84,7 @@ function setup() {
     //let me = (v * billy.width + h) * 4;
     setupManager();
     // setupButtons();
-    //futureGame = new OneForth();
+    futureGame = new OneForth();
   }
 }
 function draw() {

@@ -15,5 +15,24 @@ class OneForth {
       document.getElementById("card-1"),
       document.getElementById("card-2"),
     ];
+    //output for text areas
+    this.cardsLine = document.getElementById("cards-line"); //small summaru line
+    this.storyLine = document.getElementById("story-line"); //story text
+    this.interLine = document.getElementById("interpretation-line"); //main text that binds
+    //helper deck and reading clas objects
+    //  this.deck = new Deck();
+    //  this.reading = new CardReading();
+
+    //custom bool toggle to see which cards have been clicked to reveal fate, this array is checked before anything
+    this.fateClicked = [false, false, false];
+    //this is JUST A LOGIC THING
+    this.scene = "start"; //tells what stage its in before the other things r read
+    //IMPORTANT FOR WHEN  video paths r ready: note to replace
+    //test placeholder for cards for now
+    this.cardNames = ["e", "f", "g"];
+  }
+  //event listeners
+  setupEvents() {
+    //deck click
   }
 }

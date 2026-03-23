@@ -13,7 +13,14 @@ and not color=#1234
 if dashes removed css treats it as invalid says google
 
 test css plus test ugly font import*/
+/*trying variables in css for font, colors etc from source*/
+:root {
+  --font-mono: "Share Tech Mono", "Courier New", monospace;
+  --font-title: "Cinzel Decorative", "Georgia", serif;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel+Decorative:wght@400;700&display=swap");
+
 html,
 body {
   width: 100%;
@@ -66,4 +73,14 @@ on anywhere else, blcok removes extra bottom spacing and makes this a rectangle 
   letter-spacing: 0.18em;
   color: rgba(255, 255, 255, 0.22);
   margin-top: 0.1em;
+}
+
+/* FUTURE css*/
+
+#future-stage {
+  position: relative;
+  width: 640px;
+  height: 640px;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }

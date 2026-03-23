@@ -1,13 +1,15 @@
 class OneForth {
   constructor() {
     //custombool attributt tracks the scene
+    //main stage box(too big)
     this.stage = document.getElementById("future-stage");
-    //intsructions
+    //intsructions for users
     this.promptEl = document.getElementById("prompt-text");
-    //deck image clicky
+    //deck image clicky in the center as imahe
     this.deckEl = document.getElementById("deck-image");
     //.flip-card cintainer stored in a three array idk its
     // like 4 am so we can loop them over all elements .mouseclike
+    //three cards stored in an array so it can loop
     this.cardEls = [
       document.getElementById("card-0"),
       document.getElementById("card-1"),

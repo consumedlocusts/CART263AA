@@ -69,12 +69,49 @@
         
       </div>
     </div>
-    <!-- STATE: FUTURE--->
+    <!-- STATE: FUTURE also each card (of the 3) 
+     note:added alt text bc it might not display these yet --->
  <div id="future" class="state" style="display: none" >
        <div id="future-stage" custom-bool="idle">
-        <p id="prompt-text"></p>
-       
+        <p id="prompt-text">-</p>
+        <img id="deck-image" src="assets/cards/BACK.png" alt="deck" />
+       <div id="card-0" class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="assets/cards/BACK.png" alt="card back" />
+            </div>
+            <div class="flip-card-back">
+              <img src="assets/cards/BACK.png" alt="card face" />
+            </div>
+          </div>
+        </div>
+<div id="card-1" class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="assets/cards/BACK.png" alt="card back" />
+            </div>
+            <div class="flip-card-back">
+              <img src="assets/cards/BACK.png" alt="card face" />
+            </div>
+          </div>
+        </div>
+<div id="card-2" class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="assets/cards/BACK.png" alt="card back" />
+            </div>
+            <div class="flip-card-back">
+              <img src="assets/cards/BACK.png" alt="card face" />
+            </div>
+          </div>
+        </div>
+  
     </div>
+    <div id="reading-panel">
+        <div id="cards-line"></div>
+        <div id="story-line"></div>
+        <div id="interpretation-line"></div>
+      </div>
 
     <!---
  <script src="js/StateManager.js"></script>
@@ -83,6 +120,9 @@
     <script src="js/cardreading.js"></script>
     <script src="js/oneforth.js"></script>-->
      <script src="js/StateManager.js"></script>
+     <script src="js/deck.js"></script>
+      <script src="js/cardreadings.js"></script>
+     <script src="js/oneforth.js"></script>
     <script src="js/main.js"></script> 
     <script src="js/8ball.js"></script>
   

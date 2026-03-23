@@ -121,9 +121,35 @@ class OneForth {
       card.style.display = "block";
       card.style.left = position.left;
       card.style.top = position.top;
+      //get the image element inside the back side of the card
+      //let backImage = card.querySelector(".flip-card-back img");
     }
   }
-  flipCards() {}
-  readCard() {}
+  flipCards() {
+    //reading scene
+    this.scene = "reading";
+    //update primp text
+    this.promptEl.textContent = "CLICK EACH CARD";
+    //loop to flip
+    for (let i = 0; i < this.cardEls.length; i++) {
+      //find the flip-card-inner element for this card rn
+      let inner = this.cardEls[i].querySelector(".flip-card-inner");
+      //then add the CSS class that triggers the flip animation
+      inner.classList.add("is-flipped");
+    }
+  }
+  readCard(index) {
+    //handles the clicking one spec card during actual reading phase but doesnt generate the whole reading immidiately
+    //marks them as "read" when all three r done then showreading. index per card
+
+    //prevents repeated clicks problems so if this card was already clicked before do nothing and leave immediately
+    if (this.fateClicked[index]) {
+      return;
+    }
+    //mark this card as clicked/read
+    this.fateClicked[index] = true;
+    //add the CSS to cliked card
+    this.cardEls[index].classList.add("fate-read");
+  }
   showReading() {}
 }

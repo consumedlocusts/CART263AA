@@ -14,12 +14,11 @@ if dashes removed css treats it as invalid says google
 
 test css plus test ugly font import*/
 /*trying variables in css for font, colors etc from source*/
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel+Decorative:wght@400;700&display=swap");
 :root {
   --font-mono: "Share Tech Mono", "Courier New", monospace;
   --font-title: "Cinzel Decorative", "Georgia", serif;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel+Decorative:wght@400;700&display=swap");
 
 html,
 body {

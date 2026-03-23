@@ -33,6 +33,11 @@ class OneForth {
   }
   //event listeners
   setupEvents() {
-    //deck click
+    //deck click, when its clicked, only let the deck work in the start
+    this.deckEl.addEventListener("click", () => {
+      if (this.scene === "start") {
+        this.promptEl.textContent = "deck int";
+      }
+    });
   }
 }

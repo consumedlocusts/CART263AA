@@ -29,14 +29,15 @@ class Deck {
     ];
     //this.cards call for array of 52VVVV it is the final deck array
     this.cards = [];
-
+    //build the deck immediately
     this.buildDeck();
   }
   //build deck fills this.cards with all 52 card objects using a nested for loop
   //one for suits, one for ranks the same pattern im not sure if this will be properly shuffled this basically
   buildDeck() {
+    //empty that first deck and it rebuilds
     this.cards = [];
-
+    //nested loop where each suit gets every rank
     for (let i = 0; i < this.suits.length; i++) {
       for (let j = 0; j < this.ranks.length; j++) {
         this.cards.push({

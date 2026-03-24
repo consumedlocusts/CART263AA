@@ -154,7 +154,7 @@ function mousePressed() {
   // if (manager.current !== document.getElementById("opening")) {
   //   return; //do nothing if screen is not running or currently showing
   // }
-  console.log(manager);
+  //console.log(manager);
   let insideBall = dist(mouseX, mouseY, width / 2, height / 2) < 180;
   if (insideBall && revealActive === false) {
     //picks random number from array and floor(random) giving integer 0 to n-1 SOURCE:LINK HERE

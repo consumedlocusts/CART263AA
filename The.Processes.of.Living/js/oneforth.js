@@ -22,7 +22,7 @@ class OneForth {
     this.storyLine = document.getElementById("story-line"); //story text
     this.interLine = document.getElementById("interpretation-line"); //main text that binds
     //helper deck and reading clas objects
-     this.deck = new Deck();
+    this.deck = new Deck();
     this.reading = new CardReading();
 
     //custom bool toggle to see which cards have been clicked to reveal fate,
@@ -64,7 +64,7 @@ class OneForth {
     console.log("future entered");
     //enter card display before reset
     this.reset();
-    //intial scene for real 
+    //intial scene for real
     this.setScene("shuffleTell");
 
     //positioned upon the stage, css doing rest of work
@@ -79,13 +79,13 @@ class OneForth {
     //return the empty/reset every element to its blank starting state
     //doing the exact opposite
     //neutral scene set now
-   this.setScene("idle");
+    this.setScene("idle");
 
     this.drawnCards = [];
     this.fateClicked = [false, false, false];
 
     //empty the lines
-    
+
     //make deck visible again
     this.deckEl.style.display = "block";
     // with a for loop: rremove "fate-read" from the outer div,  remove "is-flipped" from the inner div (unflips the card)
@@ -103,15 +103,15 @@ class OneForth {
       //remove flip so the card returns to its front
       inner.classList.remove("is-flipped");
       //restore the original back image instead
-    let faceImg = this.cardEls[i].querySelector(".flip-card-back img");
+      let faceImg = this.cardEls[i].querySelector(".flip-card-back img");
       faceImg.src = "assets/cards/BACK.png";
     }
-      //empty the lines (moved here instead)
-        this.cardsLine.textContent = "";
+    //empty the lines (moved here instead)
+    this.cardsLine.textContent = "";
     this.storyLine.textContent = "";
     this.interLine.textContent = "";
   }
- setScene(name) {
+  setScene(name) {
     this.stage.setAttribute("custom-bool", name);
   }
 
@@ -120,7 +120,7 @@ class OneForth {
     this.setScene("shuffling");
     this.deckEl.style.display = "none";
     //from the custom text gen method
-     this.setTell("SHUFFLING...");
+    this.setTell("SHUFFLING...");
     //where the deck is used to call the OTHER functionings aswell
     //shuffle the deck so order becomes random / changes the internal order of this.deck.cards
     //this.deck.shuffle();
@@ -130,7 +130,7 @@ class OneForth {
     // //create new reading object when this is functioning
     // this.reading = new CardReading(this.currentCards);
     // //pos of cards visuallly in this state, the appearing list of screen positions for the 3 cards
-   
+
     // //loopthru them
     // for (let i = 0; i < this.cardEls.length; i++) {
     //   //store current card and matching positions
@@ -142,6 +142,16 @@ class OneForth {
     //   //get the image element inside the back side of the card
     //   //let backImage = card.querySelector(".flip-card-back img");
     // }
+    window.setTimeout(() => {
+      this.startSplitNow();
+    }, 1400);
+  }
+
+  //split first with text
+  startSplitNow() {
+    this.setScene("splitNow");
+    this.deckEl.style.display = "block";
+    this.setTell("NOW CLICK THE DECK TO SPLIT");
   }
   flipCards() {
     //reading scene
@@ -151,9 +161,11 @@ class OneForth {
     //loop to flip
     for (let i = 0; i < this.cardEls.length; i++) {
       //find the flip-card-inner element for this card rn
-      let inner = this.cardEls[i].querySelector(".flip-card-inner");
+      let inner = this.cardEls[i].querySelector(".flip-card-back img");
+      innerImg.src = this.deck.getImagePath(this.drawnCards[i]);
       //then add the CSS class that triggers the flip animation
-      inner.classList.add("is-flipped");
+      let flipper = this.cardEls[i].querySelector(".flip-card-inner");
+      flipper.classList.add("is-flipped");
     }
   }
   readCard(index) {
@@ -161,7 +173,7 @@ class OneForth {
     //marks them as "read" when all three r done then showreading. index per card
 
     //prevents repeated clicks problems so if this card was already clicked before do nothing and leave immediately
-    if (this.fateClicked[index]) {
+    if (this.fateClicked[index] === true) {
       return;
     }
     //mark this card as clicked/read
@@ -169,7 +181,9 @@ class OneForth {
     //add the CSS to cliked card
     this.cardEls[index].classList.add("fate-read");
     //if all three are clicked then begin the show reading next phase
-    let allDone = this.fateClicked.every((clicked) => clicked === true);
+    let allDone = this.fateClicked.every(function (clicked) {
+      return clicked === true;
+    });
 
     if (allDone) {
       this.showReading();
@@ -177,34 +191,50 @@ class OneForth {
   }
   showReading() {
     //final scene of this
-    this.scene = "done";
-    this.tellEl.textContent = "THE READING IS COMPLETE";
-    //cardreading object function stuff
-    this.cardsLine.textContent = this.reading.getCardNames();
-    this.storyLine.textContent = this.reading.getStory();
-    this.interLine.textContent = this.reading.getInterpretation();
+    let cards = this.drawnCards;
+    let sum = [];
+    //summar line s
+    //cardreading object function stuff NOW WITH LOOP
+    for (let i = 0; i < cards.length; i++) {
+      sum.push(this.reading.getOneLine(cards[i]));
+    }
+    //text joiner as made in readings and decks
+    this.cardsLine.textContent = sum.join(".");
+    this.storyLine.textContent = this.reading.buildStory(cards);
+    this.interLine.innerHTML = this.reading.buildInterpretation(cards);
+    //label randomiser its giving it a hand-placed, ritual feel uses the same Math.random()
   }
-  //label randomiser its giving it a hand-placed, ritual feel uses the same Math.random()
-  setTell(text){
-let colors = [
+  setTell(text) {
+    let colors = [
       "rgb(227,227,227)",
       "rgb(255,220,100)",
       "rgb(255,170,170)",
       "rgb(170,215,255)",
     ];
     //randomise from these colors in da array
-       let colorIndex = Math.floor(Math.random() * colors.length);
+    let colorIndex = Math.floor(Math.random() * colors.length);
     this.tellEl.style.color = colors[colorIndex];
-//tilt the text oddly
-let angle = Math.floor(Math.random() * 13) - 6;
+    //tilt the text oddly
+    let angle = Math.floor(Math.random() * 13) - 6;
     this.tellEl.style.transform = "rotate(" + angle + "deg)";
-    //generate 60 random pos for the text on the stage BUT avoids the center 
-      let tellW = 300;
+    //generate 60 random pos for the text on the stage BUT avoids the center
+    let tellW = 300;
     let tellH = 40;
     let placed = false;
     for (let attempt = 0; attempt < 60; attempt++) {
       let x = Math.floor(Math.random() * (640 - tellW - 20)) + 10;
       let y = Math.floor(Math.random() * (640 - tellH - 20)) + 10;
-      
+      //card zones to avoid but text will appear everywhere else hopfully
+      let czL = 90;
+      let czT = 140;
+      let czR = 550;
+      let czB = 380;
+      let overlapCards = !(
+        x + tellW < czL ||
+        x > czR ||
+        y + tellH < czT ||
+        y > czB
+      );
+    }
   }
 }

@@ -48,7 +48,7 @@ class OneForth {
     //If the deck is clicked later, nothing should happen
     this.deckEl.addEventListener("click", () => {
       let scene = this.stage.getAttribute("custom-bool");
-      if (this.scene === "shuffleTell") {
+      if (scene === "shuffleTell") {
         //this.showCards();
         this.startReading(); //im adding this
       } else if (scene === "splitTell") {
@@ -88,7 +88,7 @@ class OneForth {
     //makes it visible
     this.deckEl.style.display = "block";
     //updated text call w method
-    this.setTell("CLICK THE DECK TO SHUFFLE");
+    this.setTell("shuffle?");
   }
   reset() {
     //return the empty/reset every element to its blank starting state
@@ -101,7 +101,7 @@ class OneForth {
     //this.cardEls[i].style.display = "none";
 
     //make deck visible again
-    this.deckEl.style.display = "block";
+    this.deckEl.style.display = "none";
     // with a for loop: rremove "fate-read" from the outer div,  remove "is-flipped" from the inner div (unflips the card)
     for (let i = 0; i < this.cardEls.length; i++) {
       //hide the card like t the beginning, cards should not be visible yet
@@ -156,17 +156,54 @@ class OneForth {
     //   //get the image element inside the back side of the card
     //   //let backImage = card.querySelector(".flip-card-back img");
     // }
+    //draw the three cards now during the shuffle wait
+    this.drawnCards = this.deck.drawThree();
     window.setTimeout(() => {
       this.startSplitNow();
     }, 1400);
   }
 
   //split first with text
-  startSplitNow() {
-    this.setScene("splitNow");
+  startSplitTell() {
+    this.setScene("splitTell");
     this.deckEl.style.display = "block";
-    this.setTell("NOW CLICK THE DECK TO SPLIT");
+    this.setTell("split?");
   }
+  startSplitNow() {
+    //splitting the deck  so to hide deck, wait, then deal the cards
+    this.setScene("splitting");
+    this.deckEl.style.display = "none";
+    this.setTell("splitting...");
+    //the timer is too slow imo fix SOON
+    window.setTimeout(() => {
+      this.startDeal();
+    }, 1400);
+  }
+  startDeal() {
+    //show all three cards stacked at the deck center
+    this.setScene("dealing");
+    //looop again to pull the three of array
+    for (let i = 0; i < this.cardEls.length; i++) {
+      this.cardEls[i].style.left = "260px";
+      this.cardEls[i].style.top = "220px";
+      this.cardEls[i].style.display = "block";
+    }
+    this.setTell("a triad is drawn");
+    //small delay so the browser paints the starting position before animating
+    window.setTimeout(() => {
+      for (let i = 0; i < this.cardEls.length; i++) {
+        this.cardEls[i].style.left = this.dealPositions[i].left + "px";
+        this.cardEls[i].style.top = this.dealPositions[i].top + "px";
+      }
+    }, 0);
+
+    //wait for the CSS transition (0.55s) to finish before accepting clicks
+    window.setTimeout(() => {
+      this.setScene("waitReveal");
+      this.setTell("just one click");
+    }, 750);
+  }
+
   flipCards() {
     //reading scene
     this.setScene("flipping");
@@ -183,10 +220,10 @@ class OneForth {
     //checks animation endingso user can click cards individuallyt
     window.setTimeout(() => {
       this.setScene("waitFate");
-      this.setTell("CLICK EACH CARD TO RECEIVE ITS MEANING");
+      this.setTell("choose one by one");
     }, 900);
   }
-  readCard(index) {
+  revealFate(index) {
     //handles the clicking one spec card during actual reading phase but doesnt generate the whole reading immidiately
     //marks them as "read" when all three r done then showreading. index per card
 
@@ -205,6 +242,8 @@ class OneForth {
 
     if (allDone) {
       this.showReading();
+      this.setScene("done");
+      this.setTell("fin");
     }
   }
   showReading() {

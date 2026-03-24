@@ -111,35 +111,37 @@ class OneForth {
     this.storyLine.textContent = "";
     this.interLine.textContent = "";
   }
+ setScene(name) {
+    this.stage.setAttribute("custom-bool", name);
+  }
 
   startReading() {
     //making new scene to be called up there, simplified before adding the helperss
-    this.scene = "cardsShown";
+    this.setScene("shuffling");
     this.deckEl.style.display = "none";
+    //from the custom text gen method
+     this.setTell("SHUFFLING...");
     //where the deck is used to call the OTHER functionings aswell
     //shuffle the deck so order becomes random / changes the internal order of this.deck.cards
-    this.deck.shuffle();
-    //picks the first 3 cards from the shuffled deck then  currentCards becomes an array of 3 card objects
-    this.currentCards = this.deck.drawThree();
-    //create new reading object when this is functioning
-    this.reading = new CardReading(this.currentCards);
-    //pos of cards visuallly in this state, the appearing list of screen positions for the 3 cards
-    let positions = [
-      { left: "110px", top: "190px" },
-      { left: "260px", top: "160px" },
-      { left: "410px", top: "190px" },
-    ];
-    //loopthru them
-    for (let i = 0; i < this.cardEls.length; i++) {
-      //store current card and matching positions
-      let card = this.cardEls[i];
-      let position = positions[i];
-      card.style.display = "block";
-      card.style.left = position.left;
-      card.style.top = position.top;
-      //get the image element inside the back side of the card
-      //let backImage = card.querySelector(".flip-card-back img");
-    }
+    //this.deck.shuffle();
+
+    // //picks the first 3 cards from the shuffled deck then  currentCards becomes an array of 3 card objects
+    // this.currentCards = this.deck.drawThree();
+    // //create new reading object when this is functioning
+    // this.reading = new CardReading(this.currentCards);
+    // //pos of cards visuallly in this state, the appearing list of screen positions for the 3 cards
+   
+    // //loopthru them
+    // for (let i = 0; i < this.cardEls.length; i++) {
+    //   //store current card and matching positions
+    //   let card = this.cardEls[i];
+    //   let position = positions[i];
+    //   card.style.display = "block";
+    //   card.style.left = position.left;
+    //   card.style.top = position.top;
+    //   //get the image element inside the back side of the card
+    //   //let backImage = card.querySelector(".flip-card-back img");
+    // }
   }
   flipCards() {
     //reading scene

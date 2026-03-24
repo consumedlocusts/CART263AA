@@ -74,19 +74,6 @@ a:visited {
   color: var(--green);
 }
 
-/* state containers
-   each state is a full page div
-   statemanager toggles display:none / display:flex */
-.state {
-  width: 100vw;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
 /* outer bord
    mimics the <table border="5"> wrapper from the reference
    this wraps every state's content in a thick bordered cell */
@@ -150,15 +137,6 @@ a:visited {
   font-family: var(--font-title);
 }
 
-html,
-body {
-  width: 100%;
-  min-height: 100vh;
-  background: #000;
-  color: #e3e3e3;
-  font-family: "Share Tech Mono", "Courier New", monospace;
-  overflow: hidden;
-}
 /*state container css woild go here as statemanager 
 toggles display none to switch the screens
 like defining a full-screen layout system for each “state” (screen)

@@ -260,6 +260,7 @@ class OneForth {
     this.storyLine.textContent = this.reading.buildStory(cards);
     this.interLine.innerHTML = this.reading.buildInterpretation(cards);
     //label randomiser its giving it a hand-placed, ritual feel uses the same Math.random()
+    injectReadingLinks(cards);
   }
   setTell(text) {
     //change the actual words displayed with this stuff

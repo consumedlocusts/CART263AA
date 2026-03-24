@@ -19,7 +19,7 @@ class StateManager {
     //set new current state
     this.current = this.states[name];
     //show it
-    this.current.style.display = "block";
+    this.current.style.display = "flex";
     //if entered the future mode n then reset that game
     if (name === "future") {
       futureGame.enter();

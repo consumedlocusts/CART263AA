@@ -3,14 +3,15 @@ class StateManager {
     //all elements of states storage
     this.states = {};
     //current state visible storeage
-    this.current = current;
+    //this.current = current;
+    this.current = null;
   }
-  add(name, state) {
+  add(name, element) {
     //store the element o state by name
     //save a DOM element under a name like "opening" or "future"
-    this.states[name] = state;
+    this.states[name] = element;
   }
-  switch(name) {
+  switchTo(name) {
     //hide current is theres alreayd another activated
     if (this.current) {
       this.current.style.display = "none";

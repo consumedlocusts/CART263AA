@@ -171,8 +171,9 @@ function mousePressed() {
     revealTimer = window.setTimeout(function () {
       revealActive = false;
       console.log("result was: " + revealResult);
-      if (revealResult === responses[responses.length - 1])
-        manager.switch("future");
+      if (revealResult === "FUTURE") {
+        manager.switchTo("future");
+      }
     }, 1700);
   }
 }

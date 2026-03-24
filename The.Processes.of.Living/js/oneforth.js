@@ -98,10 +98,10 @@ class OneForth {
     //empty data
     this.drawnCards = [];
     this.fateClicked = [false, false, false];
-    this.cardEls[i].style.display = "none";
+    //this.cardEls[i].style.display = "none";
 
     //make deck visible again
-    //this.deckEl.style.display = "block";
+    this.deckEl.style.display = "block";
     // with a for loop: rremove "fate-read" from the outer div,  remove "is-flipped" from the inner div (unflips the card)
     for (let i = 0; i < this.cardEls.length; i++) {
       //hide the card like t the beginning, cards should not be visible yet

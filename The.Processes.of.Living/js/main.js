@@ -8,7 +8,7 @@ function setupManager() {
   manager.add("opening", document.getElementById("opening"));
   // manager.add("opening", document.getElementById("opening"));
   manager.add("future", document.getElementById("future"));
-  manager.switch("opening");
+  manager.switchTo("opening");
 }
 
 //return button when ready

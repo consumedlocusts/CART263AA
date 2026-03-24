@@ -1,5 +1,5 @@
 class StateManager {
-  constructor(current) {
+  constructor() {
     //all elements of states storage
     this.states = {};
     //current state visible storeage

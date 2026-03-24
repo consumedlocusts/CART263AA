@@ -84,9 +84,10 @@ on anywhere else, blcok removes extra bottom spacing and makes this a rectangle 
 #future-stage {
   position: relative;
   width: 640px;
-  height: 640px;
+  height: 500px;
   background: #000;
   border: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
 }
 #tell-text {
   position: absolute;
@@ -94,6 +95,8 @@ on anywhere else, blcok removes extra bottom spacing and makes this a rectangle 
   font-size: 16px;
   letter-spacing: 0.2em;
   color: #e3e3e3;
+  pointer-events: none;
+  z-index: 10;
   top: 20px;
   left: 20px;
 }
@@ -108,6 +111,9 @@ on anywhere else, blcok removes extra bottom spacing and makes this a rectangle 
   top: 220px;
   transition: transform 0.15s;
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+#deck-image:hover {
+  transform: scale(1.04);
 }
 /*flip card CSS : SOURCE : https://www.w3schools.com/howto/howto_css_flip_card.asp
 and the structure in html:
@@ -152,6 +158,7 @@ and the structure in html:
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
 }
 /*show the back of card pic when f down state*/
 .flip-card-front {
@@ -159,6 +166,29 @@ and the structure in html:
 }
 .flip-card-back {
   background: #0a0a0a;
+  transform: rotateY(180deg);
+}
+/* Card images fill their face completely */
+.flip-card-front img,
+.flip-card-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* once a card has been fate-clicked  dim it so the user can see which
+   cards still need to be clicked this added futuregame.rev fate idk */
+.flip-card.fate-read {
+  opacity: 0.4;
+  filter: grayscale(60%);
+  cursor: default;
+}
+/* hover lift while waiting for fate clicks (only on flipped not fate-read) */
+.flip-card-inner.is-flipped:hover {
+  transform: rotateY(180deg) translateY(-6px);
+}
+/* override the lift on a fate-read card but no hover effect after it done */
+.flip-card.fate-read .flip-card-inner.is-flipped:hover {
   transform: rotateY(180deg);
 }
 /*readings panels and containers (like for the card lines and the story line)*/

@@ -129,6 +129,54 @@
               find out what you decided you already knew.
             </div>
           </div>
+          <!-- cell 2: grey background, times new roman mixed in -->
+          <div class="border-cell cell-grey" style="flex:1;">
+            <span class="font-times">
+              some
+              <a class="ht-link" data-target="expand-opening-time">thing tossed</a>
+              together late one night...
+            </span>
+
+            <div id="expand-opening-time" class="hypertext-expand">
+              time is a flat circle.
+              the past, present, and future are states 
+              only hidden.
+            </div>
+          </div>
+
+          <!-- cell 3: white background, normal text -->
+          <div class="border-cell cell-white" style="flex:1; color:#000;">
+            <span class="font-times" style="font-size:14px;">click the ball.</span>
+            <br>
+            <span style="font-size:11px; color:#666;">
+              <!-- hint label lives here instead of below the ball -->
+              <span id="hint-label">click meeeee... waiting...</span>
+            </span>
+          </div>
+           <!-- bottom row: the non-functional form row from the reference -->
+      <div style="display:flex; gap:0;">
+
+        <!-- black cell: like that "button that does not do anything" -->
+        <div class="border-cell cell-black" style="flex:1; text-align:center;">
+          <!-- this button is decorative — matches the reference -->
+          <button class="return-btn" onclick="return false;">
+            stop crying 
+          </button>
+        </div>
+
+        <!-- white cell: a radio button (cutelydecorative) -->
+        <div class="border-cell cell-white" style="flex:0 0 40px; text-align:center; padding-top:10px;">
+          <input type="radio" disabled>
+        </div>
+
+        <!-- grey cell: broken link from the reference -->
+        <div class="border-cell cell-grey" style="flex:1; text-align:center;">
+          <a href="#nowhere" title="bad move...broken link" style="color:#33ff00;">
+           the end is near
+          </a>
+        </div>
+
+      </div><!-- end bottom row keep track here -->
 
       </div>
     </div>
@@ -199,6 +247,7 @@
      <script src="js/deck.js"></script>
       <script src="js/cardreadings.js"></script>
      <script src="js/oneforth.js"></script>
+     <script src="js/hypertext.js"></script>
     <script src="js/main.js"></script> 
     <script src="js/8ball.js"></script>
 

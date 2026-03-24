@@ -22,3 +22,6 @@ function setupButtons() {
       manager.switchTo("opening");
     });
 }
+function setupHypertextOnLoad() {
+  setupHypertext();
+}

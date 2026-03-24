@@ -13,11 +13,141 @@ and not color=#1234
 if dashes removed css treats it as invalid says google
 
 test css plus test ugly font import*/
-/*trying variables in css for font, colors etc from source*/
+/*trying variables in css for font, colors etc from source
+EVRYTHING NEW ADDED NOW ON IS FROM SOURCE : THIS IS NOT A BUTTON ok*/
 @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel+Decorative:wght@400;700&display=swap");
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+/* new roots vars
+   keeping these so js files can still reference --font-mono etc */
 :root {
   --font-mono: "Share Tech Mono", "Courier New", monospace;
   --font-title: "Cinzel Decorative", "Georgia", serif;
+  --font-times: "Times New Roman", Georgia, Times, serif;
+  --red: #660000; /* page background red from reference */
+  --red-bright: #ff0000; /* hot link red */
+  --green: #33ff00; /* link green from reference */
+  --orange: #ff9900; /* cell accent from reference */
+  --black: #000000;
+  --white: #ffffff;
+  --grey: #666666;
+  --grey-light: #999999;
+  --grey-pale: #cccccc;
+  --border-thick: 5px solid #cccccc; /* thick table-style border */
+  --border-med: 3px solid #cccccc;
+  --border-cell: 2px solid #33ff00; /* green cell borders */
+}
+
+/* basepage:
+   dark red background, green text, like the reference html body tag:
+   bgcolor="#660000" text="red" link="#33ff00" */
+html,
+body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--red);
+  color: #ff3333;
+  font-family: var(--font-mono);
+  overflow-x: hidden;
+}
+
+/* hp text links
+   green, no underline by default, underline on hover.
+   clicking them reveals more text — handled by hypertext.js */
+a {
+  color: var(--green);
+  text-decoration: none;
+  border-bottom: 1px solid var(--green);
+  cursor: pointer;
+}
+a:hover {
+  color: var(--orange);
+  border-bottom-color: var(--orange);
+  background: rgba(0, 0, 0, 0.3);
+}
+a:visited {
+  color: var(--green);
+}
+
+/* state containers
+   each state is a full page div
+   statemanager toggles display:none / display:flex */
+.state {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* outer bord
+   mimics the <table border="5"> wrapper from the reference
+   this wraps every state's content in a thick bordered cell */
+.border-table {
+  border: var(--border-thick);
+  border-color: var(--grey-pale);
+  cellspacing: 3px;
+  width: 700px;
+  max-width: 98vw;
+  background: var(--black);
+  margin: 20px auto;
+}
+
+/* a single cell inside the border table like a <td> */
+.border-cell {
+  border: var(--border-med);
+  border-color: var(--grey-pale);
+  padding: 10px;
+  vertical-align: top;
+}
+
+/* colored cell variants matching reference bgcolor attributes */
+.cell-black {
+  background: var(--black);
+  color: var(--green);
+}
+.cell-grey {
+  background: var(--grey);
+  color: var(--white);
+}
+.cell-orange {
+  background: var(--orange);
+  color: var(--black);
+}
+.cell-white {
+  background: var(--white);
+  color: var(--black);
+}
+.cell-red {
+  background: var(--red-bright);
+  color: var(--white);
+}
+
+/* mixed fonts mixed like the reference html used courier + times + arial */
+.font-courier {
+  font-family: "Courier New", Courier, Monaco, monospace;
+  font-size: 13px;
+}
+.font-times {
+  font-family: var(--font-times);
+  font-size: 15px;
+}
+.font-arial {
+  font-family: Arial, Helvetica, Geneva, sans-serif;
+  font-size: 14px;
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+.font-title {
+  font-family: var(--font-title);
 }
 
 html,
@@ -215,6 +345,45 @@ and the structure in html:
   color: rgba(255, 255, 255, 0.4);
   font-size: 12px;
 }
+/* hypertext links inside the reading panel 
+   these are the words that open more text when clicked */
+#interpretation-line a,
+#story-line a {
+  color: var(--orange);
+  border-bottom: 1px dotted var(--orange);
+  font-style: normal;
+}
+#interpretation-line a:hover,
+#story-line a:hover {
+  background: var(--orange);
+  color: var(--black);
+}
+/* expansion boxes
+   hidden divs that appear when a hypertext link is clicked
+   styled like a rough table cell appended inline. */
+.hypertext-expand {
+  display: none; /* hidden by default, shown by hypertext.js */
+  margin-top: 6px;
+  padding: 8px 10px;
+  border: 2px solid var(--green);
+  background: var(--red);
+  color: var(--white);
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* when expanded, this class is added by hypertext.js */
+.hypertext-expand.open {
+  display: block;
+}
+
+/* links inside expansion boxes lead to further expansions */
+.hypertext-expand a {
+  color: var(--green);
+  border-bottom: 1px solid var(--green);
+}
+
 /* return button */
 .return-btn {
   font-family: var(--font-mono);

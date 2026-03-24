@@ -74,12 +74,75 @@
       <h2 id="title-label">ASK.BILLY.BALL?</h2>
           <div id="ball-container"></div>
       <p id="hint-label"></p>click meeeee... waiting...</p>
-        
+        <!-- outer border wrapper like <table border="5" width="600"> -->
+    <div class="border-table">
+
+      <!-- top cell: title in courier on black restyling following N OLDER adobe go live html-->
+      <div class="border-cell cell-black font-courier" style="text-align:center; padding: 8px;">
+        <span class="font-title" style="color:#cccccc; letter-spacing:0.3em; font-size:13px;">
+          ASK.BILLY.BALL?
+        </span>
+        &nbsp;|&nbsp;
+        <span style="color:#666; font-size:11px;">
+          <!-- this is a non-functional decorative link, like the reference -->
+          <a href="#" onclick="return false;" title="useless">
+           and youuu wonder
+          </a>
+        </span>
+      </div>
+      <!-- middle row: ball on the left, text cells on the right -->
+      <div style="display:flex; gap:0;">
+
+        <!-- LEFT CELL: ball canvas lives here hopefully-->
+        <div class="border-cell cell-black" style="flex:0 0 auto; padding:0;">
+          <div id="ball-container"></div>
+        </div>
+
+        <!-- RIGHT COLUMN: stacked text cells like the reference right-side table -->
+        <div style="display:flex; flex-direction:column; flex:1;">
+
+          <!-- cell 1: black courier text with a green hypertext link -->
+          <div class="border-cell cell-black font-courier" style="flex:1;">
+            it all sorta snaps to the grid.
+            <!-- ht-link: clicking this word reveals more text via hypertext.js -->
+            <a class="ht-link" data-target="expand-opening-1">It seems to lack</a>
+            that certain controlled visceral imperfection.
+            welcome to
+            <span class="font-arial" style="font-size:15px; color:#ff9900;">
+              one fortiethly.
+            </span>
+            <!-- this expansion box is hidden until the link above is clicked.
+                 hypertext.js toggles class "open" to show/hide it.
+                 it can contain more links that reveal further boxes. -->
+            <div id="expand-opening-1" class="hypertext-expand">
+              the imperfection is the point.
+              <a class="ht-link" data-target="expand-opening-2">what does that mean?</a>
+            </div>
+
+            <div id="expand-opening-2" class="hypertext-expand">
+              it means FUTURE appears 8 times.
+              everything else appears twice
+              <a class="ht-link" data-target="expand-opening-3">and if it says FUTURE?</a>
+            </div>
+
+            <div id="expand-opening-3" class="hypertext-expand">
+              find out what you decided you already knew.
+            </div>
+          </div>
+
       </div>
     </div>
     <!-- STATE: FUTURE also each card (of the 3) 
      note:added alt text bc it might not display these yet --->
  <div id="future" class="state" style="display: none" >
+   <div class="border-table">
+    <div class="border-cell cell-red font-courier" style="text-align:center; padding:6px;">
+     <span style="color:#fff; letter-spacing:0.2em;">
+          ONE FORTIETHLY — THE READING
+        </span>
+         &nbsp;|&nbsp;
+           <!-- main stage cell -->
+      <div class="border-cell cell-black" style="padding:0;">
        <div id="future-stage" custom-bool="idle">
         <p id="tell-text">-</p>
         <img id="deck-image" src="assets/cards/BACK.png" alt="deck" />
@@ -113,13 +176,18 @@
             </div>
           </div>
         </div>
+         </div><!-- so hard to keep up with div -->
+      </div><!-- end stage cell -->
   
     </div>
+     <div class="border-cell cell-black" style="padding:0;">
     <div id="reading-panel">
         <div id="cards-line"></div>
         <div id="story-line"></div>
         <div id="interpretation-line"></div>
       </div>
+        </div>
+        </div>
 
     <!---
  <script src="js/StateManager.js"></script>

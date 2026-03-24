@@ -1,7 +1,9 @@
 "use strict";
 //state changer/manager class
 //ok fix later bur creates the statemangaer
+//FIX: manager and futureGame declared here as proper globals
 let manager;
+let futureGame;
 function setupManager() {
   manager = new StateManager();
   //(document.getElementById("opening"));
@@ -12,10 +14,11 @@ function setupManager() {
 }
 
 //return button when ready
-
-// function setupButtons() {
-//   document.getElementById("future-return");
-//   document.addEventListener("click", function () {
-//     //  manager.switchTo("opening");
-//   });
-// }
+//brings back after no ball content
+function setupButtons() {
+  document
+    .getElementById("future-return")
+    .addEventListener("click", function () {
+      manager.switchTo("opening");
+    });
+}

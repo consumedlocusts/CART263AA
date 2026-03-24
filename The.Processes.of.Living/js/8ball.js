@@ -58,7 +58,7 @@ function setup() {
   horz = floor(width / charWid);
   vert = floor(height / charHi);
 
-  let grid = horz * vert;
+  //let grid = horz * vert;
   //resizing
   billy.resize(horz, vert);
   billy.loadPixels();
@@ -82,10 +82,10 @@ function setup() {
       y: row * charHi,
     });
     //let me = (v * billy.width + h) * 4;
-    setupManager();
-    // setupButtons();
-    futureGame = new OneForth();
   }
+  setupManager();
+  // setupButtons();
+  futureGame = new OneForth();
 }
 function draw() {
   //hover ing adding the letters hovering in the middle yes
@@ -151,9 +151,9 @@ function checkHover() {
 }
 //NOT WORKINGGGGGG
 function mousePressed() {
-  // if (manager.current !== document.getElementById("opening")) {
-  //   return; //do nothing if screen is not running or currently showing
-  // }
+  if (manager.current !== document.getElementById("opening")) {
+    return; //do nothing if screen is not running or currently showing
+  }
   //console.log(manager);
   let insideBall = dist(mouseX, mouseY, width / 2, height / 2) < 180;
   if (insideBall && revealActive === false) {

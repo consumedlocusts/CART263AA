@@ -24,7 +24,8 @@ class OneForth {
     //helper deck and reading clas objects
     this.deck = new Deck();
     this.reading = new CardReading();
-
+    //this array gets the later stored 3 cards drawn from the deck
+    this.drawnCards = [];
     //custom bool toggle to see which cards have been clicked to reveal fate,
     // this array is to remember whether each of the 3 cards has been clicked during the reading phase
     this.fateClicked = [false, false, false];
@@ -38,8 +39,6 @@ class OneForth {
     //this.scene = "start"; //tells what stage its in before the other things r read
     //IMPORTANT FOR WHEN  video paths r ready: note to replace
 
-    //this array gets the later stored 3 cards drawn from the deck
-    this.currentCards = [];
     //call the event listen; make the deck clickable and make each card clickable
     this.setupEvents();
   }
@@ -52,16 +51,32 @@ class OneForth {
       if (this.scene === "shuffleTell") {
         //this.showCards();
         this.startReading(); //im adding this
-        // } else if (scene === "") {
+      } else if (scene === "splitTell") {
+        this.startSplitNow();
       }
     });
-    //clicker loop, card elements n different behavior depending on state
+    //clicker loop, card elements n different behavior depending on state, add
+    //add one click listener event to eac card
+    for (let i = 0; i < this.cardEls.length; i++) {
+      //store this loop's card number
+      let cardIndex = i;
+      this.cardEls[i].addEventListener("click", () => {
+        let scene = this.stage.getAttribute("custom-bool");
+        //before cards are revealed, one click flips all
+        if (scene === "waitReveal") {
+          this.flipCards();
+        }
+        //then each card can be clicked to show the reading bit
+        else if (scene === "waitFate") {
+          this.revealFate(cardIndex);
+        }
+      });
+    }
   }
   // showCards() {
   //   console.log("deck clicked");
   // }
   enter() {
-    console.log("future entered");
     //enter card display before reset
     this.reset();
     //intial scene for real
@@ -80,14 +95,13 @@ class OneForth {
     //doing the exact opposite
     //neutral scene set now
     this.setScene("idle");
-
+    //empty data
     this.drawnCards = [];
     this.fateClicked = [false, false, false];
-
-    //empty the lines
+    this.cardEls[i].style.display = "none";
 
     //make deck visible again
-    this.deckEl.style.display = "block";
+    //this.deckEl.style.display = "block";
     // with a for loop: rremove "fate-read" from the outer div,  remove "is-flipped" from the inner div (unflips the card)
     for (let i = 0; i < this.cardEls.length; i++) {
       //hide the card like t the beginning, cards should not be visible yet
@@ -155,18 +169,22 @@ class OneForth {
   }
   flipCards() {
     //reading scene
-    this.scene = "reading";
-    //update primp text
-    this.tellElEl.textContent = "CLICK EACH CARD";
+    this.setScene("flipping");
+
     //loop to flip
     for (let i = 0; i < this.cardEls.length; i++) {
       //find the flip-card-inner element for this card rn
-      let inner = this.cardEls[i].querySelector(".flip-card-back img");
+      let innerImg = this.cardEls[i].querySelector(".flip-card-back img");
       innerImg.src = this.deck.getImagePath(this.drawnCards[i]);
       //then add the CSS class that triggers the flip animation
       let flipper = this.cardEls[i].querySelector(".flip-card-inner");
       flipper.classList.add("is-flipped");
     }
+    //checks animation endingso user can click cards individuallyt
+    window.setTimeout(() => {
+      this.setScene("waitFate");
+      this.setTell("CLICK EACH CARD TO RECEIVE ITS MEANING");
+    }, 900);
   }
   readCard(index) {
     //handles the clicking one spec card during actual reading phase but doesnt generate the whole reading immidiately
@@ -205,6 +223,8 @@ class OneForth {
     //label randomiser its giving it a hand-placed, ritual feel uses the same Math.random()
   }
   setTell(text) {
+    //change the actual words displayed with this stuff
+    this.tellEl.textContent = text;
     let colors = [
       "rgb(227,227,227)",
       "rgb(255,220,100)",
@@ -221,20 +241,36 @@ class OneForth {
     let tellW = 300;
     let tellH = 40;
     let placed = false;
+    //the many random positions tried until one doesnt over lap the card central area
     for (let attempt = 0; attempt < 60; attempt++) {
       let x = Math.floor(Math.random() * (640 - tellW - 20)) + 10;
       let y = Math.floor(Math.random() * (640 - tellH - 20)) + 10;
       //card zones to avoid but text will appear everywhere else hopfully
+      //better words its the rectangle representing the card spread zone that the teller text should avoid
       let czL = 90;
       let czT = 140;
       let czR = 550;
       let czB = 380;
+      //rectangular overlap tester "is the teller box overlapping the card zone (which is these numbers)"
+      //first calc this then negate with ! to getthe overlap
       let overlapCards = !(
         x + tellW < czL ||
         x > czR ||
         y + tellH < czT ||
         y > czB
       );
+      //if this random position is safe, use it
+      if (!overlapCards) {
+        this.tellEl.style.left = x + "px";
+        this.tellEl.style.top = y + "px";
+        placed = true;
+        break;
+      }
+    }
+    //if theres nothing else then put it somehwere here
+    if (!placed) {
+      this.tellEl.style.left = "14px";
+      this.tellEl.style.top = "14px";
     }
   }
 }

@@ -22,21 +22,22 @@ class OneForth {
     this.storyLine = document.getElementById("story-line"); //story text
     this.interLine = document.getElementById("interpretation-line"); //main text that binds
     //helper deck and reading clas objects
-    //  this.deck = new Deck();
-    //  this.reading = new CardReading();
+     this.deck = new Deck();
+    this.reading = new CardReading();
 
     //custom bool toggle to see which cards have been clicked to reveal fate,
     // this array is to remember whether each of the 3 cards has been clicked during the reading phase
     this.fateClicked = [false, false, false];
+    //final landing positions for the three cards after they deal out
+    this.dealPositions = [
+      { left: 110, top: 190 },
+      { left: 260, top: 160 },
+      { left: 410, top: 190 },
+    ];
     //this is JUST A LOGIC THING
-    this.scene = "start"; //tells what stage its in before the other things r read
+    //this.scene = "start"; //tells what stage its in before the other things r read
     //IMPORTANT FOR WHEN  video paths r ready: note to replace
 
-    //helper deck and reading clas objects
-    this.deck = new Deck();
-    //null 4 now
-    this.reading = new CardReading();
-    // this.reading = new CardReading();
     //this array gets the later stored 3 cards drawn from the deck
     this.currentCards = [];
     //call the event listen; make the deck clickable and make each card clickable
@@ -48,7 +49,7 @@ class OneForth {
     //If the deck is clicked later, nothing should happen
     this.deckEl.addEventListener("click", () => {
       let scene = this.stage.getAttribute("custom-bool");
-      if (this.scene === "start") {
+      if (this.scene === "shuffleTell") {
         //this.showCards();
         this.startReading(); //im adding this
         // } else if (scene === "") {
@@ -63,7 +64,8 @@ class OneForth {
     console.log("future entered");
     //enter card display before reset
     this.reset();
-    //text call
+    //intial scene for real 
+    this.setScene("shuffleTell");
 
     //positioned upon the stage, css doing rest of work
     this.deckEl.style.left = "260px";
@@ -76,12 +78,14 @@ class OneForth {
   reset() {
     //return the empty/reset every element to its blank starting state
     //doing the exact opposite
-    this.scene = "start";
+    //neutral scene set now
+   this.setScene("idle");
+
+    this.drawnCards = [];
     this.fateClicked = [false, false, false];
+
     //empty the lines
-    this.cardsLine.textContent = "";
-    this.storyLine.textContent = "";
-    this.interLine.textContent = "";
+    
     //make deck visible again
     this.deckEl.style.display = "block";
     // with a for loop: rremove "fate-read" from the outer div,  remove "is-flipped" from the inner div (unflips the card)
@@ -90,15 +94,22 @@ class OneForth {
       this.cardEls[i].style.display = "none";
       //css based
       this.cardEls[i].classList.remove("fate-read");
+      //move all cards back to the deck center position
+      this.cardEls[i].style.left = "260px";
+      this.cardEls[i].style.top = "220px";
       //enables a clean like flip for now
       //find the inner flip container for this card then have the class "is-flipped" belongs on .flip-card-inner, not the outer container
       let inner = this.cardEls[i].querySelector(".flip-card-inner");
       //remove flip so the card returns to its front
       inner.classList.remove("is-flipped");
-      //clear stored data test
-      this.currentCards = [];
-      this.reading = null;
+      //restore the original back image instead
+    let faceImg = this.cardEls[i].querySelector(".flip-card-back img");
+      faceImg.src = "assets/cards/BACK.png";
     }
+      //empty the lines (moved here instead)
+        this.cardsLine.textContent = "";
+    this.storyLine.textContent = "";
+    this.interLine.textContent = "";
   }
 
   startReading() {

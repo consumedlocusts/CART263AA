@@ -4,29 +4,33 @@ class CardReading {
     // generates meaning text from the three cards drawn and then combines them simply
     //SUIT MEANINGGS
     this.suitMeanings = {
-      Hearts: "x",
-      Diamonds: "y",
-      Clubs: "z",
-      Spades: "f",
+      Hearts: "the inner world — feelings, connection, and longing",
+      Diamonds: "the material world — movement, exchange, and change",
+      Clubs: "ambition and effort — work, friction, and growth",
+      Spades: "difficulty and truth — loss, challenge, and hard knowledge",
     };
     //RANK MEANIGS:
     this.rankMeanings = {
-      Ace: "hi",
-      2: "hi",
-      3: "hi",
-      4: "hi",
-      5: "hi",
-      6: "hi",
-      7: "hi",
-      8: "hi",
-      9: "hi",
-      10: "hi",
-      Jack: "hi",
-      Queen: "hi",
-      King: "hi",
+      Ace: "a beginning — something is arriving or opening",
+      2: "duality — a choice, a pairing, or a balance to find",
+      3: "growth — something is expanding beyond its origin",
+      4: "stability — a pause, a foundation, or a resting point",
+      5: "disruption — something is shifting or being tested",
+      6: "passage — movement from one condition to another",
+      7: "reflection — a hidden truth or a test of patience",
+      8: "momentum — things are accumulating or accelerating",
+      9: "near-completion — one step remains before the end",
+      10: "culmination — an ending that contains a new beginning",
+      Jack: "a restless energy — action taken without full knowledge",
+      Queen: "feminine intuition — soulmate",
+      King: "mastery and authority — full command of a domain",
     };
     //the three card "filler word" as positions in the spread
-    this.positions = ["you may", "for what", "well"];
+    this.positions = [
+      "what has shaped you",
+      "for what surrounds you",
+      "what is coming toward you",
+    ];
   }
   getOneLine(card) {
     //short summary one liner at the top of the completed reading
@@ -41,13 +45,13 @@ class CardReading {
     let rank = this.rankMeanings[card.rank];
     return (
       card.display +
-      " Y " +
+      "speaks to" +
       position +
-      ". " +
-      "X " +
+      "." +
+      "this carries on " +
       suit +
       ". " +
-      "z" +
+      "it tells of" +
       rank +
       "."
     );
@@ -56,15 +60,15 @@ class CardReading {
   //FOR NOW
   buildStory(cards) {
     return (
-      "soon" +
+      "soon you will enter a place that feels half-remembered and half-invented" +
       "first" +
       cards[0].display +
-      "then" +
+      "then the" +
       cards[1].display +
-      "interpolates" +
-      "finally" +
+      "interrupts the sequence" +
+      "finally the" +
       cards[2].display +
-      "ends"
+      "settle what remains"
     );
   }
   buildInterpretation(cards) {

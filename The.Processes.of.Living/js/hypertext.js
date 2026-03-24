@@ -1,3 +1,4 @@
+//PROTOTYPE FOR CONTINUATION INSTEAD OF JUST GEN TEXT ITS GONNA LINK TO THE TEXTS HIGHLIGHTED
 function setupHypertext() {
   //find rtyy thing with the class "ht-link"
   let links = document.querySelectorAll(".ht-link");
@@ -53,6 +54,7 @@ function refreshHypertextLinks() {
 }
 function injectReadingLinks(cards) {
   //build the expansion box html for each card's suit these will be injected into the DOM as hidden boxes for hideen reading
+  //this is not functional yet since the links havent been connected
   let suitExpansions = {
     Hearts: {
       id: "expand-hearts",

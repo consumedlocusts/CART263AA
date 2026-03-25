@@ -23,13 +23,24 @@ for(let i =0; i<theCanvases.length; i++){
     theContexts.push(context);
 }
 
+//draw board A
 let drawingBoardA = new DrawingBoard(theCanvases[0],theContexts[0],theCanvases[0].id);
 //add a circular object to canvas A
 drawingBoardA.addObj(new CircularObj(100,100,20,"#FFC300","#E6E6FA", drawingBoardA.context))
 drawingBoardA.display();
 
 
-
+//direct obj for RECT variable
+let rectObj = new RectangularObj(
+    100,
+    100,
+    50,
+    70,
+    "#FF5733",
+    "#E6E6FA",
+    drawingBoardB.context
+  );
+    drawingBoardB.addObj(rectObj);
 let drawingBoardB = new DrawingBoard(theCanvases[1],theContexts[1],theCanvases[1].id);
 //add a rectangular object to canvas B
 drawingBoardB.addObj(new RectangularObj(100,100,50,70,"#FF5733","#E6E6FA",drawingBoardB.context))
@@ -44,19 +55,63 @@ drawingBoardC.display();
 let drawingBoardD = new DrawingBoard(theCanvases[3],theContexts[3],theCanvases[3].id);
 drawingBoardD.addObj(new VideoObj(0,0,400,300,videoEl,drawingBoardD.context))
 drawingBoardD.display();
+//from example from last weeek
+let analyser;
+let frequencyData;
+let micAverage = 0;
+//TRY THING FROM EARLOIER
+try {
 
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioContext = new AudioContext();
+
+    navigator.mediaDevices.getUserMedia({ audio: true })
+.then(function(audioStream){
+
+
+    let microphoneIn = audioContext.createMediaStreamSource(audioStream);
+    analyser = audioContext.createAnalyser();
+
+    microphoneIn.connect(analyser);
+
+    analyser.fftSize = 32;
+    frequencyData = new Uint8Array(analyser.frequencyBinCount);
+
+    console.log("microphone connected");
+
+}) .catch (error){
+
+    console.log("microphone access failed:", error);
+}
 
 /*** RUN THE ANIMATION LOOP  */
 window.requestAnimationFrame(animationLoop);
 
 function animationLoop(){
+    //get current microphone data
+      analyser.getByteFrequencyData(frequencyData);
+
+      //average all frequency bins into one simple value
+      let sum = 0;
+      for (let i = 0; i < frequencyData.length; i++) {
+        sum += frequencyData[i];
+      }
+    
+      micAverage = sum / frequencyData.length;
+
+      //send the mic value into board B and board C objects (not made yet )
+      //these properties must then be used inside each objects update ethod
+      rectObj.micLevel = micAverage;
+      freeObj.micLevel = micAverage;
     /*** CALL THE EACH CANVAS TO ANIMATE INSIDE  */
+
     drawingBoardA.animate();
     drawingBoardB.animate();
     drawingBoardC.animate();
     drawingBoardD.run(videoEl)
     window.requestAnimationFrame(animationLoop);
 }
+  
 
 
 
@@ -107,6 +162,7 @@ function animationLoop(){
  */
 
 
-
-
 }
+}
+
+

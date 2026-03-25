@@ -10,6 +10,13 @@ class CircularObj {
     this.startAngle = 0;
     this.endAngle = Math.PI * 2; //full rotation
     this.context = context;
+    //test properties for animation
+    this.targetX = x;
+    this.targetY = y;
+    this.baseRadius = radius;
+    this.pulseAngle = Math.random() * Math.PI * 2;
+    this.speedX = (Math.random() * 2 - 1) * 0.4;
+    this.speedY = (Math.random() * 2 - 1) * 0.4;
   }
 
   display() {
@@ -22,7 +29,7 @@ class CircularObj {
       this.radius,
       this.startAngle,
       this.endAngle,
-      true
+      true,
     );
     this.context.fill(); // set the fill
     this.context.lineWidth = 2; //change stroke
@@ -32,6 +39,17 @@ class CircularObj {
 
   update() {
     //update circle
+    //drift motion for now
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    //move gently toward the mouse position
+    this.x += (this.targetX - this.x) * 0.03;
+    this.y += (this.targetY - this.y) * 0.03;
+
+    //pulsing radius animation
+    this.pulseAngle += 0.08;
+    this.radius = this.baseRadius + Math.sin(this.pulseAngle) * 4;
     //this.x += 1;
     //console.log("circle update");
   }

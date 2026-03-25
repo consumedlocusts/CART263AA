@@ -28,7 +28,7 @@ class DrawingBoard {
     //differentiate which canvas
     //you can remove the console.logs ///
     if (this.drawingBoardId === "partA") {
-      console.log("in A");
+      //console.log("in A");
       //pass nouse pos into every circle on board A
       for (let i = 0; i < this.objectsOnCanvas.length; i++) {
         this.objectsOnCanvas[i].targetX = this.mouseOffsetX;

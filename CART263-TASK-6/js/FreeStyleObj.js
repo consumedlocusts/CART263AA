@@ -36,6 +36,7 @@ class FreeStyleObj {
     //update freestyle
 
     // console.log("free style update")
+
     //arb anim
     this.phase += 0.08;
 

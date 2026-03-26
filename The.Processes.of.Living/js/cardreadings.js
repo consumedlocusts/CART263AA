@@ -4,10 +4,10 @@ class CardReading {
     // generates meaning text from the three cards drawn and then combines them simply
     //SUIT MEANINGGS
     this.suitMeanings = {
-      Hearts: "the inner world — feelings, connection, and longing",
-      Diamonds: "the material world — movement, exchange, and change",
-      Clubs: "ambition and effort — work, friction, and growth",
-      Spades: "difficulty and truth — loss, challenge, and hard knowledge",
+      Hearts: " the inner world — feelings, connection, and longing",
+      Diamonds: " the material world — movement, exchange, and change",
+      Clubs: " ambition and effort — work, friction, and growth",
+      Spades: " difficulty and truth — loss, challenge, and hard knowledge",
     };
     //RANK MEANIGS:
     this.rankMeanings = {
@@ -27,9 +27,9 @@ class CardReading {
     };
     //the three card "filler word" as positions in the spread
     this.positions = [
-      "what has shaped you",
-      "for what surrounds you",
-      "what is coming toward you",
+      "  what has shaped you",
+      " for what surrounds you",
+      " what is coming toward you",
     ];
   }
   getOneLine(card) {

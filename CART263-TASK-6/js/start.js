@@ -33,6 +33,7 @@ function go_all_stuff() {
     new CircularObj(100, 100, 20, "#FFC300", "#E6E6FA", drawingBoardA.context),
   );
   drawingBoardA.display();
+//BOARD BBBBB
 
 // direct obj for RECT variable
     let rectObj = new RectangularObj(
@@ -42,14 +43,16 @@ function go_all_stuff() {
       70,
       "#FF5733",
       "#E6E6FA",
-      //drawingBoardB.context,
+      drawingBoardB.context,
     );
-   drawingBoardB.addObj(rectObj);
+  
     let drawingBoardB = new DrawingBoard(
       theCanvases[1],
       theContexts[1],
       theCanvases[1].id,
     );
+     drawingBoardB.addObj(rectObj);
+     drawingBoardB.display();
 /// add a rectangular object to canvas B
     drawingBoardB.addObj(
       new RectangularObj(

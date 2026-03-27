@@ -59,7 +59,7 @@ class DrawingBoard {
     //differentiate which canvas
     //you can remove the console.logs ///
     if (this.drawingBoardId === "partA") {
-      console.log("in A");
+      //console.log("in A");
       //add circle with one click then shift +click remove a circle
       if (e.shiftKey) {
         // do not remove the very first original circle

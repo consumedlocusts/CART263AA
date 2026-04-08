@@ -10,7 +10,7 @@ export class PlanetF {
     this.orbitSpeed = orbitSpeed;
     this.angle = Math.random() * Math.PI * 2;
     //its what will orbit the sun?
-
+    this.group = new THREE.Group();
     //Raycasting tools
     this.raycaster = new THREE.Raycaster();
     this.pointerPos = new THREE.Vector2();
@@ -24,35 +24,21 @@ export class PlanetF {
     this.alphaMap = this.textureLoader.load("image/alien2.jpg");
 
     this.otherMap = this.textureLoader.load("image/alien.jpg.webp");
-    this.group = new THREE.Group();
-    scene.add(group);
+    //fixes color space
+    this.colorMap.colorSpace = THREE.SRGBColorSpace;
+    this.otherMap.colorSpace = THREE.SRGBColorSpace;
+    //scene.add(group);
 
     const geo = new THREE.IcosahedronGeometry(1, 16);
     const mat = new THREE.MeshBasicMaterial({
-      color: 0x0099ff,
+      color: 0x222222,
+
       wireframe: true,
       transparent: true,
-      opacity: 0.1,
+      opacity: 0.15,
     });
 
-    // Create planet
-    //PLANTET 1
-    // const planetGeometry = new THREE.SphereGeometry(1.8, 48, 48); //ze geometry is the shape data
-
-    // const planetMaterial = new THREE.MeshBasicMaterial({
-    //   color: 0x660066,
-    //   wireframe: true,
-    //   transparent: true,
-    //   opacity: 0.15,
-    //   // // color: 0x1b1822,
-    //   // color: 0x800080, // purple, very obvious
-    //   // roughness: 0.95,
-    //   // metalness: 0.3,
-    //   // emissive: 0x120814,
-    //   // emissiveIntensity: 0.5,
-    //   // // color: 0x800080, // purple, very obvious
-    //   // wireframe: false,
-    // });
+    //PLANET ONEE
 
     //plant mesh
     this.planet = new THREE.Mesh(geo, mat);
@@ -72,29 +58,30 @@ export class PlanetF {
 
             void main() {
                 vUv = uv;
+vec3 newPosition = position;
 
-                vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    
+        float elv = texture2D(elevTexture, vUv).r;
 
-                float elv = texture2D(elevTexture, vUv).r;
-                vec3 vNormal = normalMatrix * normal;
+      
+        float dist = distance(mouseUV, vUv);
+        float thresh = 0.08;
 
-                vVisible = step(0.0, dot(-normalize(mvPosition.xyz), normalize(vNormal)));
+        float pulse = 0.0;
+        if (dist < thresh) {
+          pulse = (thresh - dist) * 4.0;
+        }
 
-                mvPosition.z += 0.35 * elv;
+        vDist = dist;
+               newPosition += normal * (elv * 0.6 + pulse);
 
-                float dist = distance(mouseUV, vUv);
-                float zDisp = 0.0;
-                float thresh = 0.04;
+        vec4 mvPosition = modelViewMatrix * vec4(newPosition, 1.0);
 
-                if (dist < thresh) {
-                    zDisp = (thresh - dist) * 10.0;
-                }
+        vec3 vNormal = normalize(normalMatrix * normal);
+        vVisible = step(0.0, dot(-normalize(mvPosition.xyz), vNormal));
 
-                vDist = dist;
-                mvPosition.z += zDisp;
-
-                gl_PointSize = size;
-                gl_Position = projectionMatrix * mvPosition;
+        gl_PointSize = size;
+        gl_Position = projectionMatrix * mvPosition;
             }
         `;
 
@@ -114,7 +101,7 @@ export class PlanetF {
                 vec3 color = texture2D(colorTexture, vUv).rgb;
                 vec3 other = texture2D(otherTexture, vUv).rgb;
 
-                float thresh = 0.04;
+                float thresh = 0.08;
                 if (vDist < thresh) {
                     color = mix(color, other, (thresh - vDist) * 50.0);
                 }
@@ -122,9 +109,11 @@ export class PlanetF {
                 gl_FragColor = vec4(color, alpha);
             }
         `;
-
+    //for stronger blending if needed for above float mixVal = (thresh - vDist) * 8.0;
+    //color = mix(color, other, mixVal);
+    // }
     this.uniforms = {
-      size: { value: 4.0 },
+      size: { value: 3.5 },
       colorTexture: { value: this.colorMap },
       otherTexture: { value: this.otherMap },
       elevTexture: { value: this.elevMap },
@@ -142,14 +131,16 @@ export class PlanetF {
 
     this.points = new THREE.Points(pointsGeometry, pointsMaterial);
     this.group.add(this.points);
+    //add them
+    this.group.add(this.planet);
+    this.group.add(this.points);
 
-    // Initial orbit position
+    //=======()======()=======moon=======()=======()================
+    this.moonPivots = [];
+    //initial orbit position
     this.group.position.x = this.orbitRadius;
 
-    //addd the planet to group again
-    this.group.add(this.planet);
-    this.moonPivots = [];
-    //the three moons as looops
+    //the three moons  looop
     for (let i = 0; i < 3; i++) {
       const moonPivot = new THREE.Group();
 
@@ -200,6 +191,7 @@ export class PlanetF {
     //TODO: Use raycasting in the click() method below to detect clicks on the models, and make an animation happen when a model is clicked.
     //TODO: Use your imagination and creativity!
     //soon will add this but moon firrst this.loadModel('../models/xenoCritter.glb', 0.35, 20, 40, 0);
+    this.group.position.x = this.orbitRadius;
     this.scene.add(this.group);
   }
 
@@ -260,3 +252,23 @@ export class PlanetF {
 //https://github.com/holgerl/procedural-planet/blob/gh-pages/js/spheremap.js
 //https://www.vertexshaderart.com/art/8oJh9QtFGgJksSFFk/
 //https://github.com/ashima/webgl-noise/blob/master/src/cellular3D.glsl
+
+//for later
+// Create planet
+//PLANTET 1
+// const planetGeometry = new THREE.SphereGeometry(1.8, 48, 48); //ze geometry is the shape data
+
+// const planetMaterial = new THREE.MeshBasicMaterial({
+//   color: 0x660066,
+//   wireframe: true,
+//   transparent: true,
+//   opacity: 0.15,
+//   // // color: 0x1b1822,
+//   // color: 0x800080, // purple, very obvious
+//   // roughness: 0.95,
+//   // metalness: 0.3,
+//   // emissive: 0x120814,
+//   // emissiveIntensity: 0.5,
+//   // // color: 0x800080, // purple, very obvious
+//   // wireframe: false,
+// });

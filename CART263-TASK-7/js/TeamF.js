@@ -10,7 +10,7 @@ export class PlanetF {
     this.orbitSpeed = orbitSpeed;
     this.angle = Math.random() * Math.PI * 2;
     //its what will orbit the sun?
-    this.group = new THREE.Group();
+
     //Raycasting tools
     this.raycaster = new THREE.Raycaster();
     this.pointerPos = new THREE.Vector2();
@@ -18,42 +18,44 @@ export class PlanetF {
 
     //texture loader
     this.textureLoader = new THREE.TextureLoader();
-
     //load textures
     this.colorMap = this.textureLoader.load("image/aalieeenn.jpg");
     this.elevMap = this.textureLoader.load("image/2136.jpg");
     this.alphaMap = this.textureLoader.load("image/alien2.jpg");
+
     this.otherMap = this.textureLoader.load("image/alien.jpg.webp");
+    this.group = new THREE.Group();
+    scene.add(group);
 
-    //Create planet groupx
-
-    //blender loader .glb models
-    //this.loader = new GLTFLoader();
-    //moon rotator's pivot
-    // this.moonPivots = [];
+    const geo = new THREE.IcosahedronGeometry(1, 16);
+    const mat = new THREE.MeshBasicMaterial({
+      color: 0x0099ff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.1,
+    });
 
     // Create planet
     //PLANTET 1
     // const planetGeometry = new THREE.SphereGeometry(1.8, 48, 48); //ze geometry is the shape data
-    const planetGeometry = new THREE.IcosahedronGeometry(1.8, 16);
-    //planet material (make evil later)
-    const planetMaterial = new THREE.MeshBasicMaterial({
-      color: 0x660066,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.15,
-      // // color: 0x1b1822,
-      // color: 0x800080, // purple, very obvious
-      // roughness: 0.95,
-      // metalness: 0.3,
-      // emissive: 0x120814,
-      // emissiveIntensity: 0.5,
-      // // color: 0x800080, // purple, very obvious
-      // wireframe: false,
-    });
+
+    // const planetMaterial = new THREE.MeshBasicMaterial({
+    //   color: 0x660066,
+    //   wireframe: true,
+    //   transparent: true,
+    //   opacity: 0.15,
+    //   // // color: 0x1b1822,
+    //   // color: 0x800080, // purple, very obvious
+    //   // roughness: 0.95,
+    //   // metalness: 0.3,
+    //   // emissive: 0x120814,
+    //   // emissiveIntensity: 0.5,
+    //   // // color: 0x800080, // purple, very obvious
+    //   // wireframe: false,
+    // });
 
     //plant mesh
-    this.planet = new THREE.Mesh(planetGeometry, planetMaterial);
+    this.planet = new THREE.Mesh(geo, mat);
     //shadows abd depth
     this.planet.castShadow = true;
     this.planet.receiveShadow = true;
@@ -127,7 +129,8 @@ export class PlanetF {
       otherTexture: { value: this.otherMap },
       elevTexture: { value: this.elevMap },
       alphaTexture: { value: this.alphaMap },
-      mouseUV: { value: this.globeUV },
+      mouseUV: { value: this.theUV },
+      //mouseUV: { type: "v2", value: new THREE.Vector2(0.0, 0.0) },
     };
 
     const pointsMaterial = new THREE.ShaderMaterial({
@@ -169,7 +172,16 @@ export class PlanetF {
         speed: 0.2 + i * 0.2,
       });
     }
+    //this.uniforms = {
+    //     time: { value: 0 },
+    //     hitUV: { value: this.hitUV }
+    // };
 
+    // this.material = new THREE.ShaderMaterial({
+    //     vertexShader: this.vertexShader,
+    //     fragmentShader: this.fragmentShader,
+    //     uniforms: this.uniforms
+    // });
     //STEP 1:
     //TODO: Create a planet using THREE.SphereGeometry (Radius must be between 1.5 and 2).
     //TODO: Give it a custom material using THREE.MeshStandardMaterial.

@@ -88,7 +88,7 @@ const planetE = new PlanetE(scene, 36, 0.0015);
 planets.push(planetE);
 
 // // Team F's planet (farthest)
-const planetF = new PlanetF(scene, 43, 0.001);
+const planetF = new PlanetF(scene, 30, 0.001);
 planets.push(planetF);
 
 let elapsedTime = 0;

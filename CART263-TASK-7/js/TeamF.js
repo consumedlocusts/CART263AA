@@ -2,12 +2,19 @@ import * as THREE from "three";
 //import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 //SAMA's THEME: Dark biomechanical horrors
+
 // Planet class for Team F
 export class PlanetF {
   constructor(scene, orbitRadius, orbitSpeed) {
     this.scene = scene;
     this.orbitRadius = orbitRadius;
     this.orbitSpeed = orbitSpeed;
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+    this.scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+    dirLight.position.set(5, 5, 5);
+    this.scene.add(dirLight);
     this.angle = Math.random() * Math.PI * 2;
     //its what will orbit the sun?
     this.group = new THREE.Group();
@@ -236,10 +243,10 @@ export class PlanetF {
     this.spineSpacing = 0.028; //distance between vertebrae along curve
     this.spineTravel = 0.0; //rate of
     //load one vertebra model and clone it
-    this.loadSpineModel("/models/vertebrae.glb");
+    this.loadSpineModel("models/spine.glb");
 
     // this.group.position.x = this.orbitRadius;
-    // this.scene.add(this.group);
+    this.scene.add(this.group);
 
     // debug ring line
     const linePoints = this.spineCurve.getPoints(240);

@@ -10,7 +10,7 @@ export class PlanetF {
     this.orbitSpeed = orbitSpeed;
     this.angle = Math.random() * Math.PI * 2;
 
-    //Create planet group
+    //Create planet groupx
     //its what will orbit the sun?
     this.group = new THREE.Group();
     //blender loader .glb models

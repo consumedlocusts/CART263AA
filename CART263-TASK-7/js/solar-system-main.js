@@ -1,18 +1,23 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { Sun } from './Sun.js';
-import { PlanetA } from './TeamA.js';
-import { PlanetB } from './TeamB.js';
-import { PlanetC } from './TeamC.js';
-import { PlanetD } from './TeamD.js';
-import { PlanetE } from './TeamE.js';
-import { PlanetF } from './TeamF.js';
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Sun } from "./Sun.js";
+import { PlanetA } from "./TeamA.js";
+import { PlanetB } from "./TeamB.js";
+import { PlanetC } from "./TeamC.js";
+import { PlanetD } from "./TeamD.js";
+import { PlanetE } from "./TeamE.js";
+import { PlanetF } from "./TeamF.js";
 
 // --- Core Setup ---
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x050510); // Deep space
 
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(
+  45,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000,
+);
 camera.position.set(0, 30, 60);
 camera.lookAt(0, 0, 0);
 
@@ -40,15 +45,18 @@ const starsGeometry = new THREE.BufferGeometry();
 const starsCount = 3000;
 const starsPositions = new Float32Array(starsCount * 3);
 for (let i = 0; i < starsCount * 3; i += 3) {
-    const r = 150 + Math.random() * 100;
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.random() * Math.PI * 2;
-    
-    starsPositions[i] = Math.sin(theta) * Math.cos(phi) * r;
-    starsPositions[i + 1] = Math.sin(theta) * Math.sin(phi) * r;
-    starsPositions[i + 2] = Math.cos(theta) * r;
+  const r = 150 + Math.random() * 100;
+  const theta = Math.random() * Math.PI * 2;
+  const phi = Math.random() * Math.PI * 2;
+
+  starsPositions[i] = Math.sin(theta) * Math.cos(phi) * r;
+  starsPositions[i + 1] = Math.sin(theta) * Math.sin(phi) * r;
+  starsPositions[i + 2] = Math.cos(theta) * r;
 }
-starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
+starsGeometry.setAttribute(
+  "position",
+  new THREE.BufferAttribute(starsPositions, 3),
+);
 const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
 const stars = new THREE.Points(starsGeometry, starsMaterial);
 scene.add(stars);
@@ -85,45 +93,45 @@ planets.push(planetF);
 
 let elapsedTime = 0;
 function animate(timer) {
-    requestAnimationFrame(animate);
-    
-    const delta = 0.001*(timer - elapsedTime) ;
-    console.log(delta)
-    elapsedTime = timer;
-    
-    // Update sun
-    sun.update(timer);
-    
-    // Rotate stars slowly
-    stars.rotation.y += 0.1*delta;
-    
-    // Update all planets (this handles planet orbit, moon orbits, and critter animations)
-    planets.forEach(planet => planet.update(delta));
-    
-    controls.update();
-    renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+
+  const delta = 0.001 * (timer - elapsedTime);
+  console.log(delta);
+  elapsedTime = timer;
+
+  // Update sun
+  sun.update(timer);
+
+  // Rotate stars slowly
+  stars.rotation.y += 0.1 * delta;
+
+  // Update all planets (this handles planet orbit, moon orbits, and critter animations)
+  planets.forEach((planet) => planet.update(delta));
+
+  controls.update();
+  renderer.render(scene, camera);
 }
 
 animate(0);
 
 // Handle window resize
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
 // Click handler
 const mouse = new THREE.Vector2();
-renderer.domElement.addEventListener('click', (event) => {
-    // Calculate mouse position in normalized device coordinates
-    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-    
-    planetA.click(mouse, scene, camera);
-    planetB.click(mouse, scene, camera);
-    planetC.click(mouse, scene, camera);
-    planetD.click(mouse, scene, camera);
-    planetE.click(mouse, scene, camera);
-    planetF.click(mouse, scene, camera);
+renderer.domElement.addEventListener("click", (event) => {
+  // Calculate mouse position in normalized device coordinates
+  mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+  mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
+  planetA.click(mouse, scene, camera);
+  planetB.click(mouse, scene, camera);
+  planetC.click(mouse, scene, camera);
+  planetD.click(mouse, scene, camera);
+  planetE.click(mouse, scene, camera);
+  planetF.click(mouse, scene, camera);
 });

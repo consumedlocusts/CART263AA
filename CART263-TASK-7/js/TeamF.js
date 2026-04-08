@@ -112,17 +112,17 @@ export class PlanetF {
         float dist = distance(mouseUV, vUv);
         float hoverZone = smoothstep(0.24, 0.0, dist);
 
-        float infectedBulge = hoverZone * hoverGrowth;
-        infectedBulge *= (0.45 + ruptureNoise * 1.2);
+        float infectedB = hoverZone * hoverGrowth;
+        infectedB *= (0.45 + ruptureNoise * 1.2);
 
         vDist = dist;
-        vGrowth = infectedBulge;
+        vGrowth = infectedB;
 
         float displacement =
             texElev * 0.45 +
             bodyNoise * 0.22 +
             ruptureNoise * 0.10 +
-            infectedBulge * 1.3;
+            infectedB * 1.3;
 
         newPosition += normal * displacement;
 
@@ -131,12 +131,12 @@ export class PlanetF {
         vec3 vNormal = normalize(normalMatrix * normal);
         vVisible = step(0.0, dot(-normalize(mvPosition.xyz), vNormal));
 
-        gl_PointSize = size + infectedBulge * 8.0;
+        gl_PointSize = size + infectedB * 8.0;
         gl_Position = projectionMatrix * mvPosition;
       }
     `;
     
-const fragmentShader =`
+const fragmentShader = `
       uniform sampler2D colorTexture;
       uniform sampler2D alphaTexture;
       uniform sampler2D otherTexture;
@@ -240,8 +240,8 @@ this.spineGroup = new THREE.Group();
 //load one vertebra model and clone it
     this.loadSpineModel("/models/vertebrae.glb");
 
-    this.group.position.x = this.orbitRadius;
-    this.scene.add(this.group);
+    // this.group.position.x = this.orbitRadius;
+    // this.scene.add(this.group);
    
   // debug ring line
     const linePoints = this.spineCurve.getPoints(240);
@@ -272,30 +272,38 @@ createSpineCurve() {
     return new THREE.CatmullRomCurve3(pts, true, "catmullrom", 0.5); 
   }
 loadSpineModel(path) {
-    this.spineLoader.load(
-      path,
-      (gltf) => {
-        this.spineSource = gltf.scene;
+  this.spineLoader.load(
+    path,
+    (gltf) => {
+      this.spineSource = gltf.scene;
 
-        this.spineSource.traverse((child) => {
-          if (child.isMesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
-          }
+      this.spineSource.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+
+      for (let i = 0; i < this.spineCount; i++) {
+        const clone = this.spineSource.clone(true);
+
+        // scale this to vertebra model
+        clone.scale.set(0.22, 0.22, 0.22);
+
+        this.spineGroup.add(clone);
+
+        this.spineObjects.push({
+          object: clone,
+          offset: i * this.spineSpacing,
         });
-
-  for (let i = 0; i < this.spineCount; i++) {
-          const clone = this.spineSource.clone(true);
-
-          //scale this to vertebra model sooon
-          clone.scale.set(0.22, 0.22, 0.22);
-
-          this.spineGroup.add(clone);
-
-          this.spineObjects.push({
-            object: clone,
-            offset: i * this.spineSpacing,
-          });
+      }
+    },
+    undefined,
+    (error) => {
+      console.error("no load:", error);
+    }
+  );
+}
   
       
     //this.uniforms = {
@@ -326,8 +334,7 @@ loadSpineModel(path) {
     //TODO: Use raycasting in the click() method below to detect clicks on the models, and make an animation happen when a model is clicked.
     //TODO: Use your imagination and creativity!
     //soon will add this but moon firrst this.loadModel('../models/xenoCritter.glb', 0.35, 20, 40, 0);
-    this.group.position.x = this.orbitRadius;
-    this.scene.add(this.group);
+    
   }
 
   update(delta) {
@@ -336,16 +343,20 @@ loadSpineModel(path) {
     this.group.position.x = Math.cos(this.angle) * this.orbitRadius;
     this.group.position.z = Math.sin(this.angle) * this.orbitRadius;
 
-    // Rotate planet
-    this.group.rotation.y += delta * 5;
+    /// slower spin
+    this.group.rotation.y += delta * 0.22;
+
+    for (let moonData of this.moonPivots) {
+      moonData.pivot.rotation.y += delta * moonData.speed;
+      moonData.moon.rotation.y += delta * 0.12;
+    }
     //rptate moon:
     //the moon is attached to the pivot and positioned away from its center so rotating the parent group swings the child around , physics
     //delta is time and frame rate for loop counter
-    for (let moonData of this.moonPivots) {
-      moonData.pivot.rotation.y += delta * moonData.speed;
-    }
+   
     //TODO: Do the moon orbits and the model animations here.
   }
+
   setPointer(mouse) {
     this.pointerPos.copy(mouse);
   }
@@ -366,7 +377,7 @@ loadSpineModel(path) {
     this.pointerPos.copy(mouse);
     this.handleRaycast(camera);
   }
-}
+
 
 //     click(mouse, scene, camera){
 
@@ -387,4 +398,5 @@ loadSpineModel(path) {
 //https://github.com/holgerl/procedural-planet/blob/gh-pages/js/spheremap.js
 //https://www.vertexshaderart.com/art/8oJh9QtFGgJksSFFk/
 //https://github.com/ashima/webgl-noise/blob/master/src/cellular3D.glsl
-//WHAT US HAPPPENING WITH FORMAT help
+//WHAT US HAPPPENING WITH FORMAT help')'
+

@@ -20,10 +20,10 @@ export class PlanetF {
     this.textureLoader = new THREE.TextureLoader();
 
     //load textures
-    this.colorMap = this.textureLoader.load("");
-    this.boneMap = this.textureLoader.load("");
-    this.alphaMap = this.textureLoader.load("");
-    this.otherMap = this.textureLoader.load("");
+    this.colorMap = this.textureLoader.load("image/aalieeenn.jpg");
+    this.elevMap = this.textureLoader.load("image/2136.jpg");
+    this.alphaMap = this.textureLoader.load("image/alien2.jpg");
+    this.otherMap = this.textureLoader.load("image/alien.jpg.webp");
 
     //Create planet groupx
 
@@ -59,6 +59,90 @@ export class PlanetF {
     this.planet.receiveShadow = true;
     //just messing with a points layer for ray castingwhen u hover over the planet it spikes (soruced from video)
     const pointsGeometry = new THREE.IcosahedronGeometry(1.8, 120);
+    const vertexShader = `
+            uniform float size;
+            uniform sampler2D elevTexture;
+            uniform vec2 mouseUV;
+
+            varying vec2 vUv;
+            varying float vVisible;
+            varying float vDist;
+
+            void main() {
+                vUv = uv;
+
+                vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+
+                float elv = texture2D(elevTexture, vUv).r;
+                vec3 vNormal = normalMatrix * normal;
+
+                vVisible = step(0.0, dot(-normalize(mvPosition.xyz), normalize(vNormal)));
+
+                mvPosition.z += 0.35 * elv;
+
+                float dist = distance(mouseUV, vUv);
+                float zDisp = 0.0;
+                float thresh = 0.04;
+
+                if (dist < thresh) {
+                    zDisp = (thresh - dist) * 10.0;
+                }
+
+                vDist = dist;
+                mvPosition.z += zDisp;
+
+                gl_PointSize = size;
+                gl_Position = projectionMatrix * mvPosition;
+            }
+        `;
+
+    const fragmentShader = `
+            uniform sampler2D colorTexture;
+            uniform sampler2D alphaTexture;
+            uniform sampler2D otherTexture;
+
+            varying vec2 vUv;
+            varying float vVisible;
+            varying float vDist;
+
+            void main() {
+                if (floor(vVisible + 0.1) == 0.0) discard;
+
+                float alpha = 1.0 - texture2D(alphaTexture, vUv).r;
+                vec3 color = texture2D(colorTexture, vUv).rgb;
+                vec3 other = texture2D(otherTexture, vUv).rgb;
+
+                float thresh = 0.04;
+                if (vDist < thresh) {
+                    color = mix(color, other, (thresh - vDist) * 50.0);
+                }
+
+                gl_FragColor = vec4(color, alpha);
+            }
+        `;
+
+    this.uniforms = {
+      size: { value: 4.0 },
+      colorTexture: { value: this.colorMap },
+      otherTexture: { value: this.otherMap },
+      elevTexture: { value: this.elevMap },
+      alphaTexture: { value: this.alphaMap },
+      mouseUV: { value: this.globeUV },
+    };
+
+    const pointsMaterial = new THREE.ShaderMaterial({
+      uniforms: this.uniforms,
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+      transparent: true,
+    });
+
+    this.points = new THREE.Points(pointsGeometry, pointsMaterial);
+    this.group.add(this.points);
+
+    // Initial orbit position
+    this.group.position.x = this.orbitRadius;
+
     //addd the planet to group again
     this.group.add(this.planet);
     this.moonPivots = [];
@@ -123,11 +207,43 @@ export class PlanetF {
     }
     //TODO: Do the moon orbits and the model animations here.
   }
+  setPointer(mouse) {
+    this.pointerPos.copy(mouse);
+  }
+
+  //called from main animate loop or from click/move handling
+  handleRaycast(camera) {
+    this.raycaster.setFromCamera(this.pointerPos, camera);
+
+    const intersects = this.raycaster.intersectObject(this.planet);
+
+    if (intersects.length > 0 && intersects[0].uv) {
+      this.theUV.copy(intersects[0].uv);
+      this.uniforms.mouseUV.value.copy(this.theUV);
+    }
+  }
 
   click(mouse, scene, camera) {
-    //TODO: Do the raycasting here.
+    this.pointerPos.copy(mouse);
+    this.handleRaycast(camera);
   }
 }
+
+//     click(mouse, scene, camera){
+
+//     this.pointer.copy(mouse);
+
+//     this.raycaster.setFromCamera(this.pointer, camera);
+
+//     const hits = this.raycaster.intersectObject(this.planet);
+
+//     if (hits.length > 0 && hits[0].uv) {
+//         this.hitUV.copy(hits[0].uv);
+//         this.uniforms.hitUV.value.copy(this.hitUV);
+//     }
+// }
+//TODO: Do the raycasting here.
+
 //SAMA SOURCE: https://blogg.bekk.no/procedural-planet-in-webgl-and-three-js-fc77f14f5505
 //https://github.com/holgerl/procedural-planet/blob/gh-pages/js/spheremap.js
 //https://www.vertexshaderart.com/art/8oJh9QtFGgJksSFFk/

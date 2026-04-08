@@ -2,16 +2,16 @@ import * as THREE from "three";
 //import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 //SAMA's THEME: Dark biomechanical horrors
-
+//also i moved mine closer
 // Planet class for Team F
 export class PlanetF {
   constructor(scene, orbitRadius, orbitSpeed) {
     this.scene = scene;
     this.orbitRadius = orbitRadius;
     this.orbitSpeed = orbitSpeed;
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-    this.scene.add(ambientLight);
-
+    // const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+    // this.scene.add(ambientLight);
+    //MAY REMOVE CUZ IT CREEPIER WITH NO LIGHT VVV
     const dirLight = new THREE.DirectionalLight(0xffffff, 2);
     dirLight.position.set(5, 5, 5);
     this.scene.add(dirLight);

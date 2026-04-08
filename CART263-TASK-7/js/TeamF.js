@@ -15,7 +15,9 @@ export class PlanetF {
     this.raycaster = new THREE.Raycaster();
     this.pointerPos = new THREE.Vector2();
     this.theUV = new THREE.Vector2(0.0, 0.0);
-
+    //hover over planet to simulate fungaly growth 
+  this.isHovered = false;
+    this.hoverGrowth = 0.0;
     //texture loader
     this.textureLoader = new THREE.TextureLoader();
     //load textures
@@ -47,73 +49,133 @@ export class PlanetF {
     this.planet.receiveShadow = true;
     //just messing with a points layer for ray castingwhen u hover over the planet it spikes (soruced from video)
     const pointsGeometry = new THREE.IcosahedronGeometry(1.8, 120);
+    //putting source for all of these random shaders i find herer
+    //HERE:
     const vertexShader = `
-            uniform float size;
-            uniform sampler2D elevTexture;
-            uniform vec2 mouseUV;
+      uniform float size;
+      uniform float time;
+      uniform float hoverGrowth;
+      uniform sampler2D elevTexture;
+      uniform vec2 mouseUV;
 
-            varying vec2 vUv;
-            varying float vVisible;
-            varying float vDist;
+      varying vec2 vUv;
+      varying float vVisible;
+      varying float vDist;
+      varying float vGrowth;
 
-            void main() {
-                vUv = uv;
-vec3 newPosition = position;
+      float hash(vec3 p) {
+        return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453123);
+      }
 
-    
-        float elv = texture2D(elevTexture, vUv).r;
+      float noise(vec3 p) {
+        vec3 i = floor(p);
+        vec3 f = fract(p);
 
-      
-        float dist = distance(mouseUV, vUv);
-        float thresh = 0.08;
+        float n000 = hash(i + vec3(0.0, 0.0, 0.0));
+        float n100 = hash(i + vec3(1.0, 0.0, 0.0));
+        float n010 = hash(i + vec3(0.0, 1.0, 0.0));
+        float n110 = hash(i + vec3(1.0, 1.0, 0.0));
+        float n001 = hash(i + vec3(0.0, 0.0, 1.0));
+        float n101 = hash(i + vec3(1.0, 0.0, 1.0));
+        float n011 = hash(i + vec3(0.0, 1.0, 1.0));
+        float n111 = hash(i + vec3(1.0, 1.0, 1.0));
 
-        float pulse = 0.0;
-        if (dist < thresh) {
-          pulse = (thresh - dist) * 4.0;
+        vec3 u = f * f * (3.0 - 2.0 * f);
+
+        return mix(
+          mix(mix(n000, n100, u.x), mix(n010, n110, u.x), u.y),
+          mix(mix(n001, n101, u.x), mix(n011, n111, u.x), u.y),
+          u.z
+        );
+      }
+
+      float fbm(vec3 p) {
+        float v = 0.0;
+        float a = 0.5;
+        for (int i = 0; i < 4; i++) {
+          v += a * noise(p);
+          p *= 2.0;
+          a *= 0.5;
         }
+        return v;
+      }
+
+      void main() {
+        vUv = uv;
+
+        vec3 newPosition = position;
+
+        float texElev = texture2D(elevTexture, vUv).r;
+        float bodyNoise = fbm(position * 1.6 + time * 0.08);
+        float ruptureNoise = fbm(position * 4.5 - time * 0.15);
+
+        float dist = distance(mouseUV, vUv);
+        float hoverZone = smoothstep(0.24, 0.0, dist);
+
+        float infectedBulge = hoverZone * hoverGrowth;
+        infectedBulge *= (0.45 + ruptureNoise * 1.2);
 
         vDist = dist;
-               newPosition += normal * (elv * 0.6 + pulse);
+        vGrowth = infectedBulge;
+
+        float displacement =
+            texElev * 0.45 +
+            bodyNoise * 0.22 +
+            ruptureNoise * 0.10 +
+            infectedBulge * 1.3;
+
+        newPosition += normal * displacement;
 
         vec4 mvPosition = modelViewMatrix * vec4(newPosition, 1.0);
 
         vec3 vNormal = normalize(normalMatrix * normal);
         vVisible = step(0.0, dot(-normalize(mvPosition.xyz), vNormal));
 
-        gl_PointSize = size;
+        gl_PointSize = size + infectedBulge * 8.0;
         gl_Position = projectionMatrix * mvPosition;
-            }
-        `;
+      }
+    `;
+    
+const fragmentShader =`
+      uniform sampler2D colorTexture;
+      uniform sampler2D alphaTexture;
+      uniform sampler2D otherTexture;
+      uniform float hoverGrowth;
+      uniform float time;
 
-    const fragmentShader = `
-            uniform sampler2D colorTexture;
-            uniform sampler2D alphaTexture;
-            uniform sampler2D otherTexture;
+      varying vec2 vUv;
+      varying float vVisible;
+      varying float vDist;
+      varying float vGrowth;
 
-            varying vec2 vUv;
-            varying float vVisible;
-            varying float vDist;
+      void main() {
+        if (floor(vVisible + 0.1) == 0.0) discard;
 
-            void main() {
-                if (floor(vVisible + 0.1) == 0.0) discard;
+        float alpha = 1.0 - texture2D(alphaTexture, vUv).r;
 
-                float alpha = 1.0 - texture2D(alphaTexture, vUv).r;
-                vec3 color = texture2D(colorTexture, vUv).rgb;
-                vec3 other = texture2D(otherTexture, vUv).rgb;
+        vec3 base = texture2D(colorTexture, vUv).rgb;
+        vec3 infected = texture2D(otherTexture, vUv).rgb;
 
-                float thresh = 0.08;
-                if (vDist < thresh) {
-                    color = mix(color, other, (thresh - vDist) * 50.0);
-                }
+        float zone = smoothstep(0.24, 0.0, vDist);
+        float blendAmt = clamp(zone * hoverGrowth * 1.5 + vGrowth * 0.5, 0.0, 1.0);
 
-                gl_FragColor = vec4(color, alpha);
-            }
-        `;
+        vec3 color = mix(base, infected, blendAmt);
+        color += vec3(0.7, 0.05, 0.18) * blendAmt * 0.9;
+        color += sin(time * 2.5 + vUv.x * 18.0 + vUv.y * 9.0) * 0.015;
+
+        float finalAlpha = clamp(alpha + blendAmt * 0.45, 0.0, 1.0);
+        gl_FragColor = vec4(color, finalAlpha);
+      }
+    `;
+
+    
     //for stronger blending if needed for above float mixVal = (thresh - vDist) * 8.0;
     //color = mix(color, other, mixVal);
     // }
     this.uniforms = {
       size: { value: 3.5 },
+       time: { value: 0.0 },
+       hoverGrowth: { value: 0.0 },
       colorTexture: { value: this.colorMap },
       otherTexture: { value: this.otherMap },
       elevTexture: { value: this.elevMap },
@@ -127,6 +189,7 @@ vec3 newPosition = position;
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       transparent: true,
+      depthWrite: false, //idk 
     });
 
     this.points = new THREE.Points(pointsGeometry, pointsMaterial);
@@ -138,18 +201,18 @@ vec3 newPosition = position;
     //=======()======()=======moon=======()=======()================
     this.moonPivots = [];
     //initial orbit position
-    this.group.position.x = this.orbitRadius;
+    //this.group.position.x = this.orbitRadius;
 
     //the three moons  looop
     for (let i = 0; i < 3; i++) {
       const moonPivot = new THREE.Group();
 
-      const moonGeometry = new THREE.SphereGeometry(0.3, 16, 16);
-      const moonMaterial = new THREE.MeshBasicMaterial({
-        color: 0xaaaaaa,
-      });
+     const moon = new THREE.Mesh(
+        new THREE.SphereGeometry(0.3, 16, 16),
+        new THREE.MeshBasicMaterial({ color: 0x888888 })
+      );
 
-      const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+     
       moon.castShadow = true;
       moon.receiveShadow = true;
       //place moon away from center so pivot rotation makes it orbit (source:)
@@ -163,6 +226,78 @@ vec3 newPosition = position;
         speed: 0.2 + i * 0.2,
       });
     }
+    //=========spines/////////
+this.spineGroup = new THREE.Group();
+    this.group.add(this.spineGroup);
+
+    this.spineCurve = this.createSpineCurve();
+    this.spineLoader = new GLTFLoader();
+    this.spineSource = null;
+     this.spineObjects = [];
+    this.spineCount = 22;     //number of vertebrae clones
+    this.spineSpacing = 0.028; //distance between vertebrae along curve
+    this.spineTravel = 0.0; //rate of 
+//load one vertebra model and clone it
+    this.loadSpineModel("/models/vertebrae.glb");
+
+    this.group.position.x = this.orbitRadius;
+    this.scene.add(this.group);
+   
+  // debug ring line
+    const linePoints = this.spineCurve.getPoints(240);
+    const lineGeo = new THREE.BufferGeometry().setFromPoints(linePoints);//3.js: Used to store the vertex positions (points) of the line
+    const lineMat = new THREE.LineBasicMaterial({ //3.js: Defines the appearance (color, opacity) of the line(i wanna see it first)
+      color: 0x553355,
+      transparent: true,
+      opacity: 0.35,
+    });
+    this.spinePathLine = new THREE.LineLoop(lineGeo, lineMat);
+    //three.js: draws a continuous line that automatically connects the last vertex back to the first, forming a closed loop
+    this.spineGroup.add(this.spinePathLine);
+  }
+//USING the three.js developer tool in google chrome it kinda tell u the dimensions so i roughly did tht based from the radius 
+createSpineCurve() {
+    const pts = [
+      new THREE.Vector3( 3.6,  0.45,  0.0),
+      new THREE.Vector3( 2.4,  1.2,   2.0),
+      new THREE.Vector3( 0.0,  0.65,  3.5),
+      new THREE.Vector3(-2.4, -0.9,   2.1),
+      new THREE.Vector3(-3.7, -0.35,  0.0),
+      new THREE.Vector3(-2.0,  1.0,  -2.2),
+      new THREE.Vector3( 0.0, -1.15, -3.7),
+      new THREE.Vector3( 2.5,  0.7,  -1.8),
+    ];
+    //resembling getPoints(divisions): Returns an array of Vector3 points sampled along the curve, which can be used to create a BufferGeometry for a Line ^^^
+//"is a class in Three.js used to create a smooth 3D spline curve that passes through a set of defined control points"
+    return new THREE.CatmullRomCurve3(pts, true, "catmullrom", 0.5); 
+  }
+loadSpineModel(path) {
+    this.spineLoader.load(
+      path,
+      (gltf) => {
+        this.spineSource = gltf.scene;
+
+        this.spineSource.traverse((child) => {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+          }
+        });
+
+  for (let i = 0; i < this.spineCount; i++) {
+          const clone = this.spineSource.clone(true);
+
+          //scale this to vertebra model sooon
+          clone.scale.set(0.22, 0.22, 0.22);
+
+          this.spineGroup.add(clone);
+
+          this.spineObjects.push({
+            object: clone,
+            offset: i * this.spineSpacing,
+          });
+  
+      
     //this.uniforms = {
     //     time: { value: 0 },
     //     hitUV: { value: this.hitUV }
@@ -252,23 +387,4 @@ vec3 newPosition = position;
 //https://github.com/holgerl/procedural-planet/blob/gh-pages/js/spheremap.js
 //https://www.vertexshaderart.com/art/8oJh9QtFGgJksSFFk/
 //https://github.com/ashima/webgl-noise/blob/master/src/cellular3D.glsl
-
-//for later
-// Create planet
-//PLANTET 1
-// const planetGeometry = new THREE.SphereGeometry(1.8, 48, 48); //ze geometry is the shape data
-
-// const planetMaterial = new THREE.MeshBasicMaterial({
-//   color: 0x660066,
-//   wireframe: true,
-//   transparent: true,
-//   opacity: 0.15,
-//   // // color: 0x1b1822,
-//   // color: 0x800080, // purple, very obvious
-//   // roughness: 0.95,
-//   // metalness: 0.3,
-//   // emissive: 0x120814,
-//   // emissiveIntensity: 0.5,
-//   // // color: 0x800080, // purple, very obvious
-//   // wireframe: false,
-// });
+//WHAT US HAPPPENING WITH FORMAT help

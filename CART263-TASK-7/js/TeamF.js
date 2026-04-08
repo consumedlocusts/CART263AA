@@ -272,7 +272,7 @@ export class PlanetF {
     return new THREE.CatmullRomCurve3(pts, true, "catmullrom", 0.5);
   }
 
-  loadSpineModel(path) {
+  buildSpine() {
     this.spineLoader.load(
       path,
       (gltf) => {
@@ -348,8 +348,12 @@ export class PlanetF {
     //delta is time and frame rate for loop counter
 
     //TODO: Do the moon orbits and the model animations here.
-    //CLOCK GET DATA delta refers again
+
+    //CLOCK GET DATA delta refers again , the shaders use delta
     this.uniforms.time.value += delta;
+    //isHovered is reset to false at the end of this method each frame.
+    //handleRaycast() (called from outside) re-sets it to true while
+    //the mouse stays over the planet
 
     if (this.isHovered) {
       this.hoverGrowth = Math.min(this.hoverGrowth + delta * 1.2, 1.6);
@@ -357,16 +361,39 @@ export class PlanetF {
       this.hoverGrowth = Math.max(this.hoverGrowth - delta * 0.7, 0.0);
     }
     this.uniforms.hoverGrowth.value = this.hoverGrowth;
-
+    //reset each frame; handleRaycast sets true again if hovering
+    //MUST reset to true next frame if still hovering or else ts breaks
+    this.isHovered = false;
     //move the whole spine chain along the curve
     this.spineTravel += delta * 0.028;
     this.updateSpineMotion();
-
-    //reset each frame; handleRaycast sets true again if hovering
-    this.isHovered = false;
   }
 
   //have mercy
+  updateSpineMotion() {
+    // Do nothing until the GLB has finished loading
+    if (this.spineObjects.length === 0) return;
+    const up = new THREE.Vector3(0, 1, 0); //neeeded for "lookAt" in the world
+    for (const { object, offset } of this.spineObjects) {
+      // t wraps 0 1 continuously then each clone has a different offset
+      //o they are always spread around the full loop
+      const t = (this.spineTravel + offset) % 1.0;
+
+      const pos = this.spineCurve.getPointAt(t);
+      const tangent = this.spineCurve.getTangentAt(t).normalize();
+
+      object.position.copy(pos);
+
+      //this is a rotation matrix from the tangent so the bone faces forward yes
+      const matrix = new THREE.Matrix4().lookAt(
+        new THREE.Vector3(),
+        tangent,
+        up,
+      );
+      object.quaternion.setFromRotationMatrix(matrix);
+    }
+  }
+  //from main mousemove
   setPointer(mouse) {
     this.pointerPos.copy(mouse);
   }

@@ -272,7 +272,7 @@ export class PlanetF {
     return new THREE.CatmullRomCurve3(pts, true, "catmullrom", 0.5);
   }
 
-  buildSpine() {
+  loadSpineModel(path) {
     this.spineLoader.load(
       path,
       (gltf) => {
@@ -393,7 +393,7 @@ export class PlanetF {
       object.quaternion.setFromRotationMatrix(matrix);
     }
   }
-  //from main mousemove
+
   setPointer(mouse) {
     this.pointerPos.copy(mouse);
   }

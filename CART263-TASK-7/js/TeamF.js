@@ -1,4 +1,6 @@
 import * as THREE from "three";
+// import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+// import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 //SAMA's THEME: Dark biomechanical horrors
 // Planet class for Team F
 export class PlanetF {
@@ -11,17 +13,23 @@ export class PlanetF {
     //Create planet group
     //its what will orbit the sun?
     this.group = new THREE.Group();
+    //blender loader .glb models
+    this.loader = new GLTFLoader();
+    //moon rotator's pivot
+    this.moonPivots = [];
 
     // Create planet
     //PLANTET 1
     const planetGeometry = new THREE.SphereGeometry(1.8, 48, 48); //ze geometry is the shape data
     //planet material (make evil later)
-    const planetMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1b1822,
-      roughness: 0.95,
-      metalness: 0.3,
-      emissive: 0x120814,
-      emissiveIntensity: 0.25,
+    const planetMaterial = new THREE.MeshBasicMaterial({
+      //   color: 0x1b1822,
+      //   roughness: 0.95,
+      //   metalness: 0.3,
+      //   emissive: 0x120814,
+      //   emissiveIntensity: 0.25,
+      color: 0x800080, // purple, very obvious
+      wireframe: false,
     });
     //plant mesh
     this.planet = new THREE.Mesh(planetGeometry, planetMaterial);
@@ -48,7 +56,7 @@ export class PlanetF {
     //STEP 4:
     //TODO: Use raycasting in the click() method below to detect clicks on the models, and make an animation happen when a model is clicked.
     //TODO: Use your imagination and creativity!
-
+    //soon will add this but moon firrst this.loadModel('../models/xenoCritter.glb', 0.35, 20, 40, 0);
     this.scene.add(this.group);
   }
 

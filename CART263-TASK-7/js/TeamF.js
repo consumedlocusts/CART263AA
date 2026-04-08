@@ -214,7 +214,7 @@ export class PlanetF {
 
       const moon = new THREE.Mesh(
         new THREE.SphereGeometry(0.3, 16, 16),
-        new THREE.MeshBasicMaterial({ color: 0x888888 }),
+        new THREE.MeshBasicMaterial({ color: 0xff0000 }),
       );
 
       moon.castShadow = true;
@@ -440,7 +440,7 @@ export class PlanetF {
 // }
 //TODO: Do the raycasting here.
 
-//SAMA SOURCE: https://blogg.bekk.no/procedural-planet-in-webgl-and-three-js-fc77f14f5505
+//SAMA SOURCES: https://blogg.bekk.no/procedural-planet-in-webgl-and-three-js-fc77f14f5505
 //https://github.com/holgerl/procedural-planet/blob/gh-pages/js/spheremap.js
 //https://www.vertexshaderart.com/art/8oJh9QtFGgJksSFFk/
 //https://github.com/ashima/webgl-noise/blob/master/src/cellular3D.glsl

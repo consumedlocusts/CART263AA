@@ -1,6 +1,6 @@
 import * as THREE from "three";
-// import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-// import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+//import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 //SAMA's THEME: Dark biomechanical horrors
 // Planet class for Team F
 export class PlanetF {
@@ -15,8 +15,8 @@ export class PlanetF {
     this.raycaster = new THREE.Raycaster();
     this.pointerPos = new THREE.Vector2();
     this.theUV = new THREE.Vector2(0.0, 0.0);
-    //hover over planet to simulate fungaly growth 
-  this.isHovered = false;
+    //hover over planet to simulate fungaly growth
+    this.isHovered = false;
     this.hoverGrowth = 0.0;
     //texture loader
     this.textureLoader = new THREE.TextureLoader();
@@ -135,8 +135,8 @@ export class PlanetF {
         gl_Position = projectionMatrix * mvPosition;
       }
     `;
-    
-const fragmentShader = `
+
+    const fragmentShader = `
       uniform sampler2D colorTexture;
       uniform sampler2D alphaTexture;
       uniform sampler2D otherTexture;
@@ -168,14 +168,13 @@ const fragmentShader = `
       }
     `;
 
-    
     //for stronger blending if needed for above float mixVal = (thresh - vDist) * 8.0;
     //color = mix(color, other, mixVal);
     // }
     this.uniforms = {
       size: { value: 3.5 },
-       time: { value: 0.0 },
-       hoverGrowth: { value: 0.0 },
+      time: { value: 0.0 },
+      hoverGrowth: { value: 0.0 },
       colorTexture: { value: this.colorMap },
       otherTexture: { value: this.otherMap },
       elevTexture: { value: this.elevMap },
@@ -189,14 +188,13 @@ const fragmentShader = `
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       transparent: true,
-      depthWrite: false, //idk 
+      depthWrite: false, //idk
     });
 
     this.points = new THREE.Points(pointsGeometry, pointsMaterial);
     this.group.add(this.points);
     //add them
     this.group.add(this.planet);
-    this.group.add(this.points);
 
     //=======()======()=======moon=======()=======()================
     this.moonPivots = [];
@@ -207,12 +205,11 @@ const fragmentShader = `
     for (let i = 0; i < 3; i++) {
       const moonPivot = new THREE.Group();
 
-     const moon = new THREE.Mesh(
+      const moon = new THREE.Mesh(
         new THREE.SphereGeometry(0.3, 16, 16),
-        new THREE.MeshBasicMaterial({ color: 0x888888 })
+        new THREE.MeshBasicMaterial({ color: 0x888888 }),
       );
 
-     
       moon.castShadow = true;
       moon.receiveShadow = true;
       //place moon away from center so pivot rotation makes it orbit (source:)
@@ -223,30 +220,32 @@ const fragmentShader = `
       //moon to planet
       this.moonPivots.push({
         pivot: moonPivot,
+        moon: moon,
         speed: 0.2 + i * 0.2,
       });
     }
     //=========spines/////////
-this.spineGroup = new THREE.Group();
+    this.spineGroup = new THREE.Group();
     this.group.add(this.spineGroup);
 
     this.spineCurve = this.createSpineCurve();
     this.spineLoader = new GLTFLoader();
     this.spineSource = null;
-     this.spineObjects = [];
-    this.spineCount = 22;     //number of vertebrae clones
+    this.spineObjects = [];
+    this.spineCount = 22; //number of vertebrae clones
     this.spineSpacing = 0.028; //distance between vertebrae along curve
-    this.spineTravel = 0.0; //rate of 
-//load one vertebra model and clone it
+    this.spineTravel = 0.0; //rate of
+    //load one vertebra model and clone it
     this.loadSpineModel("/models/vertebrae.glb");
 
     // this.group.position.x = this.orbitRadius;
     // this.scene.add(this.group);
-   
-  // debug ring line
+
+    // debug ring line
     const linePoints = this.spineCurve.getPoints(240);
-    const lineGeo = new THREE.BufferGeometry().setFromPoints(linePoints);//3.js: Used to store the vertex positions (points) of the line
-    const lineMat = new THREE.LineBasicMaterial({ //3.js: Defines the appearance (color, opacity) of the line(i wanna see it first)
+    const lineGeo = new THREE.BufferGeometry().setFromPoints(linePoints); //3.js: Used to store the vertex positions (points) of the line
+    const lineMat = new THREE.LineBasicMaterial({
+      //3.js: Defines the appearance (color, opacity) of the line(i wanna see it first)
       color: 0x553355,
       transparent: true,
       opacity: 0.35,
@@ -255,87 +254,81 @@ this.spineGroup = new THREE.Group();
     //three.js: draws a continuous line that automatically connects the last vertex back to the first, forming a closed loop
     this.spineGroup.add(this.spinePathLine);
   }
-//USING the three.js developer tool in google chrome it kinda tell u the dimensions so i roughly did tht based from the radius 
-createSpineCurve() {
+  //USING the three.js developer tool in google chrome it kinda tell u the dimensions so i roughly did tht based from the radius
+  createSpineCurve() {
     const pts = [
-      new THREE.Vector3( 3.6,  0.45,  0.0),
-      new THREE.Vector3( 2.4,  1.2,   2.0),
-      new THREE.Vector3( 0.0,  0.65,  3.5),
-      new THREE.Vector3(-2.4, -0.9,   2.1),
-      new THREE.Vector3(-3.7, -0.35,  0.0),
-      new THREE.Vector3(-2.0,  1.0,  -2.2),
-      new THREE.Vector3( 0.0, -1.15, -3.7),
-      new THREE.Vector3( 2.5,  0.7,  -1.8),
+      new THREE.Vector3(3.6, 0.45, 0.0),
+      new THREE.Vector3(2.4, 1.2, 2.0),
+      new THREE.Vector3(0.0, 0.65, 3.5),
+      new THREE.Vector3(-2.4, -0.9, 2.1),
+      new THREE.Vector3(-3.7, -0.35, 0.0),
+      new THREE.Vector3(-2.0, 1.0, -2.2),
+      new THREE.Vector3(0.0, -1.15, -3.7),
+      new THREE.Vector3(2.5, 0.7, -1.8),
     ];
+
     //resembling getPoints(divisions): Returns an array of Vector3 points sampled along the curve, which can be used to create a BufferGeometry for a Line ^^^
-//"is a class in Three.js used to create a smooth 3D spline curve that passes through a set of defined control points"
-    return new THREE.CatmullRomCurve3(pts, true, "catmullrom", 0.5); 
+    //"is a class in Three.js used to create a smooth 3D spline curve that passes through a set of defined control points"
+    return new THREE.CatmullRomCurve3(pts, true, "catmullrom", 0.5);
   }
-loadSpineModel(path) {
-  this.spineLoader.load(
-    path,
-    (gltf) => {
-      this.spineSource = gltf.scene;
 
-      this.spineSource.traverse((child) => {
-        if (child.isMesh) {
-          child.castShadow = true;
-          child.receiveShadow = true;
-        }
-      });
+  loadSpineModel(path) {
+    this.spineLoader.load(
+      path,
+      (gltf) => {
+        this.spineSource = gltf.scene;
 
-      for (let i = 0; i < this.spineCount; i++) {
-        const clone = this.spineSource.clone(true);
-
-        // scale this to vertebra model
-        clone.scale.set(0.22, 0.22, 0.22);
-
-        this.spineGroup.add(clone);
-
-        this.spineObjects.push({
-          object: clone,
-          offset: i * this.spineSpacing,
+        this.spineSource.traverse((child) => {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+          }
         });
-      }
-    },
-    undefined,
-    (error) => {
-      console.error("no load:", error);
-    }
-  );
-}
-  
-      
-    //this.uniforms = {
-    //     time: { value: 0 },
-    //     hitUV: { value: this.hitUV }
-    // };
 
-    // this.material = new THREE.ShaderMaterial({
-    //     vertexShader: this.vertexShader,
-    //     fragmentShader: this.fragmentShader,
-    //     uniforms: this.uniforms
-    // });
-    //STEP 1:
-    //TODO: Create a planet using THREE.SphereGeometry (Radius must be between 1.5 and 2).
-    //TODO: Give it a custom material using THREE.MeshStandardMaterial.
-    //TODO: Use castShadow and receiveShadow on the mesh and all future ones so they can cast and receive shadows.
-    //TODO: Add the planet mesh to the planet group.
+        for (let i = 0; i < this.spineCount; i++) {
+          const clone = this.spineSource.clone(true);
 
-    //STEP 2:
-    //TODO: Add from 1 to 3 orbiting moons to the planet group.
-    //TODO: The moons should rotate around the planet just like the planet group rotates around the Sun.
+          // scale this to vertebra model
+          clone.scale.set(0.22, 0.22, 0.22);
 
-    //STEP 3:
-    //TODO: Load Blender models to populate the planet with multiple props and critters by adding them to the planet group.
-    //TODO: Make sure to rotate the models so they are oriented correctly relative to the surface of the planet.
+          this.spineGroup.add(clone);
 
-    //STEP 4:
-    //TODO: Use raycasting in the click() method below to detect clicks on the models, and make an animation happen when a model is clicked.
-    //TODO: Use your imagination and creativity!
-    //soon will add this but moon firrst this.loadModel('../models/xenoCritter.glb', 0.35, 20, 40, 0);
-    
+          this.spineObjects.push({
+            object: clone,
+            offset: i * this.spineSpacing,
+          });
+        }
+      },
+      undefined,
+      (error) => {
+        console.error("no load:", error);
+      },
+    );
   }
+
+  // this.material = new THREE.ShaderMaterial({
+  //     vertexShader: this.vertexShader,
+  //     fragmentShader: this.fragmentShader,
+  //     uniforms: this.uniforms
+  // });
+  //STEP 1:
+  //TODO: Create a planet using THREE.SphereGeometry (Radius must be between 1.5 and 2).
+  //TODO: Give it a custom material using THREE.MeshStandardMaterial.
+  //TODO: Use castShadow and receiveShadow on the mesh and all future ones so they can cast and receive shadows.
+  //TODO: Add the planet mesh to the planet group.
+
+  //STEP 2:
+  //TODO: Add from 1 to 3 orbiting moons to the planet group.
+  //TODO: The moons should rotate around the planet just like the planet group rotates around the Sun.
+
+  //STEP 3:
+  //TODO: Load Blender models to populate the planet with multiple props and critters by adding them to the planet group.
+  //TODO: Make sure to rotate the models so they are oriented correctly relative to the surface of the planet.
+
+  //STEP 4:
+  //TODO: Use raycasting in the click() method below to detect clicks on the models, and make an animation happen when a model is clicked.
+  //TODO: Use your imagination and creativity!
+  //soon will add this but moon firrst this.loadModel('../models/xenoCritter.glb', 0.35, 20, 40, 0);
 
   update(delta) {
     // Orbit around sun
@@ -353,10 +346,27 @@ loadSpineModel(path) {
     //rptate moon:
     //the moon is attached to the pivot and positioned away from its center so rotating the parent group swings the child around , physics
     //delta is time and frame rate for loop counter
-   
+
     //TODO: Do the moon orbits and the model animations here.
+    //CLOCK GET DATA delta refers again
+    this.uniforms.time.value += delta;
+
+    if (this.isHovered) {
+      this.hoverGrowth = Math.min(this.hoverGrowth + delta * 1.2, 1.6);
+    } else {
+      this.hoverGrowth = Math.max(this.hoverGrowth - delta * 0.7, 0.0);
+    }
+    this.uniforms.hoverGrowth.value = this.hoverGrowth;
+
+    //move the whole spine chain along the curve
+    this.spineTravel += delta * 0.028;
+    this.updateSpineMotion();
+
+    //reset each frame; handleRaycast sets true again if hovering
+    this.isHovered = false;
   }
 
+  //have mercy
   setPointer(mouse) {
     this.pointerPos.copy(mouse);
   }
@@ -368,6 +378,7 @@ loadSpineModel(path) {
     const intersects = this.raycaster.intersectObject(this.planet);
 
     if (intersects.length > 0 && intersects[0].uv) {
+      this.isHovered = true;
       this.theUV.copy(intersects[0].uv);
       this.uniforms.mouseUV.value.copy(this.theUV);
     }
@@ -376,8 +387,9 @@ loadSpineModel(path) {
   click(mouse, scene, camera) {
     this.pointerPos.copy(mouse);
     this.handleRaycast(camera);
+    this.hoverGrowth = Math.min(this.hoverGrowth + 0.35, 1.6);
   }
-
+}
 
 //     click(mouse, scene, camera){
 
@@ -398,5 +410,8 @@ loadSpineModel(path) {
 //https://github.com/holgerl/procedural-planet/blob/gh-pages/js/spheremap.js
 //https://www.vertexshaderart.com/art/8oJh9QtFGgJksSFFk/
 //https://github.com/ashima/webgl-noise/blob/master/src/cellular3D.glsl
-//WHAT US HAPPPENING WITH FORMAT help')'
-
+//https://www.youtube.com/watch?v=KEMZR3unWTE
+//https://github.com/mrdoob/three.js/tree/master/editor
+//https://www.youtube.com/watch?v=XaDQI1HmoOQ
+//https://github.com/bobbyroe/vertex-earth/blob/interactive/index.js
+//https://stackoverflow.com/questions/39975687/uniform-sampler2d-in-vertex-shader

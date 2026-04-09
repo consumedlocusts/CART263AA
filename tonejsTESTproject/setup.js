@@ -31,6 +31,13 @@ controls.autoRotateSpeed = 0.5;
 // --- Lighting ---
 const ambientLight = new THREE.AmbientLight(0x080812); // Dim ambient for space
 scene.add(ambientLight);
+const planetF = new PlanetF(scene);
+// Handle window resize
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
 // Click handler
 const mouse = new THREE.Vector2();
 renderer.domElement.addEventListener("click", (event) => {

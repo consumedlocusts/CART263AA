@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { PlanetF } from "./toner.js";
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x050510); // Deep space
+scene.background = new THREE.Color(0x000000); // Deep space
 
 const camera = new THREE.PerspectiveCamera(
   45,

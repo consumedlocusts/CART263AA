@@ -25,28 +25,28 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.maxDistance = 150;
 controls.minDistance = 20;
-controls.autoRotate = true;
+controls.autoRotate = false;
 controls.autoRotateSpeed = 0.5;
 
 // --- Lighting ---
 const ambientLight = new THREE.AmbientLight(0x080812); // Dim ambient for space
 scene.add(ambientLight);
-const planetF = new PlanetF(scene);
+const planetF = new PlanetF(scene, 0, 0);
 let elapsedTime = 0;
 function animate(timer) {
   requestAnimationFrame(animate);
 
-  const delta = 0.001 * (timer - elapsedTime);
-  console.log(delta);
+  const delta = elapsedTime === 0 ? 0 : (timer - elapsedTime) / 1000;
   elapsedTime = timer;
-
+  console.log(delta);
+  console.log("delta:", delta);
   // Update sun
   planetF.update(timer);
 
   controls.update();
   renderer.render(scene, camera);
 }
-animate(0);
+requestAnimationFrame(animate);
 // Handle window resize
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;

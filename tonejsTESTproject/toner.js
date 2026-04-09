@@ -339,12 +339,12 @@ export class PlanetF {
 
   update(delta) {
     // Orbit around sun
-    this.angle += this.orbitSpeed * delta * 30;
-    this.group.position.x = Math.cos(this.angle) * this.orbitRadius;
-    this.group.position.z = Math.sin(this.angle) * this.orbitRadius;
+    // this.angle += this.orbitSpeed * delta * 30;
+    // this.group.position.x = Math.cos(this.angle) * this.orbitRadius;
+    // this.group.position.z = Math.sin(this.angle) * this.orbitRadius;
 
     /// slower spin
-    this.group.rotation.y += delta * 0.22;
+    this.group.rotation.y += delta * 0.2;
 
     for (let moonData of this.moonPivots) {
       moonData.pivot.rotation.y += delta * moonData.speed;

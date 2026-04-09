@@ -41,7 +41,7 @@ function animate(timer) {
   console.log(delta);
   console.log("delta:", delta);
   // Update sun
-  planetF.update(timer);
+  planetF.update(delta);
 
   controls.update();
   renderer.render(scene, camera);

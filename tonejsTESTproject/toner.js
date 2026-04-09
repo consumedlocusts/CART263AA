@@ -424,6 +424,13 @@ export class PlanetF {
     this.hoverGrowth = Math.min(this.hoverGrowth + 0.35, 1.6);
   }
 }
+// document.querySelector("#play").addEventListener("click", playNote);
+// function playNote() {
+//   // create a synth
+//   const synth = new Tone.Synth().toDestination();
+//   // play a note from that synth
+//   synth.triggerAttackRelease("C4", "8n");
+// }
 
 //     click(mouse, scene, camera){
 

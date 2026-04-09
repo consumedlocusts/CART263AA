@@ -32,6 +32,21 @@ controls.autoRotateSpeed = 0.5;
 const ambientLight = new THREE.AmbientLight(0x080812); // Dim ambient for space
 scene.add(ambientLight);
 const planetF = new PlanetF(scene);
+let elapsedTime = 0;
+function animate(timer) {
+  requestAnimationFrame(animate);
+
+  const delta = 0.001 * (timer - elapsedTime);
+  console.log(delta);
+  elapsedTime = timer;
+
+  // Update sun
+  planetF.update(timer);
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate(0);
 // Handle window resize
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;

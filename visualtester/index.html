@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Simple HTML</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- LOAD Tone.js from unpkg 
+     also for this new panning scene thing  "the scene itself is not made from many meshes
+      Instead, it is mostly a single fullscreen rectangle whose pixels are computed
+      by the fragment shader" from source (linked soon)-->
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/"
+        }
+      }
+    </script>
+
+    <!-- <script src="https://unpkg.com/tone"></script> -->
+    <!-- <script type="module" src="toner.js"></script> -->
+    <script type="module" src="setup.js"></script>
+  </head>
+  <!-- <body>
+    <button id="play">Click me to play note!</button>
+    <canvas id="three-ex"></canvas>
+  </body> -->
+</html>

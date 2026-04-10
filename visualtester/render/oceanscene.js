@@ -117,9 +117,31 @@ export class OceanScene {
     this.uniforms.uMousePos.value.set(this.mousePos.x, this.mousePos.y);
     //so basically i think it has to RE READ the entire  mutable parameters each frame to keep animation in sync with uniforms
     //but idk im not gonna do that yet
+    //i could do the manual method BUT the source code has a thing im fgonna try then remove to see if it works
+
     //draw current frame
     this.renderer.render(this.scene, this.camera);
     //next frame
     requestAnimationFrame(this.animate);
+    // this.syncBodyStyleClass(params.style);
+    this.syncBodyStyleClass();
+  }
+  //this is the source codes
+  //NEVER MIND
+  //because i will be syncing now (it needs me to do that before i can add these stylish filters) but try anyway
+  syncBodyStyleClass(styleValue) {
+    document.body.classList.remove(
+      "style-noir",
+      "style-retro",
+      "style-synthwave",
+      "style-dream",
+      "style-standard",
+    );
+
+    if (styleValue === 1) document.body.classList.add("style-noir");
+    else if (styleValue === 2) document.body.classList.add("style-retro");
+    else if (styleValue === 3) document.body.classList.add("style-synthwave");
+    else if (styleValue === 4) document.body.classList.add("style-dream");
+    else document.body.classList.add("style-standard");
   }
 }

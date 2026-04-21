@@ -9,6 +9,8 @@ export class OceanScene {
     this.params = params;
     //light touch o vector2 for mouse pos
     this.mousePos = new THREE.Vector2(0, 0);
+    this.bgScene = new THREE.Scene();
+    // this.bgCamera=ew THREE.OrthographicCamera(-1,1,1,1-1,0,1);
     //scene
     this.scene = new THREE.Scene();
     //ortho camera: the mesh is drawn as a flat screen!

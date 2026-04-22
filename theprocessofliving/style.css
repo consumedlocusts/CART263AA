@@ -51,7 +51,7 @@ body {
   width: 100%;
   min-height: 100vh;
   background-color: var(--red);
-  color: #ff3333;
+  color: #e90c0c;
   font-family: var(--font-mono);
   overflow-x: hidden;
 }

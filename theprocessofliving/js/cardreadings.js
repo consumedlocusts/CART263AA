@@ -4,30 +4,30 @@ class CardReading {
     // generates meaning text from the three cards drawn and then combines them simply
     //SUIT MEANINGGS
     this.suitMeanings = {
-      Hearts: " the inner world — feelings, connection, and longing",
-      Diamonds: " the material world — movement, exchange, and change",
-      Clubs: " ambition and effort — work, friction, and growth",
-      Spades: " difficulty and truth — loss, challenge, and hard knowledge",
+      Hearts: " the inner world —+- feelings, connection, and longing",
+      Diamonds: " the material world —+- movement, exchange, and change",
+      Clubs: " ambition and effort —+- work, friction, and growth",
+      Spades: " difficulty and truth —+- loss, challenge, and hard knowledge",
     };
     //RANK MEANIGS:
     this.rankMeanings = {
-      Ace: "a beginning — something is arriving or opening",
-      2: "duality — a choice, a pairing, or a balance to find",
-      3: "growth — something is expanding beyond its origin",
-      4: "stability — a pause, a foundation, or a resting point",
-      5: "disruption — something is shifting or being tested",
-      6: "passage — movement from one condition to another",
-      7: "reflection — a hidden truth or a test of patience",
-      8: "momentum — things are accumulating or accelerating",
-      9: "near-completion — one step remains before the end",
-      10: "culmination — an ending that contains a new beginning",
-      Jack: "a restless energy — action taken without full knowledge",
-      Queen: "feminine intuition — soulmate",
-      King: "mastery and authority — full command of a domain",
+      Ace: " a beginning —+- something is arriving or opening",
+      2: " duality —+- a choice, a pairing, or a balance to find",
+      3: " growth —+- something is expanding beyond its origin",
+      4: " stability —+- a pause, a foundation, or a resting point",
+      5: " disruption —+- something is shifting or being tested",
+      6: " passage —+- movement from one condition to another",
+      7: " reflection —+- a hidden truth or a test of patience",
+      8: " momentum —+- things are accumulating or accelerating",
+      9: " near-completion —+- one step remains before the end",
+      10: " culmination —+- an ending that contains a new beginning",
+      Jack: " a restless energy —+- action taken without full knowledge",
+      Queen: " feminine intuition —+- soulmate",
+      King: " mastery and authority —+- full command of a domain",
     };
     //the three card "filler word" as positions in the spread
     this.positions = [
-      "  what has shaped you",
+      " what has shaped you",
       " for what surrounds you",
       " what is coming toward you",
     ];
@@ -45,13 +45,13 @@ class CardReading {
     let rank = this.rankMeanings[card.rank];
     return (
       card.display +
-      "speaks to" +
+      " speaks to" +
       position +
       "." +
-      "this carries on " +
+      " this carries on " +
       suit +
       ". " +
-      "it tells of" +
+      " it tells of" +
       rank +
       "."
     );

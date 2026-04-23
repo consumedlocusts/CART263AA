@@ -62,146 +62,158 @@ const synth = new Tone.PolySynth(Tone.Synth, {
   },
 });
 //filterized but i dont know if i will like this one yet
+// raw saw tooth fixer
 const filter = new Tone.Filter({
   type: "lowpass",
-  frequency: 3200,
+  frequency: 2800,
   rolloff: -12,
 });
-//other efffects n stuff
-const chorus = new Tone.Chorus({
-  frequency: 0.9,
-  delayTime: 2.5,
-  depth: 0.28,
-  wet: 0.18,
-}).start();
-
+// //other efffects n stuff
+// const chorus = new Tone.Chorus({
+//   frequency: 0.9,
+//   delayTime: 2.5,
+//   depth: 0.28,
+//   wet: 0.18,
+// }).start();
+//reverb adds to the actual visual effects heree
 const reverb = new Tone.Reverb({
   decay: 4.2,
   wet: 0.18,
 });
 //from website idk what this really does other than make it so its not annoying
+//ok so limiter protects the output from being too loud too quickly lol
 const limiter = new Tone.Limiter(-2);
+//lets it measure the sound energy and since the locust reacts to note pitch and how energized the aduio is
 const analyser = new Tone.Analyser("fft", 128);
 //connect it all together
+//chain to chain
 synth.connect(filter);
-filter.connect(chorus);
-chorus.connect(reverb);
+// filter.connect(chorus);
+// chorus.connect(reverb)
+filter.connect(reverb);
 reverb.connect(limiter);
 limiter.toDestination();
 limiter.connect(analyser);
+///rest of audio set up
+async function startAudioIfNeeded() {
+  //exit immediately if audio has already bee playing
+  if (audioStarted) return;
+
+  //"Tone.start() asks the browser for permission to begin audio processing."
+
+  await Tone.start();
+
+  // "Tone.Reverb builds an impulse response internally."
+  // cuz "generating it once up front avoids a later hiccup the first time sound is played."
+  await reverb.generate();
+
+  audioStarted = true;
+}
+//--=-=----=---====HELPER FUNCTAIONNS=--=-=--====-=-
+function keyToNote(key) {
+  //look up and at how many semitones this key is above the base  note
+  const semitone = keyToSemitone[key];
+  if (semitone === undefined) return null;
+
+  //iff the value reaches 12  move into the next octave ta ta
+  const octaveOffset = Math.floor(semitone / 12);
+  const noteIndex = semitone % 12;
+  const octave = currentOctave + octaveOffset;
+  //tone.js uses note names for sound, while the visual uses MIDI numbers asa convenient pitch scale
+  return {
+    name: `${noteNames[noteIndex]}${octave}`,
+    midi: 12 * (octave + 1) + noteIndex,
+  };
+}
+function midiToPitchNorm(midi) {
+  //compress the useful MIDI range into 0..1 visuals usually work better with small normalized ranges than raw MIDI values allegdly
+  return THREE.MathUtils.clamp((midi - 48) / 36, 0, 1);
+  //define for clamp belopw
+}
+
+//wierd thing i dont get
+function nowInSeconds() {
+  //returns milliseconds the visual timing uses seconds ig
+  return performance.now() * 0.001;
+}
+function getAverageFft() {
+  const data = analyser.getValue();
+  let sum = 0;
+  let count = 0;
+
+  //samples a middle to low area of the FFT instead of the whole spectrum
+  //this range is stable enough to give motion but not so noisy that the lines jitter like crazy
+  for (let i = 3; i < 56; i++) {
+    const db = THREE.MathUtils.clamp(data[i], -140, 0);
+    //"Clamps the given value between min and max" tone.js
+    const normalized = THREE.MathUtils.mapLinear(db, -140, 0, 0, 1);
+    //"Performs a linear mapping from range <a1, a2> to range <b1, b2> for the given value.
+
+    // Tone.js says tat this Performs a linear mapping from range <a1, a2> to range <b1, b2> for the given value.
+    // x
+    // The value to be mapped.
+    // a1
+    // Minimum value for range A.
+    // a2
+    // Maximum value for range A.
+    // b1
+    // Minimum value for range B.
+    // b2
+    // Maximum value for range B.
+    // Returns: The mapped value.
+    //thus VV "Normalizes the given value according to the given typed array" VV
+    sum += normalized;
+    count++;
+  }
+  //source
+  return count ? sum / count : 0;
+}
+
 //the visual freq so those key attacks visibly lift the terrain
-let visualEnergy = 0;
+//let visualEnergy = 0;
 //three.js set upp basics taken from the joy division tut
 const scene = new THREE.Scene();
-
-const camera = new THREE.OrthographicCamera(-680, -100, 1440, -320, 0.1, 5000);
-camera.position.set(400, 1000, 300);
-camera.lookAt(400, 0, 0);
+//Orthographic camera keeps scale visually flat
+const camera = new THREE.OrthographicCamera(-500, 500, 500, -500, 0.1, 2000);
+camera.position.set(0, 0, 500);
+//also this 3.js scene is funnily photo printed like topology look and this flat projection is the better choice
+camera.lookAt(0, 0, 0);
 //render a bit small for window
 let renderWidth = window.innerWidth;
 let renderHeight = window.innerHeight;
 //new wbgl render activated
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 //density p1 for le lines
-
+//use a sensible pixel ratio
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(renderWidth, renderHeight);
+//match the renderer size to the browser
+renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0x000000, 1);
 mount.appendChild(renderer.domElement);
-
+//the visual cannot exist until the image has loaded
+let locustVisual = null;
 //group all stacked "strips" of lines but the code he shows is kinda too dense idk
 //also the spawning speed
-const lines = new THREE.Group();
-scene.add(lines);
 
-let frameId = null;
-let lastSpawnTime = 0;
+//image load
 
-//HELPPPP ers
-function keyboardKeyToNoteName(key) {
-  const semitone = keyToSemitone[key];
-  if (semitone === undefined) return null;
+function loadImage(src, onReady) {
+  const image = new Image();
 
-  const names = [
-    "C",
-    "C#",
-    "D",
-    "D#",
-    "E",
-    "F",
-    "F#",
-    "G",
-    "G#",
-    "A",
-    "A#",
-    "B",
-  ];
-  const octaveOffset = Math.floor(semitone / 12);
-  const noteIndex = semitone % 12;
-  return `${names[noteIndex]}${currentOctave + octaveOffset}`;
+  //decode the image only after it has fully loaded
+
+  image.onload = () => {
+    onReady(image);
+  };
+
+  image.src = src;
 }
-//pretty much everything that activates the key down to line alterations but more detail is needed
-async function startAudioIfNeeded() {
-  if (audioStarted) return;
-  await Tone.start();
-  await reverb.generate();
-  audioStarted = true;
-}
-
-async function onKeyDown(event) {
-  const key = event.key.toLowerCase();
-
-  if (key in keyToSemitone || key === "z" || key === "x") {
-    event.preventDefault();
-  }
-
-  if (heldPhysicalKeys.has(key)) return;
-
-  if (key === "z") {
-    currentOctave = Math.max(2, currentOctave - 1);
-    heldPhysicalKeys.add(key);
-    return;
-  }
-
-  if (key === "x") {
-    currentOctave = Math.min(6, currentOctave + 1);
-    heldPhysicalKeys.add(key);
-    return;
-  }
-
-  const note = keyboardKeyToNoteName(key);
-  if (!note) return;
-
-  await startAudioIfNeeded();
-
-  heldPhysicalKeys.add(key);
-  physicalKeyToNote.set(key, note);
-  synth.triggerAttack(note);
-  //thus also uses x, y , z to change the density
-  visualEnergy = Math.min(3.2, visualEnergy + 0.95);
-}
-//if released to keeep it goingg but fade slowly
-function releaseAllNotes() {
-  const notes = Array.from(physicalKeyToNote.values());
-  if (notes.length) synth.triggerRelease(notes);
-  heldPhysicalKeys.clear();
-  physicalKeyToNote.clear();
-}
-//data shaping helpers
-function getAnalyserData() {
-  return analyser.getValue();
-}
-//smooth the height profile to presserve a rounded topological look
-function smoothProfile(values, passes = 4) {
-  let current = values.slice();
-
-  for (let p = 0; p < passes; p++) {
-    const next = current.slice();
-    for (let i = 1; i < current.length - 1; i++) {
-      next[i] = current[i - 1] * 0.2 + current[i] * 0.6 + current[i + 1] * 0.2;
-    }
-    current = next;
-  }
-
-  return current;
+function buildLocustVisual(image) {
+  // main.js  owns loading locust.js owns visual processing
+  locustVisual = new LocustTopology({
+    scene,
+    camera,
+    renderer,
+    image,
+  });
 }

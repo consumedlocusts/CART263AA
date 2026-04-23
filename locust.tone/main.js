@@ -168,6 +168,24 @@ function getAverageFft() {
   //source
   return count ? sum / count : 0;
 }
+function createVoiceFromMidi(midi) {
+  //"voice" is kinda refering to how its related to both
+  const pitchNorm = midiToPitchNorm(midi);
+  const startTime = nowInSeconds();
+  //and each "sound"  stores a tiny "motion event" for the visual
+  //THIS i need to better view because im going off the tutorial
+  return {
+    midi,
+    startTime,
+    endTime: startTime + 1.25,
+    duration: 1.25,
+    strength: 1.12,
+
+    // lower notes affect lower regions of the drawing to then
+    // higher notes affect higher regions to  makes pitch feel spatial instead of random and not spiral
+    centerY: THREE.MathUtils.lerp(-120, 140, 1 - pitchNorm),
+  };
+}
 
 //the visual freq so those key attacks visibly lift the terrain
 //let visualEnergy = 0;

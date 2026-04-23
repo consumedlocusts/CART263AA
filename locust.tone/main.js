@@ -1,9 +1,11 @@
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
 import * as Tone from "https://cdn.jsdelivr.net/npm/tone@15.0.4/+esm";
+import { LocustTopology } from "./locust.js";
 //dom mount
 const mount = document.getElementById("mount");
 //basic keybord mapping
-const KEY_TO_SEMITONE = {
+//// A W S E D F T G Y H U J K
+const keyToSemitone = {
   a: 0,
   w: 1,
   s: 2,
@@ -18,27 +20,44 @@ const KEY_TO_SEMITONE = {
   j: 11,
   k: 12,
 };
-
+//here" he note names that belong to the 12 semitones in western equal temperament"
+const noteNames = [
+  "C",
+  "C#",
+  "D",
+  "D#",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "G#",
+  "A",
+  "A#",
+  "B",
+];
 //octave to be shifted with diffirent keys
 let currentOctave = 4;
 //start
 let audioStarted = false;
 //"to make" cord like effects after
-const heldPhysicalKeys = new Set();
-const physicalKeyToNote = new Map();
+//keep track of which physical computer keys are being held
+const heldKeys = new Set();
+//anf when the key is released it need s to release the exact same note
+const keyToNoteName = new Map();
 //the actual tone.js set up, from soruce, a rich sound for those active lines i guess
-//the richyrich synth
+//after x z altering notion
+// "active note motions" to decide how the lines should lift and bend
+const activeVoices = [];
+//the richyrich synth fixed
 const synth = new Tone.PolySynth(Tone.Synth, {
-  maxPolyphony: 16,
+  maxPolyphony: 8,
   options: {
-    oscillator: {
-      type: "sawtooth",
-    },
+    oscillator: { type: "sawtooth" },
     envelope: {
-      attack: 0.003,
-      decay: 0.22,
-      sustain: 0.72,
-      release: 1.25,
+      attack: 0.005,
+      decay: 0.15,
+      sustain: 0.5,
+      release: 0.8,
     },
   },
 });
@@ -100,7 +119,7 @@ let lastSpawnTime = 0;
 
 //HELPPPP ers
 function keyboardKeyToNoteName(key) {
-  const semitone = KEY_TO_SEMITONE[key];
+  const semitone = keyToSemitone[key];
   if (semitone === undefined) return null;
 
   const names = [
@@ -132,7 +151,7 @@ async function startAudioIfNeeded() {
 async function onKeyDown(event) {
   const key = event.key.toLowerCase();
 
-  if (key in KEY_TO_SEMITONE || key === "z" || key === "x") {
+  if (key in keyToSemitone || key === "z" || key === "x") {
     event.preventDefault();
   }
 

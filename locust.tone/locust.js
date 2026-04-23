@@ -127,10 +127,10 @@ export class LocustTopology {
     //convert the locusr image into horiz scan rows
     //the final aesthetic isa field of horizontal marks
     //deconstructing or reonstructing behaving like topology lines
-    this.rows = this.buildScanRows(imgData);
+    // this.rows = this.buildScanRows(imgData);
 
-    this.updateScaleAndCamera();
-    this.rebuildGeometry();
+    // this.updateScaleAndCamera();
+    // this.rebuildGeometry();
   }
   // well known brightness scale builder for ascii like objects
   //but the logic rlly needs to know if a point is nothing or something dark or light
@@ -140,5 +140,8 @@ export class LocustTopology {
     const g = imgData.data[i + 1];
     const b = imgData.data[i + 2];
     return (r + g + b) / 3;
+  }
+  buildScanRows(imgData) {
+    const rows = [];
   }
 }

@@ -249,13 +249,13 @@ async function onKeyDown(event) {
   }
 
   //ignore auto repeat if the key is already being held (for now)
-  if (heldPhysicalKeys.has(key)) return;
+  if (heldKeys.has(key)) return;
 
   // COOL : Z shifts octave downward.
   //"octave changes are really just transposition; they move the same layout into a lower pitch range without remapping every key"
   if (key === "z") {
     currentOctave = Math.max(2, currentOctave - 1);
-    heldPhysicalKeys.add(key);
+    heldKeys.add(key);
     return;
   }
 
@@ -263,13 +263,13 @@ async function onKeyDown(event) {
   // "keeping octave on simple nearby keys makes range changes fast during performance"
   if (key === "x") {
     currentOctave = Math.min(6, currentOctave + 1);
-    heldPhysicalKeys.add(key);
+    heldKeys.add(key);
     return;
   }
 
   //convert this key into a note finallt
-  const note = keyToMidiAndName(key);
-
+  //const note = keyToMidiAndName(key);
+  const note = keyToNote(key);
   //stop if the key is not a musical key!
   if (!note) return;
 
@@ -277,10 +277,10 @@ async function onKeyDown(event) {
   await startAudioIfNeeded();
 
   //,ark the physical key as held ofc
-  heldPhysicalKeys.add(key);
+  heldKeys.add(key);
 
   //temember which note belongs to this physical key.
-  physicalKeyToNote.set(key, note.name);
+  keyToNoteName.set(key, note.name);
 
   //start the synth note.
   synth.triggerAttack(note.name);
@@ -288,5 +288,62 @@ async function onKeyDown(event) {
   //create the matching visual note event.
   activeVoices.push(createVoiceFromMidi(note.midi));
 }
-function onKeyUp(event) {}
-function releaseAllNotes() {}
+function onKeyUp(event) {
+  const key = event.key.toLowerCase();
+  //remove the key from the held set.
+  heldKeys.delete(key);
+  //look up the musical note linked to this physical key y
+  const noteName = keyToNoteName.get(key);
+  //wierd but
+  // it needs to know if a note exists, then to release it.
+  if (!noteName) {
+    synth.triggerRelease(noteName);
+    keyToNoteName.delete(key);
+  }
+}
+function releaseAllNotes() {
+  //gather all currently held note names
+  const notes = Array.from(keyToNoteName.values());
+
+  // release them together if any exist
+  if (notes.length) {
+    synth.triggerRelease(notes);
+  }
+
+  //clear input tracking
+  heldKeys.clear();
+  physicalKeyToNote.clear();
+}
+//finally:
+// Register all browser event listeners.
+window.addEventListener("keydown", onKeyDown, false);
+window.addEventListener("keyup", onKeyUp, false);
+window.addEventListener("blur", releaseAllNotes, false);
+window.addEventListener("pointerdown", startAudioIfNeeded, false);
+window.addEventListener("resize", () => locustVisual.handleResize(), false);
+function animate(nowMs = 0) {
+  //asks zethe browser to call animate again on the next frame
+  requestAnimationFrame(animate);
+
+  //then onvert the frame time from milliseconds to seconds
+  const time = nowMs * 0.001;
+
+  // masure current sound energy.
+  //this is the shared bridge between sound and drawing;
+  // the notes create events but FFT energy tells the image how intense the overall movement should look
+  const fftEnergy = getAverageFFT();
+
+  //remove old visual note events adder
+  removeExpiredVoices(time);
+
+  //ppdate the locust line positions
+  if (locustVisual) {
+    locustVisual.update(time, activeVoices, fftEnergy);
+  }
+
+  //draw the current frame
+  renderer.render(scene, camera);
+}
+animate();
+//then
+loadImage("./locust.png", buildLocustVisual);

@@ -140,8 +140,36 @@ export class LocustTopology {
     const g = imgData.data[i + 1];
     const b = imgData.data[i + 2];
     return (r + g + b) / 3;
+    //likewise of the ascii from previous sessions
   }
   buildScanRows(imgData) {
     const rows = [];
+    //// this creates the Joy Division "P[leasures" like scanline structure
+for (let y = 0; y < imgData.height; y += this.gridStep) {
+      const segments = [];
+//idk why i just like putting a bunch of functions that could be inside seachother but in a classlol
+      //start remembers where a brightness  begins
+      //runBrightness and runCount  measure how bright that it nbe
+      let start = null;
+      let runBrightness = 0;
+      let runCount = 0;
+for (let x = 0; x < imgData.width; x += this.gridStep) {
+    const brightness = this.brightnessAt(imgData, x, y);
+        const active = brightness > this.activeBrightness;
+        //grid builidmg 
+        //if this cell belongs to the locust either begin or continue a segment
+        if (active) {
+          if (start === null) {
+            start = x;
+            runBrightness = 0;
+            runCount = 0;
+          }
+
+          runBrightness += brightness;
+          runCount++;
+        }
+         const atRowEnd = x + this.gridStep >= imgData.width;
+       // const shouldClose = start !== null && (!active || atRowEnd);
+       
   }
 }

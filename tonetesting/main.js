@@ -42,7 +42,7 @@ const synth = new Tone.PolySynth(Tone.Synth, {
     },
   },
 });
-//filterized but i dont know if i will like this one yet
+//filterized but i dont know if i will like this one yet, enrich
 const filter = new Tone.Filter({
   type: "lowpass",
   frequency: 3200,
@@ -60,10 +60,10 @@ const reverb = new Tone.Reverb({
   decay: 4.2,
   wet: 0.18,
 });
-//from website idk what this really does other than make it so its not annoying
+//from website idk what this really does other than make it so its not annoying, more filters
 const limiter = new Tone.Limiter(-2);
 const analyser = new Tone.Analyser("fft", 128);
-//connect it all together
+//connect it all together; "routing"
 synth.connect(filter);
 filter.connect(chorus);
 chorus.connect(reverb);
@@ -74,6 +74,7 @@ limiter.connect(analyser);
 let visualEnergy = 0;
 //three.js set upp basics taken from the joy division tut
 const scene = new THREE.Scene();
+//a small chromatic keyboard on the computer keyboard
 
 const camera = new THREE.OrthographicCamera(-680, -100, 1440, -320, 0.1, 5000);
 camera.position.set(400, 1000, 300);
@@ -186,3 +187,4 @@ function smoothProfile(values, passes = 4) {
 
   return current;
 }
+//lone landscape strip and then looped for the

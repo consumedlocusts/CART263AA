@@ -169,7 +169,26 @@ for (let x = 0; x < imgData.width; x += this.gridStep) {
           runCount++;
         }
          const atRowEnd = x + this.gridStep >= imgData.width;
-       // const shouldClose = start !== null && (!active || atRowEnd);
-       
+       const shouldClose = start !== null && (!active || atRowEnd);
+       if (shouldClose){
+        //when briteness red convert it into the horz segments
+        const end = active && atRowEnd ? x : x - this.gridStep;
+          const cellsWide = Math.max(1, Math.round((end - start) / this.gridStep) + 1);
+          //shortens each row seg 
+          //leaving tiny gaps prevents the image from looking too blocky or fused
+          if(cellsWide>=this.minSegmentPixels){
+            const averageBrightness = runBrightness / Math.max(1, runCount);
+            const segmentWidth=(end - start + this.gridStep) * this.lineLengthFactor;
+            //push
+            segments.push({
+              centerX: start + (end - start) * 0.5,
+              width: segmentWidth,
+              brightness: averageBrightness,
+            });
+          }
+          start=null;
+          }
+       }
   }
 }
+  

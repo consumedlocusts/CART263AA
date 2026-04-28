@@ -4,7 +4,7 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
 //i wanted that bbouncy line topology look i guess
 //the lines are bent when notes are played and eased back when nothing is happening
 export class LocustTopology {
-  constructor({ scene, camera, renderer, imagePath = "./locust.png" }) {
+  constructor({ scene, camera, renderer, image }) {
     //save the three.js scene so this class can add line objects into ih
     this.scene = scene;
 
@@ -15,7 +15,7 @@ export class LocustTopology {
     this.renderer = renderer;
 
     //yeah
-    this.imagePath = imagePath;
+    this.image = image;
     //---++====+=----big vis controls--------+=++==
     //MIGHT GROUP THEM BUT THIS IS SIMPELR TO ME RN
     //     this.PARAMS = {
@@ -146,8 +146,8 @@ export class LocustTopology {
     //SCANS THE IMAGE into the abstract row/segment data
     this.rows = this.buildScanRows(imgData);
 
-    // this.updateScaleAndCamera();
-    // this.rebuildGeometry();
+    this.updateScaleAndCamera();
+    this.rebuildGeometry();
   }
   // well known brightness scale builder for ascii like objects
   //but the logic rlly needs to know if a point is nothing or something dark or light
@@ -277,7 +277,7 @@ export class LocustTopology {
     this.imageOffsetX = 0;
     this.imageOffsetY = 0;
   }
-  mapImgPointToScene(x, y) {
+  mapImagePointToScene(x, y) {
     //converts a point in IMAGE SPACE to a point in SCENE SPACE
     //IMAGE SPACE: origin at the top-left corner, Y increases downward
     //SCENE SPACE: origin at the center of the screen, Y increases upward

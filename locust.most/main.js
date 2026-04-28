@@ -409,10 +409,8 @@ function onKeyUp(event) {
   const noteName = keyToNoteName.get(key);
   //wierd but
   // it needs to know if a note exists, then to release it.
-  if (!noteName) {
-    synth.triggerRelease(noteName);
-    keyToNoteName.delete(key);
-  }
+  if (!noteName) return; //bail if no note
+  synth.triggerRelease(noteName);
 }
 function releaseAllNotes() {
   //gather all currently held note names
@@ -427,7 +425,7 @@ function releaseAllNotes() {
 
   //clear input tracking
   heldKeys.clear();
-  physicalKeyToNote.clear();
+  keyToNoteName.clear();
 }
 //finally:
 // Register all browser event listeners

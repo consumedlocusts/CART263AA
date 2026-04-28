@@ -416,9 +416,11 @@ function onKeyUp(event) {
 }
 function releaseAllNotes() {
   //gather all currently held note names
+
   const notes = Array.from(keyToNoteName.values());
 
-  // release them together if any exist
+  //release the notes together if any exist
+  //also called  when the browser window loses focus (user switches tabs)
   if (notes.length) {
     synth.triggerRelease(notes);
   }
@@ -428,35 +430,55 @@ function releaseAllNotes() {
   physicalKeyToNote.clear();
 }
 //finally:
-// Register all browser event listeners.
+// Register all browser event listeners
+
 window.addEventListener("keydown", onKeyDown, false);
 window.addEventListener("keyup", onKeyUp, false);
 window.addEventListener("blur", releaseAllNotes, false);
 window.addEventListener("pointerdown", startAudioIfNeeded, false);
-window.addEventListener("resize", () => locustVisual.handleResize(), false);
+window.addEventListener(
+  "resize",
+  () => {
+    //the CSS style.width/style.height, keeping them consistent
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    //update the pixel ratio
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    //for the locust visual to recompute scale and rebuild geometry
+    //the if statement in case a resize event occurs before the image has loaded
+    if (locustVisual) {
+      locustVisual.handleResize();
+    }
+  },
+  false,
+);
+
 function animate(nowMs = 0) {
   //asks zethe browser to call animate again on the next frame
   requestAnimationFrame(animate);
 
-  //then onvert the frame time from milliseconds to seconds
+  //then convert the frame time from milliseconds to seconds
+  // the timing system (voices, easing, sine waves) all work in seconds
   const time = nowMs * 0.001;
 
-  // masure current sound energy.
+  //current sound energy
   //this is the shared bridge between sound and drawing;
   // the notes create events but FFT energy tells the image how intense the overall movement should look
-  const fftEnergy = getAverageFFT();
+  //produces a 0–1 number that scales the visual animation intensity
+  const fftEnergy = getAverageFft();
 
   //remove old visual note events adder
   removeExpiredVoices(time);
 
-  //ppdate the locust line positions
+  //update the locust line positions
+  //the if statement is a protection handling the brief period after page loads
   if (locustVisual) {
     locustVisual.update(time, activeVoices, fftEnergy);
   }
 
-  //draw the current frame
+  //RENDER THE SCENE
   renderer.render(scene, camera);
 }
+//animation loop
 animate();
-//then
+//finally
 loadImage("./locust.png", buildLocustVisual);

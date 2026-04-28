@@ -532,6 +532,15 @@ export class LocustTopology {
         const localWave =
           Math.sin(wavePhase) * row.currentWave * (0.2 + meta.brightness * 0.8);
         //THE FINAL POSITIONS BACK INTO THE BUFFER
+        position[baseIndex + 0] = meta.leftX;
+        position[baseIndex + 1] = meta.baseY + localYOffset + localWave;
+        position[baseIndex + 2] = 0;
+
+        position[baseIndex + 3] = meta.rightX;
+        position[baseIndex + 4] = meta.baseY + localYOffset + localWave; //endpoints
+        position[baseIndex + 5] = 0;
+        //signal
+        row.lineSegments.geometry.attributes.position.needsUpdate = true;
       }
     }
   }

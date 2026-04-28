@@ -293,4 +293,107 @@ export class LocustTopology {
       y: centeredY * this.overallScale + this.imageOffsetY,
     };
   }
+  rebuildGeometry() {
+    //TO DRAW LINES IN THREE.JS
+    //BufferGeometry: stores the vertex (point) data in arrays
+    //LineBasicMaterial: defines the visual properties of the lines(color,transparent,opacity)
+    //LineSegments: an object that combines a geometry and material it interprets
+    //the vertex array as pairs (start, end, start, end)
+    //like: vertices 0&1 is one segment 2&3 another etc
+
+    //discard any existing Three.js objects (freeing GPU resources)
+    this.clearLineGroup();
+    //create one Three.js LineSegments object per image row
+    for (const row of this.rows) {
+      const positions = [];
+      //metadata about each segment, stored parallel to the positions array
+      //used during animation to know where each segment "should" be so then
+      //at rest it can compute offsets from baseline
+      const baseMeta = [];
+      for (const segment of row.segments) {
+        //imagespace boundaries to scenespace points
+        const halfWidth = segment.width * 0.5;
+        const left = this.mapImagePointToScene(
+          segment.centerX - halfWidth,
+          row.y,
+        );
+        const right = this.mapImagePointToScene(
+          segment.centerX + halfWidth,
+          row.y,
+        );
+        const center = this.mapImagePointToScene(segment.centerX, row.y);
+
+        //draws strokeLayers copies of each segment and slightly offset in Y
+        //fakes line thickness since WebGL cant render true thick lines
+
+        for (let layer = 0; layer < this.strokeLayers; layer++) {
+          //so they are multiplied by strokeSeparation (0.85) to get actual offset
+          //like the three copies sit at -0.85, 0, and +0.85 scene units
+          //but the center layer is at the true position the others are above and below
+          const layerOffset =
+            (layer - (this.strokeLayers - 1) * 0.5) * this.strokeSeparation;
+
+          //push the two endpoints (left and right) for this segment copy
+          positions.push(
+            left.x,
+            left.y + layerOffset,
+            0,
+            right.x,
+            right.y + layerOffset,
+            0,
+          );
+          //store the base (at rest) properties of this segment
+          baseMeta.push({
+            leftX: left.x, //at rest positios (never changes)
+            rightX: right.x,
+            baseY: center.y + layerOffset, //vertical center of layer
+            centerX: center.x, //used to compute horizontal wave
+            brightness: segment.brightness / 255, //normalised to 0-1 for shader math stuff
+          });
+        }
+      }
+      //create the objects for this row
+      const geometry = new THREE.BufferGeometry();
+      //sigh
+      //setAttribute registers a named attribute on the geometry
+      //"position" name for vertex coordinates in Three.js.
+      //THREE.BufferAttribute wraps a plain array in a "typed" GPU format
+      //new Float32Array(positions)converts the array to a 32-bit float array
+      geometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(new Float32Array(positions), 3),
+      );
+      //LineBasicMaterial is line material in Three.js
+      //does not react to lights and does not cast shadows
+
+      const material = new THREE.LineBasicMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.98, //slightly off to allow layering and manipulation
+      });
+      //is like THREE.Line but treats every pair of vertices as a separate line
+      //rather than connecting them all into one continuous line
+      const lineSegments = new THREE.LineSegments(geometry, material);
+      this.lineGroup.add(lineSegments);
+      //store information needed during animation
+      this.rowObjects.push({
+        lineSegments,
+        baseMeta, //at-rest position
+        rowImageY: row.y, //Y in image pixels (for row to note matching)
+        rowSceneY: this.mapImagePointToScene(0, row.y).y, //Y in scene units (for distance calculations in update)
+        currentOffset: 0, //vertical animation displacement
+        currentWave: 0, //wave oscillation amplitude
+      });
+    }
+  }
+  //called by main.js when the browser window is resized
+  //camera clip planes and the geometry coordinates all depend on window size,
+  //so both must be recomputed when the window dimensions change
+  handleResize() {
+    //recompute
+    this.updateScaleAndCamera();
+
+    //rebuild
+    this.rebuildGeometry();
+  }
 }

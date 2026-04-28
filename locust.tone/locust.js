@@ -396,4 +396,143 @@ export class LocustTopology {
     //rebuild
     this.rebuildGeometry();
   }
+  //converts a MIDI note number into a normalised 0–1 horizontal value
+  midiToXNorm(midi) {
+    return THREE.MathUtils.clamp((midi - 48) / 36, 0, 1);
+  }
+  //smoothly interpolates a value toward a target over multiple frames
+  //FORMULA: current + (target - current) * factor
+  //smooth curve makes an "easing out" feel that feels natural/organic
+  ease(current, target, factor) {
+    return current + (target - current) * factor;
+  }
+  //FFT = Fast Fourier Transform It decomposes a signal into frequency components
+  update(time, activeVoices, fftEnergy) {
+    //skip if no geometry is built
+    if (!this.rowObjects.length) return;
+    //get the Y coordinate of the last (bottommost) row in image pixels
+    //used to normalise each row's position to a 0–1 range
+    const maxRowY = this.rowObjects[this.rowObjects.length - 1]?.rowImageY || 1;
+    for (const row of this.rowObjects) {
+      //each row processed
+      let targetOffset = 0; //vertical displacement of this whole row
+      let targetWave = 0; //wave oscillation amplitude for segments in this row
+      //where this row is within the full image height 0 = top, 1 = bottom
+      const rowNorm = this.rowObjects.length <= 1 ? 0 : row.rowImageY / maxRowY;
+      //NICE FORMULA FROM SOURCE that translates for the above
+      //Math.sin(rowNorm * Math.PI) creates a half sine curve:
+      //rowNorm=0.0 to sin(0)= 0.0 (top of image:no lift)
+      //rowNorm=0.5 to sin(pi/2)= 1.0 (middle of image:maximum lift)
+      //rowNorm=1.0 to sin(pi)= 0.0 (bottom of image:no lift)
+      //again multiplying by the mentioned baseRelief scales this
+      //so rows in the middle of the body gently rise
+      const bodyContour = Math.sin(rowNorm * Math.PI) * this.baseRelief;
+      //ACCUMULATE THE EFFECT OF ALL ACTIVE NOTES ON THIS ROW
+      for (const voice of activeVoices) {
+        //age:how many seconds have passed since this note was triggered.
+        const age = time - voice.startTime;
+        //life:age normalised to the note's duration
+        const life = THREE.MathUtils.clamp(age / voice.duration, 0, 1);
+        //percussive notes with instant onset, peak intensity, gradual decay
+        const attackRelease = Math.sin(life * Math.PI);
+        //convert the note's MIDI number to a normalised horizontal position
+        //noteX: -1 = leftmost note (MIDI 48), +1 = rightmost note (MIDI 84)
+        const noteX = THREE.MathUtils.lerp(-1, 1, this.midiToXNorm(voice.midi));
+        //how far the note's "influence" spreads vertically
+        const rowShape = Math.exp(
+          -Math.pow((row.rowSceneY - voice.centerY) / 140, 2),
+        );
+
+        //basically loud playing makes the lines move much more dramatically
+
+        targetOffset +=
+          rowShape *
+          attackRelease *
+          voice.strength *
+          this.noteWarpStrength *
+          (0.5 + fftEnergy * 1.8);
+        //accumulate the wave amplitude contribution
+        //extremely high pitch notes produce more wave motion than middle notes
+        targetWave +=
+          attackRelease *
+          voice.strength *
+          (0.5 + fftEnergy) *
+          (0.5 + Math.abs(noteX)) *
+          this.internalWaveAmount;
+      }
+      //SMOOTH EACH ROWS DISPLACEMENT TOWARD ITS TARGET!!
+      row.currentOffset = this.ease(
+        row.currentOffset,
+        bodyContour + targetOffset,
+        this.returnEasing, //moves 13% of the remaining gap each frame
+      );
+      //waves amplitude uses a slightly slower easing
+      row.currentWave = this.ease(
+        row.currentWave,
+        targetWave,
+        this.returnEasing * 0.9,
+      );
+      //directly modify the vertex positions in the existing BufferAttribute array
+      //instead of creating new geometry every frame
+      const position = row.lineSegments.geometry.attributes.position.array;
+      //must set needsUpdate = true
+      //the buffer has changed needs reuploading to GPU before rendering
+      for (let i = 0; i < row.baseMeta.length; i++) {
+        const meta = row.baseMeta[i];
+        //leftX, leftY, leftZ, rightX, rightY, rightZ
+        const baseIndex = i * 6;
+        //whole row offset
+        let localYOffset = row.currentOffset;
+        //each individual segment gets has extra offset based on its horizontal
+        //proximity to active note
+        //making locust look like it's being deformed at
+        //specific points rather than warped as a stiff image
+        for (const voice of activeVoices) {
+          const life = THREE.MathUtils.clamp(
+            (time - voice.startTime) / voice.duration,
+            0,
+            1,
+          );
+          const attackRelease = Math.sin(life * Math.PI);
+          const noteXNorm = this.midiToXNorm(voice.midi);
+          //cnvert normalised note position to a scene X coordinate
+          const noteXScene = THREE.MathUtils.lerp(
+            -window.innerWidth * 0.28,
+            window.innerWidth * 0.28,
+            noteXNorm,
+          );
+          // /120 means a segment 120 scene units away gets ??? influence
+          const horizontalInfluence = Math.exp(
+            -Math.pow((meta.centerX - noteXScene) / 120, 2),
+          );
+          //brighter pixels get slightly more motion
+          //brightness=0 (barely visible edges):0.3(30% boost)
+          //brightness=1 (bright center):1.0 (100% boost)
+          const brightBoost = 0.3 + meta.brightness * 0.7;
+
+          localYOffset +=
+            horizontalInfluence *
+            attackRelease *
+            voice.strength *
+            this.noteWarpStrength *
+            brightBoost *
+            (0.45 + fftEnergy * 1.2);
+        }
+
+        //"microwave oscillation" so even within a row's overall offset, individual segments also oscillate
+        //with a sine wave
+        //an appearance of a vibrating membrane
+        //wavephase sources:
+        // time * 3.0 so 3 cycles per second
+        //meta.centerX * 0.03 nearby segments are slightly out of phase making that "ripple" effect from left to right
+        //row.rowSceneY * 0.01 rows at different heights also have slightly different phases
+        //also (0.2 + brightness*0.8)again boosts for brighter segments
+        const wavePhase =
+          time * 3.0 + meta.centerX * 0.03 + row.rowSceneY * 0.01;
+        const localWave =
+          Math.sin(wavePhase) * row.currentWave * (0.2 + meta.brightness * 0.8);
+        //THE FINAL POSITIONS BACK INTO THE BUFFER
+      }
+    }
+  }
 }
